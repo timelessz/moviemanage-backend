@@ -80,6 +80,7 @@
             <div class="content">
                 <div class="title m-b-md">
                     Laravel
+                    <img src="{{ url('/captcha/1') }}">
                 </div>
 
                 <div class="links">
