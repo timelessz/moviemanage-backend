@@ -1,0 +1,351 @@
+body {
+    color: #505050;
+    line-height: 1.75em;
+    background: #ebebeb;
+}
+
+/*头部logo　还有查询框*/
+
+.main-header {
+    text-align: center;
+    padding: 22px 0;
+    background-color: rgb(241, 242, 243);
+    background-repeat: no-repeat;
+    background-position: center 20%;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.top-logosearch {
+
+}
+
+.top-logosearch {
+
+}
+
+.searchinput {
+}
+
+.nav {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+/* Carousel base class */
+.carousel {
+    height: 360px;
+    margin-bottom: 20px;
+}
+
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+    z-index: 10;
+}
+
+/* Declare heights because of positioning of img element */
+.carousel .item {
+    height: 360px;
+    background-color: #777;
+}
+
+.carousel-inner > .item > a > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    height: 360px;
+}
+
+.carousel-inner > .item > a p {
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    padding: 0px 15px;
+}
+
+/*主要内容区域背景*/
+.list-container {
+    background: #fff;
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+
+.list-middle-container {
+    margin-top: 20px;
+}
+
+/**底部*/
+.main-footer {
+    background: #202020;
+    padding: 35px 0 0;
+    color: #959595;
+}
+
+.main-footer .widget .recent-post .recent-single-post {
+    border-bottom: 1px dashed #303030;
+}
+
+.main-footer .widget .tag-cloud a {
+    border: 1px solid #303030;
+}
+
+.main-footer .widget .title {
+    color: #ffffff;
+    border-bottom: 1px solid #303030;
+}
+
+.main-footer .widget .friend-links hr {
+    margin: 1em 0;
+    border-top: 1px dashed #303030;
+}
+
+.copyright hr {
+    margin: 1em 0;
+    border-top: 1px dashed #303030;
+}
+
+/**版权信息*/
+.copyright {
+    background: #111;
+    font-size: 13px;
+    text-align: center;
+    color: #555555;
+    padding-top: 28px;
+    padding-bottom: 28px;
+    border-top: 1px solid #303030;
+}
+
+.copyright span {
+    margin: 0 .5em;
+}
+
+.copyright a {
+    color: #555555;
+}
+
+/**电影列表*/
+
+.movie-list {
+    padding: 0px 5px;
+}
+
+.movie-list a {
+    color: rgb(68, 68, 68);
+    text-decoration: none;
+}
+
+.movie-list-title {
+    text-align: left;
+    padding: 5px 25px;
+    color: #0f0f0f;
+}
+
+.movie-list a:visited {
+    color: rgb(68, 68, 68);
+    text-decoration: none;
+}
+
+.movie-list-desc {
+    line-height: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: rgb(153, 153, 153);
+    padding: 0px 8px;
+    overflow: hidden;
+    font-size: 14px;
+}
+
+.movie-list-score {
+    text-align: left;
+}
+
+.list-group {
+    margin-bottom: 0px;
+}
+
+/*电影分数*/
+.movie-score {
+    color: rgba(249, 164, 15, 0.92);
+}
+
+/*面包屑*/
+.breadcrumb {
+    margin-bottom: 10px;
+    margin-top: -10px;
+}
+
+/**最热电影*/
+
+.movie-hot-list a {
+    text-decoration: none;
+}
+
+.movie-hot-list a:hover {
+    position: relative;
+    left: -1px;
+}
+
+/**标签云*/
+
+.widget .title {
+    margin-top: 0;
+    padding-bottom: 7px;
+    border-bottom: 1px solid #ebebeb;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.widget .title:after {
+    content: "";
+    width: 90px;
+    height: 1px;
+    background: #e67e22;
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+}
+
+.widget .recent-post .recent-single-post {
+    border-bottom: 1px dashed #ebebeb;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+}
+
+.widget .recent-post .recent-single-post:last-child {
+    margin-bottom: 0;
+}
+
+.widget .recent-post .recent-single-post .post-title {
+    color: #505050;
+    -webkit-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.widget .recent-post .recent-single-post .post-title:hover {
+    color: #e67e22;
+    text-decoration: none;
+}
+
+.widget .recent-post .recent-single-post .date {
+    color: #959595;
+}
+
+.widget .tag-cloud a {
+    border: 1px solid #ebebeb;
+    padding: 2px 7px;
+    color: #959595;
+    line-height: 1.5em;
+    display: inline-block;
+    margin: 0 7px 7px 0;
+    -webkit-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.widget .tag-cloud a:hover {
+    color: #ffffff;
+    background: #e67e22;
+    border: 1px solid #e67e22;
+    text-decoration: none;
+}
+
+.widget .social {
+    padding: 0;
+    margin: 0;
+}
+
+.widget .social li {
+    display: inline-block;
+    margin: 0 2px 5px 0;
+    text-align: center;
+}
+
+.widget .social li a i {
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    border: 1px solid #ebebeb;
+    color: #959595;
+    -webkit-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.widget .social li:hover i {
+    color: #ffffff;
+    background: #e67e22;
+    border: 1px solid #e67e22;
+}
+
+.widget .newsletter .input-group {
+    margin-bottom: 10px;
+    display: block;
+}
+
+.widget .newsletter .input-group .email,
+.widget .newsletter .input-group btn {
+    width: 100%;
+}
+
+.widget .ad {
+    text-align: center;
+}
+
+.widget .ad img {
+    max-width: 100%;
+}
+
+/**详情页*/
+h1 {
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.movie-detail-thumbnail {
+    width: 30%;
+    padding: 10px;
+}
+
+.movie-detail-list {
+    width: 68%;
+}
+
+.movie-title-year {
+    color: rgb(137, 137, 137);
+}
+
+.movie-detail-list-des {
+    position: relative;
+    width: 100%;
+    height: 135px;
+    overflow-y: scroll;
+    font-size: 13px;
+    line-height: 17pt;
+}
+
+.download-link h2 {
+    font-size: 20px;
+    color: rgb(18, 120, 246);
+    font-weight: normal;
+    padding: 0px 10px;
+}
+
+/*电影列表 list*/
+
+.movie-list-item {
+    border-bottom: 1px dashed #ebebeb;
+}
+
+/*
+.movie-detail {
+    padding-left: 0px;
+}
+
+.movie-detail-list {
+    padding-left: 0px;
+}*/

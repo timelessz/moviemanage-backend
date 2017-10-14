@@ -31,39 +31,9 @@ class Movie extends Model
 
     /**
      * 可以被批量赋值的属性。
-     *
      * @var array
      */
-    protected $fillable = ['name', 'alias_name', 'title', 'coversrc',
-        'type', 'length', 'imdbscore', 'imdburl', 'doubanscore', 'doubanurl',
-        'region_id', 'region_name', 'director', 'ages', 'releasedate', 'starring',
-        'comment', 'summary', 'content', 'tags', 'language'];
+    protected $fillable = ['name', 'alias_name', 'title', 'coversrc', 'type', 'length', 'imdbscore', 'imdburl', 'doubanscore', 'doubanurl', 'region_id', 'region_name', 'director', 'ages', 'releasedate', 'starring',
+        'comment', 'summary', 'content', 'tags', 'language', 'comefrom', 'country', 'big_coversrc', 'bigcoversrc_settime', 'pvcount', 'is_show', 'is_hot', 'created_at', 'updated_at'];
 }
-
-//create table movie_movie_list
-//(
-//	name varchar(200) null comment '电影名',
-//	en_name varchar(200) default '' null comment '英文名',
-//	title varchar(300) default '' null comment '标题',
-//	cover_src varchar(500) null comment '缩略图的src',
-//	type varchar(200) null comment '电影的分类',
-//	duration varchar(50) null comment '电影时长',
-//	douban_score varchar(20) default '0' null comment '豆瓣评分',
-//	douban_url varchar(500) default '' null comment '豆瓣链接',
-//	region int null comment '区域 欧美 日韩 大陆 港台 印度 其他',
-//	director varchar(50) default '' null comment '导演',
-//	ages varchar(20) default '' null comment '电影年代',
-//	releasedate varchar(500) null comment '上映时间',
-//	starring text null comment '演员',
-//	comment text null comment '豆瓣之类的评分',
-//	summary varchar(1000) null comment '电影简介',
-//	content longtext null comment '内容',
-//	tags varchar(500) default '' null comment '分类标签',
-//	created_at int null,
-//	updated_at int null,
-//	constraint table_name_id_uindex
-//		unique (id)
-//)
-//comment '最终的电影表'
-//;
 

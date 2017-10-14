@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../../favicon.ico">
+    <title>@yield('title')</title>
+    <meta name="author" content="">
+    <meta name="keywords" content="@yield('keywords')">
+    <meta name="description" content="@yield('description')">
+    <!--默认应该使用cdn的资源-->
+    <!--<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"-->
+    <!--integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+    <!--<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"-->
+    <!--integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="{{URL::asset('dist/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{URL::asset('dist/css/bootstrap-theme.min.css')}}">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{URL::asset('star/css/star-rating.css')}}" media="all" type="text/css"/>
+    <link rel="stylesheet" href="{{URL::asset('dist/css/index.css')}}">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]>
+    <script src="{{URL::asset('assets/js/ie8-responsive-file-warning.js')}}"></script>
+    <![endif]-->
+    <script src="{{URL::asset('assets/js/ie-emulation-modes-warning.js')}}"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<header class="main-header">
+    <div class="container">
+        <div class="row">
+            <div class="index-top-logo col-lg-3 ">
+                <img src="http://www.bttt99.com/images/logo.png" alt="电影下载2018">
+            </div>
+            <div class="index-top-search col-lg-5 col-lg-offset-2">
+                <div class="row searchinput">
+                    <div class="6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="请输入　电影名、演员、电影类型">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">搜索</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="navbar-wrapper">
+    <div class="container-fluid　nav">
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        @yield('menu')
+                        {{--<li class="active"><a href="#">首页</a></li>--}}
+                        {{--<li><a href="#about">欧美电影</a></li>--}}
+                        {{--<li><a href="#contact">大陆电影</a></li>--}}
+                        {{--<li><a href="#contact">日韩电影</a></li>--}}
+                        {{--<li><a href="#contact">港台电影</a></li>--}}
+                        {{--<li><a href="#contact">博主推荐</a></li>--}}
+                        {{--<li><a href="#contact">电影影评</a></li>--}}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+
+<div class="container  main-container">
+    @yield('content')
+</div>
+
+<footer class="main-footer list-middle-container">
+    <div class="container container-footer ">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="widget">
+                    <h4 class="title">电影影评</h4>
+                    <div class="content recent-post">
+                        <div class="recent-single-post">
+                            <a href="/custom-excerpts/" class="post-title">自定义文章摘要（Excerpt）
+                                <div class="date">2017年8月9日</div>
+                            </a>
+                        </div>
+                        <div class="recent-single-post">
+                            <a href="/primary-tags/" class="post-title">首要“标签”</a>
+                            <div class="date">2017年8月3日</div>
+                        </div>
+                        <div class="recent-single-post">
+                            <a href="/ghost-1-0-released/" class="post-title">Ghost 1.0 版本正式发布</a>
+                            <div class="date">2017年7月29日</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="widget">
+                    <h4 class="title">标签云</h4>
+                    <div class="content tag-cloud">
+                        <a href="/tag/about-ghost/">台湾电影</a>
+                        <a href="/tag/release/">战狼2</a>
+                        <a href="/tag/javascript/">巴霍巴利2（印度史诗巨制）</a>
+                        <a href="/tag/promise/">Promise</a>
+                        <a href="/tag/zhuti/">主题</a>
+                        <a href="/tag/nodejs/">Node.js</a>
+                        <a href="/tag/mysql/">MySQL</a>
+                        <a href="/tag/nginx/">Nginx</a>
+                        <a href="/tag/aliyun-ecs/">阿里云服务器</a>
+                        <a href="/tag/ubuntu/">Ubuntu</a>
+                        <a href="/tag/ghost-in-depth/">深度玩转 Ghost</a>
+                        <a href="/tag/theme/">Theme</a>
+                        <a href="/tag/zhu-shou-han-shu/">助手函数</a>
+                        <a href="/tag/markdown/">Markdown</a>
+                        <a href="/tag/proxy/">反向代理</a>
+                        <a href="/tag-cloud/">...</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="widget">
+                    <h4 class="title">电影分类</h4>
+                    <div class="content tag-cloud friend-links">
+                        <a href="http://lodashjs.com/" title="Lodash中文文档" target="_blank">IMDB高分推荐</a>
+                        <a href="http://www.jquery123.com/" title="jQuery中文文档" target="_blank">豆瓣高分推荐</a>
+                        <hr>
+                        <a href="http://www.bootcss.com" title="Bootstrap中文网" target="_blank">爱情</a>
+                        <a href="http://www.bootcdn.cn" title="开放CDN服务" target="_blank">动作</a>
+                        <a href="http://www.gruntjs.net" title="Grunt中文网" target="_blank">动漫</a>
+                        <a href="http://www.gulpjs.com.cn/" title="Gulp中文网" target="_blank">恐怖</a>
+                        <hr>
+                        <a href="http://www.aliyun.com/" title="欧美" target="_blank">欧美</a>
+                        <a href="http://www.aliyun.com/" title="欧美" target="_blank">韩国</a>
+                        <a href="http://www.aliyun.com/" title="欧美" target="_blank">港台</a>
+                        <a href="http://www.aliyun.com/" title="欧美" target="_blank">大陆</a>
+                        <a href="http://www.aliyun.com/" title="欧美" target="_blank">印度</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>
+                    电影天堂电影下载网站 免费提供下载链接,本站不直接提供电影下载资源，所有电影下载 免费链接均来自网络，本站电影大多为rmvb格式，只供网络测试、请在下载电影24小时内删除所下内容，请支持购买正版！如无意中侵犯了您的权益,请发邮件至xlpuvip@126.com (使用时将#改为@),我们确认后将立即清除相关链接。
+                 <a class="back-to-top" href="#top">
+                    返回顶部
+                 </a>
+                </span>
+                <hr>
+                <span>
+                    Copyright © <a href="http://www.ghostchina.com/">电影下载主站 2016-2017</a>
+               </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="star/js/star-rating.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $(".input-21c").rating({
+            showClear: false,
+            min: 0,
+            max: 10,
+            step: 0.1,
+            size: 'tm',
+            starCaptionClasses: function (val) {
+                if (val < 6) {
+                    return 'label label-success';
+                } else {
+                    return 'label label-danger';
+                }
+            },
+        });
+    })
+</script>
+</body>
+</html>

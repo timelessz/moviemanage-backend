@@ -13,7 +13,6 @@ class CommonController extends Controller
      */
     public static function getPageInfo($page, $rows)
     {
-
         if (intval($page) < 1) {
             $page = 1;
         }

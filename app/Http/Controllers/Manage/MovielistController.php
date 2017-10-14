@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Manage;
 
 use App\Http\Controllers\CommonController;
 use App\Movie;
+use App\Xunleipu;
+use App\Xunleipumoviedownloadlink;
+use App\Xunleipumovieimglist;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class MovielistController extends Controller
 {
@@ -125,12 +129,38 @@ class MovielistController extends Controller
         if ($model) {
             $movie_id = $model->id;
             $pre_movieid = $request->id;
-
+            // 需要把 xunleipu 数据库中的下载链接存进来
+            Xunleipumoviedownloadlink::where('movie_id', $pre_movieid)->get();
+            //还需要把内容中的图片存下来
+            $download_data = Xunleipumoviedownloadlink::where('movie_id', $pre_movieid)->get()->toArray();
+            $img_data = Xunleipumovieimglist::where('movie_id', $pre_movieid)->get()->toArray();
+            $comefrom = 'xunleipu';
+            array_walk($download_data, array($this, 'form_movieoption'), [$movie_id, $comefrom]);
+            array_walk($img_data, array($this, 'form_movieoption'), [$movie_id, $comefrom]);
+            DB::table('movie_download_link')->insert($download_data);
+            DB::table('movie_imglist')->insert($img_data);
+            //同时需要把 之前的电影中存下最终的电影id
+            Xunleipu::where('id', $pre_movieid)->update(['movie_id' => $movie_id]);
             //这个需要同步把 其他的数据转移过来
             return response()->json(['status' => 'success', 'msg' => '电影添加成功', 'data' => []]);
         }
         return response()->json(['status' => 'failed', 'msg' => '电影添加失败请重试', 'data' => ['']]);
+    }
 
+    /**
+     * 格式化
+     */
+    protected function form_movieoption(&$v, $k, $data)
+    {
+        list($movie_id, $comefrom) = $data;
+        $v['pre_movie_id'] = $v['movie_id'];
+        $v['movie_id'] = $movie_id;
+        $v['comefrom'] = $comefrom;
+        unset($v['create_time']);
+        unset($v['update_time']);
+        unset($v['id']);
+        $v['created_at'] = time();
+        $v['updated_at'] = time();
     }
 
 }
