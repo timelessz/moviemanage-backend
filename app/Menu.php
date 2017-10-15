@@ -9,19 +9,31 @@ class Menu
     /**
      * 公共的菜单列表  后期会动态调整的
      */
-    public static function get_menu()
+    public function get_menu($current = '')
     {
-        return [
-            ['path' => '/index.html', 'text' => '首页', 'title' => ''],
-            ['path' => '/oumei.html', 'text' => '欧美电影'],
-            ['path' => '/dalu.html', 'text' => '大陆电影'],
-            ['path' => '/rihan.html', 'text' => '日韩电影'],
-            ['path' => '/gangtai.html', 'text' => '港台电影'],
-            ['path' => '/recommend.html', 'text' => '博主推荐'],
-            ['path' => '/yingping.html', 'text' => '电影影评'],
-            ['path' => '/meiju.html', 'text' => '美剧下载'],
+        $menu = [
+            ['en' => 'index', 'path' => '/index.html', 'text' => '首页', 'title' => '影窝首页'],
+            ['en' => 'oumei', 'path' => '/oumei.html', 'text' => '欧美电影', 'title' => '欧美电影，影窝'],
+            ['en' => 'dalu', 'path' => '/dalu.html', 'text' => '大陆电影', 'title' => '欧美电影，影窝'],
+            ['en' => 'rihan', 'path' => '/rihan.html', 'text' => '日韩电影', 'title' => '日韩电影，影窝'],
+            ['en' => 'gangtai', 'path' => '/gangtai.html', 'text' => '港台电影', 'title' => '港台电影，影窝'],
+            ['en' => 'recommend', 'path' => '/recommend.html', 'text' => '博主推荐', 'title' => '电影评论，影窝'],
+            ['en' => 'yingping', 'path' => '/yingping.html', 'text' => '电影影评', 'title' => '电影影评，影窝'],
+            ['en' => 'meiju', 'path' => '/meiju.html', 'text' => '美剧下载', 'title' => '美剧下载，影窝'],
         ];
+        //默认选中
+        if ($current) {
+            array_walk($menu, [$this, 'form_current'], $current);
+        }
+        return $menu;
     }
 
+
+    private static function form_current(&$v, $k, $current)
+    {
+        if ($v['en'] == $current) {
+            $v['current'] = '10';
+        }
+    }
 
 }
