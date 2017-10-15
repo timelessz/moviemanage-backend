@@ -40,7 +40,7 @@
     <div class="container">
         <div class="row">
             <div class="index-top-logo col-lg-3 ">
-                <img src="http://www.bttt99.com/images/logo.png" alt="电影下载2018">
+                <img src="/image/logo.png" alt="电影下载2018">
             </div>
             <div class="index-top-search col-lg-5 col-lg-offset-2">
                 <div class="row searchinput">
