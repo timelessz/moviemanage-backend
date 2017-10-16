@@ -10,7 +10,6 @@
     <meta name="keywords" content="@yield('keywords')">
     <meta name="description" content="@yield('description')">
     <!--默认应该使用cdn的资源-->
-    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
@@ -179,13 +178,17 @@
                 </span>
                 <hr>
                 <span>
-                    Copyright © <a href="http://www.ghostchina.com/">电影下载主站 2016-2017</a>
+                    Copyright © <a href="http://www.dyxz2018.com/">电影下载主站 2016-2017</a>
                </span>
             </div>
         </div>
     </div>
 </div>
 
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 <script src="star/js/star-rating.js" type="text/javascript"></script>
 <script>
     $(function () {
