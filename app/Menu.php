@@ -17,6 +17,7 @@ class Menu
             ['en' => 'dalu', 'path' => '/dalu.html', 'text' => '大陆电影', 'title' => '欧美电影，影窝'],
             ['en' => 'rihan', 'path' => '/rihan.html', 'text' => '日韩电影', 'title' => '日韩电影，影窝'],
             ['en' => 'gangtai', 'path' => '/gangtai.html', 'text' => '港台电影', 'title' => '港台电影，影窝'],
+            ['en' => 'jingdian', 'path' => '/jingdian.html', 'text' => '经典电影', 'title' => '经典电影，影窝'],
             ['en' => 'recommend', 'path' => '/recommend.html', 'text' => '博主推荐', 'title' => '电影评论，影窝'],
             ['en' => 'yingping', 'path' => '/yingping.html', 'text' => '电影影评', 'title' => '电影影评，影窝'],
             ['en' => 'meiju', 'path' => '/meiju.html', 'text' => '美剧下载', 'title' => '美剧下载，影窝'],

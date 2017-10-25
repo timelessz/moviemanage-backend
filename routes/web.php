@@ -16,7 +16,9 @@ Route::get('/', function () {
 });
 Route::resource('xunleipu', 'Manage\XunleipuController');
 Route::resource('movietype', 'Manage\MovietypeController');
-Route::resource('movie', 'Manage\MovielistController');
+//Route::resource('movie', 'Manage\MovielistController');
+//修改代码
+Route::resource('moviemanage', 'Manage\MovielistController');
 
 Route::post('xunleipumovieadd', 'Manage\MovielistController@xunleipumovieadd');
 Route::get('movietypelist', 'Manage\MovietypeController@getlist');
@@ -32,12 +34,23 @@ Route::get('liststatic', 'Index\IndexstaticController@listdemo');
 Route::get('detailstatic', 'Index\IndexstaticController@detaildemo');
 
 
-
 //没有找到更好的解决方案
 Route::get('oumei.html', 'Index\IndexstaticController@oumeilist');
 Route::get('oumei/{id}.html', 'Index\IndexstaticController@oumeilist');
-
-
+//日韩
+Route::get('rihan.html', 'Index\IndexstaticController@rihanlist');
+Route::get('rihan/{id}.html', 'Index\IndexstaticController@rihanlist');
+//港台
+Route::get('gangtai.html', 'Index\IndexstaticController@gangtailist');
+Route::get('gangtai/{id}.html', 'Index\IndexstaticController@gangtailist');
+//大陆电影
 Route::get('dalu.html', 'Index\IndexstaticController@dalulist');
 Route::get('dalu/{id}.html', 'Index\IndexstaticController@dalulist');
+//经典电影
+Route::get('jingdian.html', 'Index\IndexstaticController@jingdianlist');
+Route::get('jingdian/{id}.html', 'Index\IndexstaticController@jingdianlist');
+
+Route::get('movie/{id}.html', 'Index\IndexstaticController@movie');
+
+
 

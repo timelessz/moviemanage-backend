@@ -5,24 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="../../favicon.ico">
-    <title>@yield('title')</title>
     <meta name="author" content="">
-    <meta name="keywords" content="@yield('keywords')">
-    <meta name="description" content="@yield('description')">
-    <!--默认应该使用cdn的资源-->
+{!!$tdk_html!!}
+<!--默认应该使用cdn的资源-->
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
     <link rel="stylesheet" href="{{URL::asset('star/css/star-rating.css')}}" media="all" type="text/css"/>
-
     <link rel="stylesheet" href="{{URL::asset('dist/css/index.css')}}">
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]>
     <script src="{{URL::asset('assets/js/ie8-responsive-file-warning.js')}}"></script>
@@ -36,12 +30,11 @@
     <![endif]-->
 </head>
 <body>
-
 <header class="main-header">
     <div class="container">
         <div class="row">
             <div class="index-top-logo col-lg-3 ">
-                <img src="/image/logo.png" alt="电影下载2018">
+                <img src="/image/logo.png" alt="电影下载2018，影窝电影" title="影窝电影网">
             </div>
             <div class="index-top-search col-lg-5 col-lg-offset-2">
                 <div class="row searchinput">
@@ -58,7 +51,6 @@
         </div>
     </div>
 </header>
-
 <div class="navbar-wrapper">
     <div class="container-fluid　nav">
         <!-- Fixed navbar -->
@@ -76,25 +68,39 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        @yield('menu')
-                        {{--<li class="active"><a href="#">首页</a></li>--}}
-                        {{--<li><a href="#about">欧美电影</a></li>--}}
-                        {{--<li><a href="#contact">大陆电影</a></li>--}}
-                        {{--<li><a href="#contact">日韩电影</a></li>--}}
-                        {{--<li><a href="#contact">港台电影</a></li>--}}
-                        {{--<li><a href="#contact">博主推荐</a></li>--}}
-                        {{--<li><a href="#contact">电影影评</a></li>--}}
+                        <?php
+                        if($menu){
+                        foreach ($menu as $k=>$v){
+                        ?>
+                        <li class="<?php if (array_key_exists('current', $v)) {
+                            echo 'active';
+                        } ?>"><a href="{{$v['path']}}" title="{{$v['title']}}">{{$v['text']}}</a></li>
+                        <?php
+                        }
+                        }
+                        ?>
                     </ul>
                 </div>
             </div>
         </nav>
     </div>
 </div>
-
 <div class="container  main-container">
-    @yield('content')
+    <div class="container  main-container">
+        @yield('crousel')
+        <div class="row">
+            @yield('breadcrumb')
+            @yield('content')
+            @include('rightrecommend')
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                @include('regionnewlist')
+                @include('hotmovie')
+            </div>
+        </div>
+    </div>
 </div>
-
 <footer class="main-footer list-middle-container">
     <div class="container container-footer ">
         <div class="row">
@@ -165,7 +171,6 @@
         </div>
     </div>
 </footer>
-
 <div class="copyright">
     <div class="container">
         <div class="row">

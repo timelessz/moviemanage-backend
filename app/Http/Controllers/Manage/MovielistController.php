@@ -25,9 +25,9 @@ class MovielistController extends Controller
         list($skip, $take) = CommonController::getPageInfo($page, $row);
         $movie_name = $request->input('movie_name');
         $query = Movie::where('name', 'like', "%$movie_name%")->orWhere('alias_name', 'like', "%$movie_name%")->orWhere('title', 'like', "%$movie_name%");
-        $rows = $query->take($take)->skip($skip)->orderBy('id', 'desc')->get(['id', 'title', 'ages', 'type', 'coversrc', 'region_name','comefrom', 'is_hot', 'is_show', 'big_coversrc','pvcount' ,'country', 'created_at']);
+        $rows = $query->take($take)->skip($skip)->orderBy('id', 'desc')->get(['id', 'title', 'ages', 'type', 'coversrc', 'region_name', 'comefrom', 'is_hot', 'is_show', 'big_coversrc', 'pvcount', 'country', 'created_at']);
         //需要执行操作把 区域 电影类型展现出来
-        $count = $query->count();
+        $count =Movie::where('name', 'like', "%$movie_name%")->orWhere('alias_name', 'like', "%$movie_name%")->orWhere('title', 'like', "%$movie_name%")->count();
         return response()->json(['status' => 'success', 'data' => ['rows' => $rows, 'total' => $count], 'msg' => 'get data success']);
     }
 
