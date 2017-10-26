@@ -8,6 +8,8 @@ class Element
     //带图片的需要展现的字段列表
     private $pic_field = ['id', 'name', 'title', 'ages', 'summary', 'coversrc', 'type', 'doubanscore', 'region_id', 'region_name', 'director', 'created_at', 'country'];
     private $movietype = [];
+    private $tag_path = '/tag/%s.html';
+    private $type_path = '/type/%s.html';
     private $breadcrumb = [
         [
             'text' => '首页',
@@ -43,13 +45,11 @@ class Element
         if ($fivecover_movie) {
             array_walk($fivecover_movie, $form_movie_arr);
         }
-
         //带图片的最新电影
         $newest_movie = Movie::orderBy('created_at', 'desc')->limit(16)->get($this->pic_field)->toArray();
         if ($newest_movie) {
             array_walk($newest_movie, $form_movie_arr);
         }
-
         //获取每个区域的最新的id 列表
         $regionnewlist = $this->getRegionNewList($form_movie_arr);
         //底部最热电影
@@ -157,10 +157,24 @@ class Element
                 $en_name = 'jingdian';
                 break;
         }
+
+        //面包屑导航
+        $breadcrumb = $this->breadcrumb;
+        $current = sprintf('/movie/%s.html', $id);
+        array_push($breadcrumb, [
+            'text' => $movie['region_name'],
+            'href' => '/' . $en_name . '.html',
+            'title' => $movie['region_name'],
+        ]);
+        array_push($breadcrumb, [
+            'text' => $movie['name'],
+            'href' => $current,
+            'title' => $movie['title'],
+        ]);
         //菜单元素
         $menu = (new Menu())->get_menu($en_name);
         //关键词元素
-        $tdk_html = (new Tdk())->get_tdk('movie');
+        $tdk_html = (new Tdk())->get_tdk('movie', $movie['name']);
         //获取每个区域的最新的id 列表
         $regionnewlist = $this->getRegionNewList($form_movie_arr);
         //底部最热电影
@@ -170,7 +184,35 @@ class Element
         //热映电影
         $screenmovie_list = $this->getScreenMovie($form_movie_arr);
         /****************************************/
-        return compact('tdk_html', 'menu', 'fivecover_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list');
+        $this->form_per_movie($movie);
+        return compact('movie', 'tdk_html', 'menu', 'breadcrumb', 'fivecover_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list');
+    }
+
+
+    /**
+     * 格式化每一条数据
+     * @access  public
+     */
+    private function form_per_movie(&$v)
+    {
+        $type = $this->movietype;
+        //首先格式化电影
+        $v['href'] = "/movie/{$v['id']}.html";
+        if (array_key_exists('type', $v)) {
+            $type_id = array_filter(explode(',', $v['type']));
+            $type = [];
+            foreach ($type_id as $value) {
+                $type[] = [
+                    'id' => $value,
+                    'href' => sprintf($this->type_path, $value),
+                    'name' => $this->movietype[$value]
+                ];
+            }
+            $v['type'] = $type;
+        }
+        if (array_key_exists('created_at', $v)) {
+            $v['created_at'] = date('Y年m月d日', $v['created_at']);
+        }
     }
 
 
@@ -346,14 +388,13 @@ code;
     {
         //首先格式化电影
         $v['href'] = "/movie/{$v['id']}.html";
-        $tag_path = '/tag/tag%s.html';
         if (array_key_exists('type', $v)) {
             $type_id = array_filter(explode(',', $v['type']));
             $type = [];
             foreach ($type_id as $value) {
                 $type[] = [
                     'id' => $value,
-                    'href' => sprintf($tag_path, $value),
+                    'href' => sprintf($this->type_path, $value),
                     'name' => $this->movietype[$value]
                 ];
             }

@@ -74,8 +74,6 @@ class IndexstaticController extends Controller
         }
         //从头获取数据
         $element = (new Element())->getMovieEnsstial($id);
-        print_r($element);
-        exit;
         $code = view('detail', $element);
         return $code;
         return view('detail');
