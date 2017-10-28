@@ -137,8 +137,34 @@ class Element
     {
         $form_movie_arr = [$this, 'execFormatMovie'];
         $movie = Movie::find($id)->toArray();
-        $downloadlink = Moviedownloadlink::where('movie_id', $id)->get(['id', 'type_name', 'href'])->toArray();
-        $imglist = Movieimglist::where('movie_id', $id)->get(['id', 'imgsrc'])->toArray();
+        $downloadlink = Moviedownloadlink::where('movie_id', $id)->get(['id', 'type_name', 'type_id', 'href', 'pwd', 'text'])->toArray();
+        //整理下下载链接把 同类的整合到一个里边
+        $d_link = [];
+        foreach ($downloadlink as $k => $v) {
+            if (array_key_exists($v['type_id'], $d_link)) {
+                array_push(
+                    $d_link[$v['type_id']]['list'],
+                    [
+                        'href' => $v['href'],
+                        'text' => $v['text'],
+                        'pwd' => $v['pwd']
+                    ]
+                );
+            } else {
+                $d_link[$v['type_id']] = [
+                    'type_name' => $v['type_name'],
+
+                    'list' => [
+                        [
+                            'href' => $v['href'],
+                            'text' => $v['text'],
+                            'pwd' => $v['pwd']
+                        ]
+                    ]
+                ];
+            }
+        }
+//        $imglist = Movieimglist::where('movie_id', $id)->get(['id', 'imgsrc'])->toArray();
         $en_name = '';
         switch ($movie['region_id']) {
             case'1':
@@ -185,7 +211,7 @@ class Element
         $screenmovie_list = $this->getScreenMovie($form_movie_arr);
         /****************************************/
         $this->form_per_movie($movie);
-        return compact('movie', 'tdk_html', 'menu', 'breadcrumb', 'fivecover_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list');
+        return compact('movie', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'fivecover_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list');
     }
 
 

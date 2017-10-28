@@ -11,14 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//关于电影管理的相关页面
+
 Route::resource('xunleipu', 'Manage\XunleipuController');
 Route::resource('movietype', 'Manage\MovietypeController');
 //Route::resource('movie', 'Manage\MovielistController');
 //修改代码
 Route::resource('moviemanage', 'Manage\MovielistController');
+Route::resource('Xunleipudownloadlink', 'Manage\Xunleipudownloadlink');
+
+
+
 
 Route::post('xunleipumovieadd', 'Manage\MovielistController@xunleipumovieadd');
 Route::get('movietypelist', 'Manage\MovietypeController@getlist');
@@ -28,6 +31,8 @@ Route::get('movietaglist', 'Manage\MovietagController@getlist');
 Route::get('/captcha/{tmp}', 'CaptchaController@captcha');
 Route::get('/getcaptcha', 'CaptchaController@getcaptcha');
 
+
+//关于页面静态化的相关操作
 
 Route::get('indexstatic', 'Index\IndexstaticController@index');
 Route::get('liststatic', 'Index\IndexstaticController@listdemo');

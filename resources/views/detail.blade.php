@@ -94,52 +94,34 @@
                 </div>
             </div>
         </div>
-
+        <?php
+        foreach ($d_link as $k => $v) {
+        ?>
         <div class="list-middle-container list-container container-fluid download-link">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="widget">
-                        <h2 class="title">迅雷下载</h2>
+                        <h2 class="title">{{$v['type_name']}}</h2>
+                        <?php
+                        $str = $k == 4 ? '密码:' : '';
+                        foreach ($v['list'] as $val){
+                        ?>
                         <div class="content recent-post">
                             <div class="recent-single-post">
-                                <a href="/custom-excerpts/" class="post-title">自定义文章摘要（Excerpt）
+                                <a href="{{$val['href']}}" class="post-title">{{$val['text']}} {{$str}}{{$val['pwd']}}
                                 </a>
                             </div>
                         </div>
+                        <?php
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="list-middle-container list-container container-fluid download-link">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="widget">
-                        <h2 class="title">BT下载</h2>
-                        <div class="content recent-post">
-                            <div class="recent-single-post">
-                                <a href="/custom-excerpts/" class="post-title">自定义文章摘要（Excerpt）
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="list-middle-container list-container container-fluid download-link">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="widget">
-                        <h2 class="title">电驴下载</h2>
-                        <div class="content recent-post">
-                            <div class="recent-single-post">
-                                <a href="/custom-excerpts/" class="post-title">自定义文章摘要（Excerpt）
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php
+        }
+        ?>
         <div class="list-middle-container list-container container-fluid">
             <div class="row">
                 <div class="col-lg-12">
