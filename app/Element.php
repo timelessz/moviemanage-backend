@@ -102,6 +102,7 @@ class Element
                 $region_name = '经典电影';
                 break;
         }
+        $name = $region_name;
         $current = sprintf('/%s.html', $region_enname);
         //面包屑导航
         $breadcrumb = $this->breadcrumb;
@@ -149,7 +150,7 @@ class Element
         //首先需要根据$type_id 来获取
         $movietype = $this->getMovieType();
         $typeinfo = $movietype[$type_id];
-        $name=$typeinfo['name'];
+        $name = $typeinfo['name'];
         $current = sprintf('/type-%s.html', $type_id);
         //面包屑导航
         $breadcrumb = $this->breadcrumb;
