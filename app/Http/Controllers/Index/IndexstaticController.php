@@ -12,7 +12,7 @@ class IndexstaticController extends Controller
     {
         $element = (new Element())->getIndexEnsstial();
         $code = view('index', $element);
-        return $code;
+//        return $code;
         file_put_contents('index.html', $code);
     }
 
