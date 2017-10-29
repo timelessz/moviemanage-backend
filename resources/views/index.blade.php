@@ -21,16 +21,18 @@
             foreach ($fivecover_movie as $k => $v) {
             ?>
             <div class="item <?php echo $k == 0 ? 'active' : '';?>">
-                <a href="{{$v['href']}}" title="{{$v['title']}}">
+                <a href="{{$v['href']}}" target="_blank" title="{{$v['title']}}">
                     <img class="first-slide" src="{{$v['big_coversrc']}}" alt="{{$v['title']}}">
                     <div class="container">
                         <div class="carousel-caption">
-                            <div>{{$v['title']}}</div>
+                            <div style="font-size:24px">{{$v['title']}}</div>
                             <p>
                                 <?php
                                 foreach ($v['type'] as $val) {
                                 ?>
-                                <a href='{{$val['href']}}' target="_blank">{{$val['name']}}</a>
+                                <span>
+                                    {{$val['name']}}
+                                </span>
                                 <?php
                                 }
                                 ?>

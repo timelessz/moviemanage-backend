@@ -21,8 +21,6 @@ Route::resource('moviemanage', 'Manage\MovielistController');
 Route::resource('Xunleipudownloadlink', 'Manage\Xunleipudownloadlink');
 
 
-
-
 Route::post('xunleipumovieadd', 'Manage\MovielistController@xunleipumovieadd');
 Route::get('movietypelist', 'Manage\MovietypeController@getlist');
 Route::get('movieregionlist', 'Manage\MovieregionController@getlist');
@@ -41,19 +39,27 @@ Route::get('detailstatic', 'Index\IndexstaticController@detaildemo');
 
 //没有找到更好的解决方案
 Route::get('oumei.html', 'Index\IndexstaticController@oumeilist');
-Route::get('oumei/{id}.html', 'Index\IndexstaticController@oumeilist');
+Route::get('oumei-{id}.html', 'Index\IndexstaticController@oumeilist');
 //日韩
 Route::get('rihan.html', 'Index\IndexstaticController@rihanlist');
-Route::get('rihan/{id}.html', 'Index\IndexstaticController@rihanlist');
+Route::get('rihan-{id}.html', 'Index\IndexstaticController@rihanlist');
 //港台
 Route::get('gangtai.html', 'Index\IndexstaticController@gangtailist');
-Route::get('gangtai/{id}.html', 'Index\IndexstaticController@gangtailist');
+Route::get('gangtai-{id}.html', 'Index\IndexstaticController@gangtailist');
 //大陆电影
 Route::get('dalu.html', 'Index\IndexstaticController@dalulist');
-Route::get('dalu/{id}.html', 'Index\IndexstaticController@dalulist');
+Route::get('dalu-{id}.html', 'Index\IndexstaticController@dalulist');
+
 //经典电影
 Route::get('jingdian.html', 'Index\IndexstaticController@jingdianlist');
-Route::get('jingdian/{id}.html', 'Index\IndexstaticController@jingdianlist');
+Route::get('jingdian-{id}.html', 'Index\IndexstaticController@jingdianlist');
+
+//电影分类列表
+Route::get('typelist.html', 'Index\IndexstaticController@typelist');
+
+//根据分类获取的列表
+Route::get('type-{id}-{page}.html', 'Index\IndexstaticController@typemovielist');
+Route::get('type-{id}.html', 'Index\IndexstaticController@typemovielist');
 
 Route::get('movie/{id}.html', 'Index\IndexstaticController@movie');
 

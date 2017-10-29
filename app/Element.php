@@ -2,14 +2,16 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Cache;
+
 class Element
 {
 
     //带图片的需要展现的字段列表
     private $pic_field = ['id', 'name', 'title', 'ages', 'summary', 'coversrc', 'type', 'doubanscore', 'region_id', 'region_name', 'director', 'created_at', 'country'];
     private $movietype = [];
-    private $tag_path = '/tag/%s.html';
-    private $type_path = '/type/%s.html';
+    private $tag_path = '/tag-%s.html';
+    private $type_path = '/type-%s.html';
     private $breadcrumb = [
         [
             'text' => '首页',
@@ -54,13 +56,16 @@ class Element
         $regionnewlist = $this->getRegionNewList($form_movie_arr);
         //底部最热电影
         $hotmovie_list = $this->getHotMovie($form_movie_arr);
-        //博主影片推荐
-        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
         //热映电影
         $screenmovie_list = $this->getScreenMovie($form_movie_arr);
+        /**右侧相关菜单推荐*************************************/
+        //电影分类
+        $movietype = $this->getMovieType();
+        //博主影片推荐
+        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
+        /**********************************************/
 
-        /****************************************/
-        return compact('tdk_html', 'menu', 'fivecover_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list');
+        return compact('tdk_html', 'menu', 'fivecover_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype');
     }
 
 
@@ -114,10 +119,15 @@ class Element
         $regionnewlist = $this->getRegionNewList($form_movie_arr);
         //底部最热电影
         $hotmovie_list = $this->getHotMovie($form_movie_arr);
-        //博主影片推荐
-        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
         //获取正在热映的电影列表
         $screenmovie_list = $this->getScreenMovie($form_movie_arr);
+
+        /**右侧相关菜单推荐*************************************/
+        //电影分类
+        $movietype = $this->getMovieType();
+        //博主影片推荐
+        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
+        /**********************************************/
 
         //电影列表 同事计算分页相关
         $movies = Movie::where('region_id', $region_id)->orderBy('id', 'desc')->limit($pagesize)->offset($pagesize * ($pagenum - 1))->get($this->pic_field)->toArray();
@@ -125,7 +135,55 @@ class Element
         $count = Movie::where('region_id', $region_id)->count();
         $allpagenum = ceil($count / $pagesize);
         $pagination = $this->multipage($allpagenum, $pagenum, 'oumei');
-        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'region_name', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movies', 'allpagenum', 'count', 'pagination');
+        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'movies', 'allpagenum', 'count', 'pagination');
+    }
+
+
+    /**
+     * 获取分类的电影列表
+     * @access public
+     */
+    public function getTypeMovieListEnsstial($type_id, $pagenum, $pagesize = 10)
+    {
+        $form_movie_arr = [$this, 'execFormatMovie'];
+        //首先需要根据$type_id 来获取
+        $movietype = $this->getMovieType();
+        $typeinfo = $movietype[$type_id];
+        $name=$typeinfo['name'];
+        $current = sprintf('/type-%s.html', $type_id);
+        //面包屑导航
+        $breadcrumb = $this->breadcrumb;
+        array_push($breadcrumb, [
+            'text' => $name,
+            'href' => $current,
+            'title' => $name,
+        ]);
+        $this->breadcrumb;
+        //菜单元素
+        $menu = (new Menu())->get_menu('type');
+        //关键词元素
+        $tdk_html = (new Tdk())->get_tdk('type', $name);
+
+        //获取每个区域的最新的id 列表
+        $regionnewlist = $this->getRegionNewList($form_movie_arr);
+        //底部最热电影
+        $hotmovie_list = $this->getHotMovie($form_movie_arr);
+        //获取正在热映的电影列表
+        $screenmovie_list = $this->getScreenMovie($form_movie_arr);
+
+        /**右侧相关菜单推荐*************************************/
+        //博主影片推荐
+        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
+        /**********************************************/
+
+        //电影列表 同事计算分页相关
+        $movies = Movie::where('type', 'like', ",$type_id,")->orderBy('id', 'desc')->limit($pagesize)->offset($pagesize * ($pagenum - 1))->get($this->pic_field)->toArray();
+        array_walk($movies, $form_movie_arr);
+        $count = Movie::where('type', 'like', ",$type_id,")->count();
+        $allpagenum = ceil($count / $pagesize);
+        $pagination = $this->multipage($allpagenum, $pagenum, 'type-' . $type_id, '');
+
+        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'movies', 'allpagenum', 'count', 'pagination');
     }
 
 
@@ -184,6 +242,7 @@ class Element
                 break;
         }
 
+
         //面包屑导航
         $breadcrumb = $this->breadcrumb;
         $current = sprintf('/movie/%s.html', $id);
@@ -205,13 +264,17 @@ class Element
         $regionnewlist = $this->getRegionNewList($form_movie_arr);
         //底部最热电影
         $hotmovie_list = $this->getHotMovie($form_movie_arr);
-        //博主影片推荐
-        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
         //热映电影
         $screenmovie_list = $this->getScreenMovie($form_movie_arr);
-        /****************************************/
+
+        /**右侧相关菜单推荐*************************************/
+        //电影分类
+        $movietype = $this->getMovieType();
+        //博主影片推荐
+        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
+        /**********************************************/
         $this->form_per_movie($movie);
-        return compact('movie', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'fivecover_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list');
+        return compact('movie', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'fivecover_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype');
     }
 
 
@@ -283,19 +346,19 @@ code;
         }
         //没有第一页
         $pagestring .=
-            "<li><a href='/{$page_en}/1.html?{$para}'>第一页</a></li>" .
-            "<li><a href='/{$page_en}/" . ($currentpage - 1) . ".html{$para}' $para >«</a></li>";
+            "<li><a href='/{$page_en}-1.html?{$para}'>第一页</a></li>" .
+            "<li><a href='/{$page_en}-" . ($currentpage - 1) . ".html{$para}' $para >«</a></li>";
 
         for ($i = $from; $i <= $to; $i++) {
-            $pagestring .= $i == $currentpage ? "<li class='active'><a href='/{$page_en}/{$i}.html{$para}'>{$i}</a></li>" :
-                "<li><a href='/{$page_en}/{$i}.html{$para}'>{$i}</a></li>";
+            $pagestring .= $i == $currentpage ? "<li class='active'><a href='/{$page_en}-{$i}.html{$para}'>{$i}</a></li>" :
+                "<li><a href='/{$page_en}-{$i}.html{$para}'>{$i}</a></li>";
         }
 
         if ($to != $currentpage) {
             //表示不是最后一页
             $pagestring .=
-                "<li><a href='/{$page_en}/{$to}.html{$para}' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>" .
-                "<li><a href='/{$page_en}/{$allpagenum}.html{$para}'>最后一页</a></li>";
+                "<li><a href='/{$page_en}-{$to}.html{$para}' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>" .
+                "<li><a href='/{$page_en}-{$allpagenum}.html{$para}'>最后一页</a></li>";
         }
         return $pagestring;
     }
@@ -355,7 +418,6 @@ code;
                 'list' => $gangtailist
             ]
         ];
-
     }
 
     /**
@@ -407,6 +469,26 @@ code;
 
 
     /**
+     * 获取电影类型
+     * @access private
+     */
+    private function getMovieType()
+    {
+        return Cache::get('MovieType', function () {
+            $data = Movietype::get(['id', 'name'])->toArray();
+            $type = [];
+            foreach ($data as $k => $v) {
+                $type[$v['id']] = [
+                    'name' => $v['name'],
+                    'href' => sprintf($this->type_path, $v['id']),
+                ];
+            }
+            return $type;
+        });
+    }
+
+
+    /**
      * 格式化电影字段
      * @access private
      */
@@ -425,6 +507,10 @@ code;
                 ];
             }
             $v['type'] = $type;
+        }
+        if (array_key_exists('summary', $v)) {
+            $v['sub_summary'] = trim(mb_substr(strip_tags($v['summary']), 0, 150, 'utf-8')) . '...';
+            $v['summary'] = trim(mb_substr(strip_tags($v['summary']), 0, 200, 'utf-8'));
         }
         if (array_key_exists('created_at', $v)) {
             $v['created_at'] = date('Y年m月d日', $v['created_at']);

@@ -21,6 +21,7 @@ class Menu
             ['en' => 'recommend', 'path' => '/recommend.html', 'text' => '博主推荐', 'title' => '电影评论，影窝'],
             ['en' => 'yingping', 'path' => '/yingping.html', 'text' => '电影影评', 'title' => '电影影评，影窝'],
             ['en' => 'meiju', 'path' => '/meiju.html', 'text' => '美剧下载', 'title' => '美剧下载，影窝'],
+            ['en' => 'type', 'path' => '/typelist.html', 'text' => '电影分类', 'title' => '电影分类，影窝'],
         ];
         //默认选中
         if ($current) {

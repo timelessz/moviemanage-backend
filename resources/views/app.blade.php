@@ -194,24 +194,5 @@
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
-<script src="star/js/star-rating.js" type="text/javascript"></script>
-<script>
-    $(function () {
-        $(".input-21c").rating({
-            showClear: false,
-            min: 0,
-            max: 10,
-            step: 0.1,
-            size: 'tm',
-            starCaptionClasses: function (val) {
-                if (val < 6) {
-                    return 'label label-success';
-                } else {
-                    return 'label label-danger';
-                }
-            },
-        });
-    })
-</script>
 </body>
 </html>

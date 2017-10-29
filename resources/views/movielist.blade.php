@@ -18,7 +18,7 @@
     <div class="col-lg-9 col-md-9 col-xs-12">
         <div class="container-fluid list-container">
             <div class="widget">
-                <h1 class="title">{{$region_name}}</h1>
+                <h1 class="title">{{$name}}</h1>
                 <div class="container-fluid movie-list">
                     <?php
                     foreach ($movies as $k=>$v){
@@ -39,7 +39,9 @@
                                 <span style="padding-left: 20px;color: #ffb86b;font-size: 20px"> {{$v['doubanscore']}}</span>
                             </div>
                             <p>
-                                <a href="{{$v['href']}}" target="_blank"> {{$v['summary']}}</a>
+                                <a href="{{$v['href']}}" target="_blank"
+                                   title="{{$v['summary']}}"> {{$v['sub_summary']}}
+                                </a>
                             </p>
                             <div class="pull-left">
                                 <span>

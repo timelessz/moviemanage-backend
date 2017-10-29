@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Index;
 
 use App\Element;
-use App\Movie;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class IndexstaticController extends Controller
@@ -14,7 +12,7 @@ class IndexstaticController extends Controller
     {
         $element = (new Element())->getIndexEnsstial();
         $code = view('index', $element);
-//        return $code;
+        return $code;
         file_put_contents('index.html', $code);
     }
 
@@ -78,5 +76,20 @@ class IndexstaticController extends Controller
         return $code;
         return view('detail');
     }
+
+    /**
+     * 根据电影分类来展现电影
+     *
+     */
+    public function typemovielist($id = 1, $page = 1)
+    {
+        //获取分类的id
+        $element = (new Element())->getTypeMovieListEnsstial( $id, $page, 10);
+        $code = view('movielist', $element);
+        return $code;
+
+        return view('movielist');
+    }
+
 
 }
