@@ -30,6 +30,8 @@ Route::get('movietaglist', 'Manage\MovietagController@getlist');
 Route::get('getmoviecoversrc/{id}', 'Manage\MovielistController@getMovieCoversrc');
 Route::post('setmoviecoversrc', 'Manage\MovielistController@setMovieCoversrc');
 Route::get('sethotmovie/{id}', 'Manage\MovielistController@setHotMovie');
+Route::get('getmovierecommend/{id}','Manage\MovielistController@getMovieRecommend');
+Route::post('setmovierecommend', 'Manage\MovielistController@setMovieRecommend');
 
 
 Route::get('/captcha/{tmp}', 'CaptchaController@captcha');

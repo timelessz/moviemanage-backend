@@ -195,9 +195,9 @@ class MovielistController extends Controller
         $data = Movie::where('id', $id)->first(['big_coversrc']);
         if ($data) {
             $bigcoversrc = $data->toArray()['big_coversrc'];
-            return response()->json(['status' => 'success', 'msg' => '电影添加成功', 'data' => ['bigcoversrc' => $bigcoversrc]]);
+            return response()->json(['status' => 'success', 'msg' => '获取轮播图成功', 'data' => ['bigcoversrc' => $bigcoversrc]]);
         }
-        return response()->json(['status' => 'failed', 'msg' => '电影添加失败请重试', 'data' => []]);
+        return response()->json(['status' => 'failed', 'msg' => '获取轮播图失败请重试', 'data' => []]);
     }
 
     /**
@@ -223,6 +223,31 @@ class MovielistController extends Controller
             return response()->json(['status' => 'success', 'msg' => '设置热门电影成功', 'data' => []]);
         }
         return response()->json(['status' => 'failed', 'msg' => '设置热门电影失败请重试', 'data' => []]);
+    }
+
+    /**
+     * 获取博主推荐电影
+     */
+    public function getMovieRecommend($id)
+    {
+        $data = Movie::where('id', $id)->first(['recommend_reason']);
+        if ($data) {
+            return response()->json(['status' => 'success', 'msg' => '获取博主推荐电影成功', 'data' => ['recommend_reason' => $data->toArray()['recommend_reason']]]);
+        }
+        return response()->json(['status' => 'failed', 'msg' => '获取博主推荐电影失败请重试', 'data' => []]);
+    }
+
+    /**
+     * 保存设置好的 推荐电影
+     * @access public
+     */
+    public function setMovieRecommend(Request $request)
+    {
+        $data = $request->all();
+        if (Movie::where('id', $data['id'])->update(['recommend_reason' => $data['recommend_reason'], 'recommend_settime' => time(),'is_recommend'=>'20'])) {
+            return response()->json(['status' => 'success', 'msg' => '添加博主推荐成功', 'data' => []]);
+        }
+        return response()->json(['status' => 'failed', 'msg' => '添加博主推荐失败请重试', 'data' => []]);
     }
 
 }
