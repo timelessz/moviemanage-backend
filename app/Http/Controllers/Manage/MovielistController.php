@@ -15,8 +15,8 @@ class MovielistController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
      * @return \Illuminate\Http\Response
-     * @todo 需要把电影的region type tag 展现出来
      */
     public function index(Request $request)
     {
@@ -27,7 +27,7 @@ class MovielistController extends Controller
         $query = Movie::where('name', 'like', "%$movie_name%")->orWhere('alias_name', 'like', "%$movie_name%")->orWhere('title', 'like', "%$movie_name%");
         $rows = $query->take($take)->skip($skip)->orderBy('id', 'desc')->get(['id', 'title', 'ages', 'type', 'coversrc', 'region_name', 'comefrom', 'is_hot', 'is_show', 'big_coversrc', 'pvcount', 'country', 'created_at']);
         //需要执行操作把 区域 电影类型展现出来
-        $count =Movie::where('name', 'like', "%$movie_name%")->orWhere('alias_name', 'like', "%$movie_name%")->orWhere('title', 'like', "%$movie_name%")->count();
+        $count = Movie::where('name', 'like', "%$movie_name%")->orWhere('alias_name', 'like', "%$movie_name%")->orWhere('title', 'like', "%$movie_name%")->count();
         return response()->json(['status' => 'success', 'data' => ['rows' => $rows, 'total' => $count], 'msg' => 'get data success']);
     }
 
@@ -49,6 +49,7 @@ class MovielistController extends Controller
      */
     public function store(Request $request)
     {
+        //
         $input = $request->all();
         if (array_key_exists('tags', $input)) {
             $tag = implode(',', $input['tags']);
@@ -68,44 +69,65 @@ class MovielistController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Movie $movie
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Movie $movie)
+    public function show($id)
     {
         //
+
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Movie $movie
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Movie $movie)
+    public function edit($id)
     {
-        //
+        $data = [];
+        $movie = Movie::where('id', $id)->first();
+        if ($movie) {
+            $data = $movie->toArray();
+            $data['type'] = array_values(array_filter(explode(',', $data['type'])));
+            $data['tags'] = array_values(array_filter(explode(',', $data['tags'])));
+            return response()->json(['status' => 'success', 'msg' => '电影获取成功', 'data' => $data]);
+        }
+        return response()->json(['status' => 'failed', 'msg' => '电影获取失败请重试', 'data' => ['']]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Movie $movie
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Movie $movie)
+    public function update(Request $request, $id)
     {
-        //
+        $input = $request->all();
+        if (array_key_exists('tags', $input)) {
+            $tag = implode(',', $input['tags']);
+            $input['tags'] = $tag ? ",{$tag}," : '';
+        }
+        if (array_key_exists('type', $input)) {
+            $type = implode(',', $input['type']);
+            $input['type'] = $type ? ",{$type}," : '';
+        }
+        if (Movie::where('id', $id)->update($input)) {
+            return response()->json(['status' => 'success', 'msg' => '电影修改成功', 'data' => []]);
+        }
+        return response()->json(['status' => 'failed', 'msg' => '电影修改失败请重试', 'data' => ['']]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Movie $movie
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Movie $movie)
+    public function destroy($id)
     {
         //
     }
@@ -161,6 +183,46 @@ class MovielistController extends Controller
         unset($v['id']);
         $v['created_at'] = time();
         $v['updated_at'] = time();
+    }
+
+
+    /**
+     * 获取电影的bigMovieCoversrc
+     * @access public
+     */
+    public function getMovieCoversrc($id)
+    {
+        $data = Movie::where('id', $id)->first(['big_coversrc']);
+        if ($data) {
+            $bigcoversrc = $data->toArray()['big_coversrc'];
+            return response()->json(['status' => 'success', 'msg' => '电影添加成功', 'data' => ['bigcoversrc' => $bigcoversrc]]);
+        }
+        return response()->json(['status' => 'failed', 'msg' => '电影添加失败请重试', 'data' => []]);
+    }
+
+    /**
+     * 保存设置好的 bigcoversrc
+     * @access public
+     */
+    public function setMovieCoversrc(Request $request)
+    {
+        $data = $request->all();
+        if (Movie::where('id', $data['id'])->update(['big_coversrc' => $data['coversrc'], 'bigcoversrc_settime' => time()])) {
+            return response()->json(['status' => 'success', 'msg' => '修改首页大图成功', 'data' => []]);
+        }
+        return response()->json(['status' => 'failed', 'msg' => '修改首页大图失败请重试', 'data' => []]);
+    }
+
+    /**
+     * 设置热门电影
+     * @access public
+     */
+    public function setHotMovie($id)
+    {
+        if (Movie::where('id', $id)->update(['is_hot' => '20', 'hot_settime' => time()])) {
+            return response()->json(['status' => 'success', 'msg' => '设置热门电影成功', 'data' => []]);
+        }
+        return response()->json(['status' => 'failed', 'msg' => '设置热门电影失败请重试', 'data' => []]);
     }
 
 }

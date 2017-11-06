@@ -14,17 +14,23 @@
 //关于电影管理的相关页面
 
 Route::resource('xunleipu', 'Manage\XunleipuController');
+
 Route::resource('movietype', 'Manage\MovietypeController');
-//Route::resource('movie', 'Manage\MovielistController');
 //修改代码
 Route::resource('moviemanage', 'Manage\MovielistController');
-Route::resource('Xunleipudownloadlink', 'Manage\Xunleipudownloadlink');
 
+
+Route::resource('Xunleipudownloadlink', 'Manage\Xunleipudownloadlink');
 
 Route::post('xunleipumovieadd', 'Manage\MovielistController@xunleipumovieadd');
 Route::get('movietypelist', 'Manage\MovietypeController@getlist');
 Route::get('movieregionlist', 'Manage\MovieregionController@getlist');
 Route::get('movietaglist', 'Manage\MovietagController@getlist');
+
+Route::get('getmoviecoversrc/{id}', 'Manage\MovielistController@getMovieCoversrc');
+Route::post('setmoviecoversrc', 'Manage\MovielistController@setMovieCoversrc');
+Route::get('sethotmovie/{id}', 'Manage\MovielistController@setHotMovie');
+
 
 Route::get('/captcha/{tmp}', 'CaptchaController@captcha');
 Route::get('/getcaptcha', 'CaptchaController@getcaptcha');

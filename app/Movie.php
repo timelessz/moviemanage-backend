@@ -8,6 +8,7 @@ class Movie extends Model
 {
     //迅雷铺 list 字段
     protected $table = 'movie_movie_list';
+
     //不主动维护 时间戳字段
     public $timestamps = false;
 
@@ -35,5 +36,6 @@ class Movie extends Model
      */
     protected $fillable = ['name', 'alias_name', 'title', 'coversrc', 'type', 'length', 'imdbscore', 'imdburl', 'doubanscore', 'doubanurl', 'region_id', 'region_name', 'director', 'ages', 'releasedate', 'starring',
         'comment', 'summary', 'content', 'tags', 'language', 'comefrom', 'country', 'big_coversrc', 'bigcoversrc_settime', 'pvcount', 'is_show', 'is_hot', 'created_at', 'updated_at'];
+
 }
 

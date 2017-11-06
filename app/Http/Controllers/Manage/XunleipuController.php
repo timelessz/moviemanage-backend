@@ -8,7 +8,6 @@ use App\Xunleipumoviedownloadlink;
 use App\Xunleipumovieimglist;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
 
 class XunleipuController extends Controller
 {
