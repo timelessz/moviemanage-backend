@@ -35,7 +35,7 @@ class Movie extends Model
      * @var array
      */
     protected $fillable = ['name', 'alias_name', 'title', 'coversrc', 'type', 'length', 'imdbscore', 'imdburl', 'doubanscore', 'doubanurl', 'region_id', 'region_name', 'director', 'ages', 'releasedate', 'starring',
-        'comment', 'summary', 'content', 'tags', 'language', 'comefrom', 'country', 'big_coversrc', 'bigcoversrc_settime', 'pvcount', 'is_show', 'is_hot', 'created_at', 'updated_at'];
+        'comment', 'summary', 'content', 'tags', 'language', 'comefrom', 'country', 'big_coversrc', 'bigcoversrc_settime', 'is_show', 'is_hot', 'hot_settime', 'is_recommend', 'recommend_settime', 'recommend_reason', 'pvcount', 'is_screen', 'screen_time', 'created_at', 'updated_at'];
 
 }
 

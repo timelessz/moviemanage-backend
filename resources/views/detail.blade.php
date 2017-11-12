@@ -94,6 +94,7 @@
                 </div>
             </div>
         </div>
+
         <?php
         foreach ($d_link as $k => $v) {
         ?>
@@ -122,97 +123,111 @@
         <?php
         }
         ?>
+
+        <?php
+        if($movie['recommend_reason']){
+        ?>
+        <div class="list-middle-container list-container container-fluid recommend_reason">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <h2 class="title">博主推荐</h2>
+                        <div class="content">
+                            {!!$movie['recommend_reason'] !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php } ?>
+        <?php
+        if ($review) {
+        ?>
+        <div class="list-middle-container list-container container-fluid">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <h4 class="title">电影影评</h4>
+                        <div class="content recent-post">
+                            <?php
+                            foreach ($review as $v){
+                            ?>
+                            <div class="recent-single-post">
+                                <a href="{{$v['href']}}" class="post-title" title="{{$v['title']}}">
+                                    {{$v['title']}}
+                                </a>
+                                <div class="date pull-right">{{$v['created_at']}}</div>
+                            </div>
+                            <?php
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <?php
+        }
+        ?>
+        <?php
+        if($relative_movies){
+        ?>
         <div class="list-middle-container list-container container-fluid">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="widget">
                         <h4 class="title">相关推荐</h4>
                         <div class="container-fluid">
+
                             <div class="row">
-                                <div class="col-xs-12 col-md-6 col-lg-3">
-                                    <a href="#" class="thumbnail">
-                                        <img src="image/demo.jpg" alt="欧美电影">
+                                <?php
+                                foreach ($relative_movies as $v) {
+                                ?>
+                                <div class="col-xs-6 col-md-4 col-lg-3" style="padding-left:8px;padding-right:8px;">
+                                    <div class="thumbnail" style="margin-bottom: 15px;margin-top: 0px">
+                                        <a href="{{$v['href']}}" title="{{$v['title']}}">
+                                            <img src="{{$v['coversrc']}}" alt="{{$v['title']}}" style="height:240px">
+                                        </a>
                                         <div class="row">
-                                            <div class="col-lg-12 movie-list-title">国境线</div>
+                                            <div class="col-lg-12 movie-list-title"
+                                                 style="width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
+                                                <a href="{{$v['href']}}" title="{{$v['title']}}">
+                                                    {{$v['name']}}
+                                                </a>
+                                                <span class="movie-score" title="豆瓣评分{{$v['doubanscore']}}">
+                                            {{$v['doubanscore']}}
+                                        </span>
+                                            </div>
                                         </div>
-                                        <div class="row" style="padding-left: 15px">
+                                        <div class="row" style="padding-left:15px">
                                             <div class="movie-list-desc">
-                                                2017 欧美 战争 动作 历史 新闻
+                                                {{$v['ages']}} {{$v['region_name']}}
+                                                <?php
+                                                foreach ($v['type'] as $val) {
+                                                ?>
+                                                <a href='{{$val['href']}}' target="_blank">{{$val['name']}}</a>
+                                                <?php
+                                                }
+                                                ?>
                                             </div>
                                         </div>
-                                    </a>
+                                    </div>
                                 </div>
-                                <div class="col-xs-12 col-md-6 col-lg-3">
-                                    <a href="#" class="thumbnail">
-                                        <img src="image/demo1.jpg" alt="欧美电影">
-                                        <div class="row">
-                                            <div class="col-lg-12 movie-list-title" title="2017年8月12日">台北物语
-                                            </div>
-                                        </div>
-                                        <div class="row" style="padding-left: 15px">
-                                            <div class="movie-list-desc">
-                                                2017 欧美 战争 动作 历史 新闻
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-xs-12 col-md-6 col-lg-3">
-                                    <a href="#" class="thumbnail">
-                                        <img src="image/head-bg.jpg" alt="欧美电影">
-                                        <div class="row">
-                                            <div class="col-lg-12 movie-list-title">战狼2</div>
-                                        </div>
-                                        <div class="row" style="padding-left: 15px">
-                                            <div class="movie-list-desc">
-                                                2017 欧美 战争 动作 历史 新闻
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-xs-12 col-md-6 col-lg-3">
-                                    <a href="#" class="thumbnail">
-                                        <img src="image/head-bg.jpg" alt="欧美电影">
-                                        <div class="row">
-                                            <div class="col-lg-12 movie-list-title">战狼2</div>
-                                        </div>
-                                        <div class="row" style="padding-left: 15px">
-                                            <div class="movie-list-desc">
-                                                2017 欧美 战争 动作 历史 新闻
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
+                                <?php
+                                }
+                                ?>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="list-middle-container list-container container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="widget">
-                        <h4 class="title">电影影评</h4>
-                        <div class="content recent-post">
-                            <div class="recent-single-post">
-                                <a href="/custom-excerpts/" class="post-title">自定义文章摘要（Excerpt）
-                                    <div class="date">2017年8月9日</div>
-                                </a>
-                            </div>
-                            <div class="recent-single-post">
-                                <a href="/primary-tags/" class="post-title">首要“标签”</a>
-                                <div class="date">2017年8月3日</div>
-                            </div>
-                            <div class="recent-single-post">
-                                <a href="/ghost-1-0-released/" class="post-title">Ghost 1.0 版本正式发布</a>
-                                <div class="date">2017年7月29日</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <?php
+        }
+        ?>
+
     </div>
 @endsection

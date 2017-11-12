@@ -21,41 +21,27 @@
                 <h1 class="title">{{$name}}</h1>
                 <div class="container-fluid movie-list">
                     <?php
-                    foreach ($movies as $k=>$v){
+                    foreach ($moviereviews as $k=>$v){
                     ?>
                     <div class="media movie-list-item">
                         <div class="media-left">
                             <a href="{{$v['href']}}" title="{{$v['title']}}">
                                 <img class="media-object" data-src="holder.js/90x90" alt="{{$v['title']}}"
-                                     src="{{$v['coversrc']}}"
+                                     src="{{$v['thumbnail']}}"
                                      data-holder-rendered="true" style="width:90px;">
                             </a>
                         </div>
                         <div class="media-body">
                             <div>
                                 <h2 class="media-heading" style="font-size:24px;display: inline-block">
-                                    <a href="{{$v['href']}}" target="_blank">{{$v['name']}}</a>
+                                    <a href="{{$v['href']}}" target="_blank">{{$v['title']}}</a>
                                 </h2>
-                                <span style="padding-left: 20px;color: #ffb86b;font-size: 20px"> {{$v['doubanscore']}}</span>
                             </div>
                             <p>
                                 <a href="{{$v['href']}}" target="_blank"
                                    title="{{$v['summary']}}"> {{$v['sub_summary']}}
                                 </a>
                             </p>
-                            <div class="pull-left">
-                                <span>
-                                    <a href="{{$current}}" target="_blank">{{$v['region_name']}}</a>
-                                </span>
-                                <span>
-                                    <?php
-                                    foreach ($v['type'] as $val) {
-                                    ?>
-                                    <a href='{{$val['href']}}' target="_blank">{{$val['name']}}</a>
-                                    <?php
-                                    }
-                                    ?></span>
-                            </div>
                             <div class="pull-right">
                                 {{$v['created_at']}}
                             </div>

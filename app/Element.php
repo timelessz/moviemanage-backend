@@ -12,6 +12,7 @@ class Element
     private $movietype = [];
     private $tag_path = '/tag-%s.html';
     private $type_path = '/type-%s.html';
+    private $review = '/review/%s.html';
     private $breadcrumb = [
         [
             'text' => '首页',
@@ -223,7 +224,8 @@ class Element
                 ];
             }
         }
-//        $imglist = Movieimglist::where('movie_id', $id)->get(['id', 'imgsrc'])->toArray();
+
+//      $imglist = Movieimglist::where('movie_id', $id)->get(['id', 'imgsrc'])->toArray();
         $en_name = '';
         switch ($movie['region_id']) {
             case'1':
@@ -242,7 +244,6 @@ class Element
                 $en_name = 'jingdian';
                 break;
         }
-
 
         //面包屑导航
         $breadcrumb = $this->breadcrumb;
@@ -267,15 +268,175 @@ class Element
         $hotmovie_list = $this->getHotMovie($form_movie_arr);
         //热映电影
         $screenmovie_list = $this->getScreenMovie($form_movie_arr);
-
         /**右侧相关菜单推荐*************************************/
         //电影分类
         $movietype = $this->getMovieType();
         //博主影片推荐
         $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
+        //获取电影影评
+        $review = $this->getMovieReview($id);
+//        print_r($review);
         /**********************************************/
+        //获取相关的电影
+        $relative_movies = $this->getRelativeMovie($movie['type'], $id);
         $this->form_per_movie($movie);
-        return compact('movie', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'fivecover_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype');
+        return compact('movie', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'fivecover_movie', 'review', 'relative_movies', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype');
+    }
+
+    /**
+     * 获取电影影评list
+     * @access public
+     */
+    public function getYingpingListEnsstial($pagenum, $pagesize = 10)
+    {
+        $form_movie_arr = [$this, 'execFormatMovie'];
+        $name='影视前沿';
+        //首先需要根据$type_id 来获取
+        $current = sprintf('/yingping-%s.html', $pagenum);
+        //面包屑导航
+
+        $breadcrumb = $this->breadcrumb;
+        array_push($breadcrumb, [
+            'text' => '影评',
+            'href' => $current,
+            'title' => '影评',
+        ]);
+        $this->breadcrumb;
+
+        //菜单元素
+        $menu = (new Menu())->get_menu('yingping');
+        //关键词元素
+        $tdk_html = (new Tdk())->get_tdk('yingping');
+        //电影分类
+        $movietype = $this->getMovieType();
+        //获取每个区域的最新的id 列表
+        $regionnewlist = $this->getRegionNewList($form_movie_arr);
+        //底部最热电影
+        $hotmovie_list = $this->getHotMovie($form_movie_arr);
+        //获取正在热映的电影列表
+        $screenmovie_list = $this->getScreenMovie($form_movie_arr);
+
+        /**右侧相关菜单推荐*************************************/
+        //博主影片推荐
+        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
+        /**********************************************/
+
+        //电影列表 同事计算分页相关
+        $moviereviews = Moviereview::orderBy('id', 'desc')->limit($pagesize)->offset($pagesize * ($pagenum - 1))->get($this->movieReview)->toArray();
+        array_walk($moviereviews, [$this, 'execFormatMoviereviews']);
+        $count = Moviereview::count();
+        $allpagenum = ceil($count / $pagesize);
+        $pagination = $this->multipage($allpagenum, $pagenum, 'yingping', '');
+        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'moviereviews', 'allpagenum', 'count', 'pagination');
+    }
+
+    // 获取电影评论必须的元素
+    public function getReviewEnsstial($id)
+    {
+        $form_movie_arr = [$this, 'execFormatMovie'];
+        $moviereview = Moviereview::find($id)->toArray();
+        $movie_id = $moviereview['movie_id'];
+        $movie_name = $moviereview['movie_name'];
+
+        //面包屑导航
+        $breadcrumb = $this->breadcrumb;
+        $current = sprintf($this->review, $id);
+        array_push($breadcrumb, [
+            'text' => '电影评论',
+            'href' => '/yingping.html',
+            'title' => '电影评论',
+        ]);
+        array_push($breadcrumb, [
+            'text' => $moviereview['title'],
+            'href' => $current,
+            'title' => $moviereview['title'],
+        ]);
+        //菜单元素
+        $menu = (new Menu())->get_menu('yingping');
+        //关键词元素
+        $tdk_html = (new Tdk())->get_tdk('review', $movie_name ?: $moviereview['title']);
+        //获取每个区域的最新的id 列表
+        $regionnewlist = $this->getRegionNewList($form_movie_arr);
+        //底部最热电影
+        $hotmovie_list = $this->getHotMovie($form_movie_arr);
+        //热映电影
+        $screenmovie_list = $this->getScreenMovie($form_movie_arr);
+        /**右侧相关菜单推荐*************************************/
+        //电影分类
+        $movietype = $this->getMovieType();
+        //博主影片推荐
+        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
+        //相关电影 后期这个地方可以修改为多个电影的形式 暂时只有一个
+        $relative_movie = [];
+        if ($movie_id) {
+            //获取相关的电影
+            $relative_movie = Movie::find($movie_id);
+            $this->execFormatMovie($relative_movie, 0);
+        }
+        return compact('moviereview', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'fivecover_movie', 'review', 'relative_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype');
+    }
+
+
+    private $movieReview = ['id', 'title', 'movie_id', 'movie_name', 'thumbnail', 'count', 'summary', 'created_at'];
+
+    /**
+     * 获取电影影评
+     * @access private
+     */
+    private function getMovieReview($id)
+    {
+        $review = Moviereview::where('movie_id', $id)->get($this->movieReview);
+        $data = [];
+        if ($review) {
+            $data = $review->toArray();
+            foreach ($data as $k => $v) {
+                $this->execFormatMoviereviews($v, 0);
+                $data[$k] = $v;
+            }
+        }
+        return $data;
+    }
+
+
+    /**
+     * 格式化每一个电影评论
+     * @access private
+     */
+    private function execFormatMoviereviews(&$v, $k)
+    {
+        if (array_key_exists('created_at', $v)) {
+            $v['created_at'] = date('Y-m-d', $v['created_at']);
+        }
+        $v['href'] = sprintf($this->review, $v['id']);
+        if (array_key_exists('summary', $v)) {
+            $v['sub_summary'] = trim(mb_substr(strip_tags($v['summary']), 0, 150, 'utf-8')) . '...';
+            $v['summary'] = trim(mb_substr(strip_tags($v['summary']), 0, 200, 'utf-8'));
+        }
+    }
+
+
+    /**
+     * 获取相关联的电影
+     * @access private
+     */
+    private function getRelativeMovie($type_string, $id)
+    {
+        $types = array_filter(explode(',', $type_string));
+        $limit = 4;
+        $movies = [];
+        foreach ($types as $v) {
+            if ($limit <= 0) {
+                break;
+            }
+            $movies_arr = Movie::where('type', 'like', "%,$v,%")->where('id', '!=', $id)->orderBy('id', 'desc')->limit($limit)->get($this->pic_field);
+            $p_count = $movies_arr->count();
+            $limit = $limit - $p_count;
+            foreach ($movies_arr->toArray() as $val) {
+                $this->form_per_movie($val);
+                array_push($movies, $val);
+            }
+        }
+        return $movies;
     }
 
 
@@ -509,6 +670,14 @@ code;
             }
             $v['type'] = $type;
         }
+        $region = [];
+        if (array_key_exists('region_id', $v)) {
+            $regions = $this->getMovieRegion();
+            $v['region'] = [
+                'href' => "/{$regions[$v['region_id']]['en_name']}.html",
+                'name' => $regions[$v['region_id']]['name']
+            ];
+        }
         if (array_key_exists('summary', $v)) {
             $v['sub_summary'] = trim(mb_substr(strip_tags($v['summary']), 0, 150, 'utf-8')) . '...';
             $v['summary'] = trim(mb_substr(strip_tags($v['summary']), 0, 200, 'utf-8'));
@@ -516,6 +685,25 @@ code;
         if (array_key_exists('created_at', $v)) {
             $v['created_at'] = date('Y年m月d日', $v['created_at']);
         }
+    }
+
+    /**
+     * 获取电影的区域 信息 用于格式化数据时候使用
+     * @access private
+     */
+    private function getMovieRegion()
+    {
+        return Cache::remember('region', 200, function () {
+            $regions = Movieregion::all(['id', 'name', 'en_name']);
+            $l_regions = [];
+            foreach ($regions->toArray() as $v) {
+                $l_regions[$v['id']] = [
+                    'en_name' => $v['en_name'],
+                    'name' => $v['name']
+                ];
+            }
+            return $l_regions;
+        });
     }
 
 

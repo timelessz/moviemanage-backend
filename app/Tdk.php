@@ -29,9 +29,10 @@ class Tdk
         //美剧列表
         'meiju' => ['title' => '', 'keywords' => '', 'description' => ''],
         //影评列表
-        'yingpinglist' => ['title' => '', 'keywords' => '', 'description' => ''],
+        'yingping' => ['title' => '影窝电影热评', 'keywords' => '影窝影评,各类电影剧情介绍,电影图片,预告片,影讯,电影论坛', 'description' => '影窝电影提供最新电影动态，专业电影影评，帮您更好鉴赏电影佳片，电影预告片推荐，给您推荐适合您的电影。'],
+        //每一篇影评的tdk
+        'review' => ['title' => '%s(影窝)', 'keywords' => '%s影评,%s电影剧情介绍,%s电影图片,%s预告片,%s影讯,%s论坛', 'description' => '%s'],
         //影评
-        'yingping' => ['title' => '', 'keywords' => '', 'description' => '']
     ];
 
     /**
@@ -79,6 +80,15 @@ class Tdk
                 $tdk['description'] = str_replace("%s", $name, $tdk['description']);
                 break;
             case 'meiju':
+                break;
+            case 'yingping':
+                $tdk = $this->tdk_template[$current];
+                break;
+            case 'review':
+                $tdk=$this->tdk_template[$current];
+                $tdk['title'] = str_replace("%s", $name, $tdk['title']);
+                $tdk['keywords'] = str_replace("%s", $name, $tdk['keywords']);
+                $tdk['description'] = str_replace("%s", $name, $tdk['description']);
                 break;
         }
         return $this->get_tdk_html($tdk);

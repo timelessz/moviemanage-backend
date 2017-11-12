@@ -18,6 +18,8 @@ Route::resource('xunleipu', 'Manage\XunleipuController');
 Route::resource('movietype', 'Manage\MovietypeController');
 //修改代码
 Route::resource('moviemanage', 'Manage\MovielistController');
+//电影影评
+Route::resource('moviereview', 'Manage\MoviereviewController');
 
 
 Route::resource('Xunleipudownloadlink', 'Manage\Xunleipudownloadlink');
@@ -30,7 +32,7 @@ Route::get('movietaglist', 'Manage\MovietagController@getlist');
 Route::get('getmoviecoversrc/{id}', 'Manage\MovielistController@getMovieCoversrc');
 Route::post('setmoviecoversrc', 'Manage\MovielistController@setMovieCoversrc');
 Route::get('sethotmovie/{id}', 'Manage\MovielistController@setHotMovie');
-Route::get('getmovierecommend/{id}','Manage\MovielistController@getMovieRecommend');
+Route::get('getmovierecommend/{id}', 'Manage\MovielistController@getMovieRecommend');
 Route::post('setmovierecommend', 'Manage\MovielistController@setMovieRecommend');
 
 
@@ -57,11 +59,12 @@ Route::get('gangtai-{id}.html', 'Index\IndexstaticController@gangtailist');
 //大陆电影
 Route::get('dalu.html', 'Index\IndexstaticController@dalulist');
 Route::get('dalu-{id}.html', 'Index\IndexstaticController@dalulist');
-
 //经典电影
 Route::get('jingdian.html', 'Index\IndexstaticController@jingdianlist');
 Route::get('jingdian-{id}.html', 'Index\IndexstaticController@jingdianlist');
-
+//电影影评
+Route::get('yingping.html', 'Index\IndexstaticController@yingpinglist');
+Route::get('yingping-{id}.html', 'Index\IndexstaticController@yingpinglist');
 //电影分类列表
 Route::get('typelist.html', 'Index\IndexstaticController@typelist');
 
@@ -69,7 +72,9 @@ Route::get('typelist.html', 'Index\IndexstaticController@typelist');
 Route::get('type-{id}-{page}.html', 'Index\IndexstaticController@typemovielist');
 Route::get('type-{id}.html', 'Index\IndexstaticController@typemovielist');
 
+//电影详情页面
 Route::get('movie/{id}.html', 'Index\IndexstaticController@movie');
-
+//影评详情页面
+Route::get('review/{id}.html', 'Index\IndexstaticController@review');
 
 
