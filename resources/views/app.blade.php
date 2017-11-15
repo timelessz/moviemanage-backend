@@ -107,21 +107,20 @@
         <div class="row">
             <div class="col-sm-4">
                 <div class="widget">
-                    <h4 class="title">电影影评</h4>
+                    <h4 class="title"><a href="/yingping.html" target="_blank">电影影评</a></h4>
                     <div class="content recent-post">
+                        <?php
+                        //'footer_reviews', 'footer_tags', 'footer_types'
+                        foreach($footer_reviews as $v){
+                        ?>
                         <div class="recent-single-post">
-                            <a href="/custom-excerpts/" class="post-title">自定义文章摘要（Excerpt）
-                                <div class="date">2017年8月9日</div>
+                            <a href="{{$v['href']}}" class="post-title">{{$v['title']}}
+                                <div class="date">{{$v['created_at']}}</div>
                             </a>
                         </div>
-                        <div class="recent-single-post">
-                            <a href="/primary-tags/" class="post-title">首要“标签”</a>
-                            <div class="date">2017年8月3日</div>
-                        </div>
-                        <div class="recent-single-post">
-                            <a href="/ghost-1-0-released/" class="post-title">Ghost 1.0 版本正式发布</a>
-                            <div class="date">2017年7月29日</div>
-                        </div>
+                        <?php
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -129,22 +128,14 @@
                 <div class="widget">
                     <h4 class="title">标签云</h4>
                     <div class="content tag-cloud">
-                        <a href="/tag/about-ghost/">台湾电影</a>
-                        <a href="/tag/release/">战狼2</a>
-                        <a href="/tag/javascript/">巴霍巴利2（印度史诗巨制）</a>
-                        <a href="/tag/promise/">Promise</a>
-                        <a href="/tag/zhuti/">主题</a>
-                        <a href="/tag/nodejs/">Node.js</a>
-                        <a href="/tag/mysql/">MySQL</a>
-                        <a href="/tag/nginx/">Nginx</a>
-                        <a href="/tag/aliyun-ecs/">阿里云服务器</a>
-                        <a href="/tag/ubuntu/">Ubuntu</a>
-                        <a href="/tag/ghost-in-depth/">深度玩转 Ghost</a>
-                        <a href="/tag/theme/">Theme</a>
-                        <a href="/tag/zhu-shou-han-shu/">助手函数</a>
-                        <a href="/tag/markdown/">Markdown</a>
-                        <a href="/tag/proxy/">反向代理</a>
-                        <a href="/tag-cloud/">...</a>
+                        <?php
+                        foreach ($footer_tags as $v){
+                        ?>
+                        <a href="{{$v['href']}}" target="_blank">{{$v['name']}}</a>
+                        <?php
+                        }
+                        ?>
+                        <a href="/tag.html">...</a>
                     </div>
                 </div>
             </div>
@@ -153,19 +144,27 @@
                 <div class="widget">
                     <h4 class="title">电影分类</h4>
                     <div class="content tag-cloud friend-links">
-                        <a href="http://lodashjs.com/" title="Lodash中文文档" target="_blank">IMDB高分推荐</a>
-                        <a href="http://www.jquery123.com/" title="jQuery中文文档" target="_blank">豆瓣高分推荐</a>
-                        <hr>
-                        <a href="http://www.bootcss.com" title="Bootstrap中文网" target="_blank">爱情</a>
-                        <a href="http://www.bootcdn.cn" title="开放CDN服务" target="_blank">动作</a>
-                        <a href="http://www.gruntjs.net" title="Grunt中文网" target="_blank">动漫</a>
-                        <a href="http://www.gulpjs.com.cn/" title="Gulp中文网" target="_blank">恐怖</a>
-                        <hr>
-                        <a href="http://www.aliyun.com/" title="欧美" target="_blank">欧美</a>
-                        <a href="http://www.aliyun.com/" title="欧美" target="_blank">韩国</a>
-                        <a href="http://www.aliyun.com/" title="欧美" target="_blank">港台</a>
-                        <a href="http://www.aliyun.com/" title="欧美" target="_blank">大陆</a>
-                        <a href="http://www.aliyun.com/" title="欧美" target="_blank">印度</a>
+                        <?php
+                        foreach ($footer_types as $k=>$v){
+                        if ($k % 6 == 1 && $k != 1) {
+                            echo '<hr>';
+                        }
+                        ?>
+                        <a href="{{$v['href']}}" title="{{$v['name']}}" target="_blank">{{$v['name']}}</a>
+                        <?php
+                        }
+                        ?>
+                        {{--<hr>--}}
+                        {{--<a href="http://www.bootcss.com" title="Bootstrap中文网" target="_blank">爱情</a>--}}
+                        {{--<a href="http://www.bootcdn.cn" title="开放CDN服务" target="_blank">动作</a>--}}
+                        {{--<a href="http://www.gruntjs.net" title="Grunt中文网" target="_blank">动漫</a>--}}
+                        {{--<a href="http://www.gulpjs.com.cn/" title="Gulp中文网" target="_blank">恐怖</a>--}}
+                        {{--<hr>--}}
+                        {{--<a href="http://www.aliyun.com/" title="欧美" target="_blank">欧美</a>--}}
+                        {{--<a href="http://www.aliyun.com/" title="欧美" target="_blank">韩国</a>--}}
+                        {{--<a href="http://www.aliyun.com/" title="欧美" target="_blank">港台</a>--}}
+                        {{--<a href="http://www.aliyun.com/" title="欧美" target="_blank">大陆</a>--}}
+                        {{--<a href="http://www.aliyun.com/" title="欧美" target="_blank">印度</a>--}}
                     </div>
                 </div>
             </div>

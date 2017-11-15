@@ -65,8 +65,10 @@ class Element
         //博主影片推荐
         $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
         /**********************************************/
-
-        return compact('tdk_html', 'menu', 'fivecover_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype');
+        $footer_reviews = $this->getFooterMovieReview();
+        $footer_tags = $this->getFooterMovieTag();
+        $footer_types = $this->getFooterMovieType();
+        return compact('tdk_html', 'menu', 'fivecover_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype','footer_reviews', 'footer_tags', 'footer_types');
     }
 
 
@@ -137,7 +139,10 @@ class Element
         $count = Movie::where('region_id', $region_id)->count();
         $allpagenum = ceil($count / $pagesize);
         $pagination = $this->multipage($allpagenum, $pagenum, 'oumei');
-        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'movies', 'allpagenum', 'count', 'pagination');
+        $footer_reviews = $this->getFooterMovieReview();
+        $footer_tags = $this->getFooterMovieTag();
+        $footer_types = $this->getFooterMovieType();
+        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'movies', 'allpagenum', 'count', 'pagination','footer_reviews', 'footer_tags', 'footer_types');
     }
 
 
@@ -184,8 +189,10 @@ class Element
         $count = Movie::where('type', 'like', ",$type_id,")->count();
         $allpagenum = ceil($count / $pagesize);
         $pagination = $this->multipage($allpagenum, $pagenum, 'type-' . $type_id, '');
-
-        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'movies', 'allpagenum', 'count', 'pagination');
+        $footer_reviews = $this->getFooterMovieReview();
+        $footer_tags = $this->getFooterMovieTag();
+        $footer_types = $this->getFooterMovieType();
+        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'movies', 'allpagenum', 'count', 'pagination','footer_reviews', 'footer_tags', 'footer_types');
     }
 
 
@@ -280,7 +287,10 @@ class Element
         //获取相关的电影
         $relative_movies = $this->getRelativeMovie($movie['type'], $id);
         $this->form_per_movie($movie);
-        return compact('movie', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'fivecover_movie', 'review', 'relative_movies', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype');
+        $footer_reviews = $this->getFooterMovieReview();
+        $footer_tags = $this->getFooterMovieTag();
+        $footer_types = $this->getFooterMovieType();
+        return compact('movie', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'fivecover_movie', 'review', 'relative_movies', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype','footer_reviews', 'footer_tags', 'footer_types');
     }
 
     /**
@@ -290,7 +300,7 @@ class Element
     public function getYingpingListEnsstial($pagenum, $pagesize = 10)
     {
         $form_movie_arr = [$this, 'execFormatMovie'];
-        $name='影视前沿';
+        $name = '影视前沿';
         //首先需要根据$type_id 来获取
         $current = sprintf('/yingping-%s.html', $pagenum);
         //面包屑导航
@@ -327,7 +337,10 @@ class Element
         $count = Moviereview::count();
         $allpagenum = ceil($count / $pagesize);
         $pagination = $this->multipage($allpagenum, $pagenum, 'yingping', '');
-        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'moviereviews', 'allpagenum', 'count', 'pagination');
+        $footer_reviews = $this->getFooterMovieReview();
+        $footer_tags = $this->getFooterMovieTag();
+        $footer_types = $this->getFooterMovieType();
+        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'moviereviews', 'allpagenum', 'count', 'pagination','footer_reviews', 'footer_tags', 'footer_types');
     }
 
     // 获取电影评论必须的元素
@@ -373,7 +386,54 @@ class Element
             $relative_movie = Movie::find($movie_id);
             $this->execFormatMovie($relative_movie, 0);
         }
-        return compact('moviereview', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'fivecover_movie', 'review', 'relative_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype');
+        $footer_reviews = $this->getFooterMovieReview();
+        $footer_tags = $this->getFooterMovieTag();
+        $footer_types = $this->getFooterMovieType();
+        return compact('moviereview', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'fivecover_movie', 'review',  'relative_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype','footer_reviews', 'footer_tags', 'footer_types');
+    }
+
+    /**
+     * 获取底部电影影评
+     */
+    private function getFooterMovieReview()
+    {
+        $moviereview = Moviereview::limit(3)->get($this->movieReview)->toArray();
+        array_walk($moviereview, [$this, 'execFormatMoviereviews']);
+        return $moviereview;
+    }
+
+    /**
+     * 获取底部电影标签
+     * @access private
+     */
+    private function getFooterMovieTag()
+    {
+        $movietag = Movietag::limit(20)->get(['id', 'name', 'detail'])->toArray();
+        $tags = [];
+        foreach ($movietag as $k => $v) {
+            $tags[$v['id']] = [
+                'name' => $v['name'],
+                'href' => sprintf($this->tag_path, $v['id']),
+            ];
+        }
+        return $tags;
+    }
+
+    /**
+     * 获取去底部电影类型
+     * @access private
+     */
+    private function getFooterMovieType()
+    {
+        $movietype = Movietype::limit('18')->get(['id', 'name', 'detail'])->toArray();
+        $type = [];
+        foreach ($movietype as $k => $v) {
+            $type[$v['id']] = [
+                'name' => $v['name'],
+                'href' => sprintf($this->type_path, $v['id']),
+            ];
+        }
+        return $type;
     }
 
 
