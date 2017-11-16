@@ -22,6 +22,8 @@ class Tdk
         'jingdian' => ['title' => '好看的经典电影_经典电影排行榜_经典电影推荐_经典电影大片-影窝电影', 'keywords' => '好看的经典电影,最新经典电影排行榜,经典电影推荐,国产电影大片', 'description' => '迅雷铺电影网提供经典电影排行榜,好看的经典电影大片，经典电影推荐'],
         //电影分类 列表
         'type' => ['title' => '%s电影下载_电影天堂_%s电影迅雷下载_%s免费下载_下载地址-影窝电影', 'keywords' => '%s电影下载,电影天堂,迅雷下载全集,剧情介绍,%s电影下载地址', 'description' => '%s电影迅雷下载、%s电影免费下载全集，在这里您可以获得%s电影的下载地址'],
+        //电影分类 列表
+        'tag' => ['title' => '%s电影下载_电影天堂_%s电影迅雷下载_%s免费下载_下载地址-影窝电影', 'keywords' => '%s电影下载,电影天堂,迅雷下载全集,剧情介绍,%s电影下载地址', 'description' => '%s电影迅雷下载、%s电影免费下载全集，在这里您可以获得%s电影的下载地址'],
         //电影详情 刀剑神域：序列之争剧场版下载全集高清_迅雷下载_免费下载_下载地址 - 迅雷铺
         'movie' => ['title' => '%s下载_电影天堂_%s迅雷下载_%s免费下载_下载地址-影窝电影', 'keywords' => '%s,电影天堂,迅雷下载全集,剧情介绍,下载地址', 'description' => '%s迅雷下载、%s免费下载全集，在这里您可以免费获得%s的详细剧情介绍,剧照和迅雷高速免费下载地址'],
         //美剧相关
@@ -85,7 +87,13 @@ class Tdk
                 $tdk = $this->tdk_template[$current];
                 break;
             case 'review':
-                $tdk=$this->tdk_template[$current];
+                $tdk = $this->tdk_template[$current];
+                $tdk['title'] = str_replace("%s", $name, $tdk['title']);
+                $tdk['keywords'] = str_replace("%s", $name, $tdk['keywords']);
+                $tdk['description'] = str_replace("%s", $name, $tdk['description']);
+                break;
+            case 'tag':
+                $tdk = $this->tdk_template[$current];
                 $tdk['title'] = str_replace("%s", $name, $tdk['title']);
                 $tdk['keywords'] = str_replace("%s", $name, $tdk['keywords']);
                 $tdk['description'] = str_replace("%s", $name, $tdk['description']);

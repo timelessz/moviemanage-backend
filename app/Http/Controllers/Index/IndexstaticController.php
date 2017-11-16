@@ -116,4 +116,17 @@ class IndexstaticController extends Controller
     }
 
 
+    /**
+     * 根据电影标志来展现电影
+     *
+     */
+    public function tagmovielist($id = 1, $page = 1)
+    {
+        //获取分类的id
+        $element = (new Element())->getTagMovieListEnsstial($id, $page, 10);
+        $code = view('movielist', $element);
+        return $code;
+        return view('movielist');
+    }
+
 }
