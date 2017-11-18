@@ -23,7 +23,6 @@ class IndexstaticController extends Controller
         $element = (new Element())->getMovieListEnsstial('oumei', $id, 10);
         $code = view('movielist', $element);
         return $code;
-        return view('movielist');
     }
 
 
@@ -33,7 +32,6 @@ class IndexstaticController extends Controller
         $element = (new Element())->getMovieListEnsstial('dalu', $id, 10);
         $code = view('movielist', $element);
         return $code;
-        return view('movielist');
     }
 
     //rihan list
@@ -52,7 +50,6 @@ class IndexstaticController extends Controller
         $element = (new Element())->getMovieListEnsstial('gangtai', $id, 10);
         $code = view('movielist', $element);
         return $code;
-        return view('movielist');
     }
 
     //经典电影list
@@ -61,7 +58,6 @@ class IndexstaticController extends Controller
         $element = (new Element())->getMovieListEnsstial('jingdian', $id, 10);
         $code = view('movielist', $element);
         return $code;
-        return view('movielist');
     }
 
     //
@@ -74,7 +70,6 @@ class IndexstaticController extends Controller
         $element = (new Element())->getMovieEnsstial($id);
         $code = view('detail', $element);
         return $code;
-        return view('detail');
     }
 
     //影评list
@@ -83,7 +78,6 @@ class IndexstaticController extends Controller
         $element = (new Element())->getYingpingListEnsstial($id, 10);
         $code = view('reviewlist', $element);
         return $code;
-        return view('reviewlist');
     }
 
     /**
@@ -99,7 +93,28 @@ class IndexstaticController extends Controller
         $element = (new Element())->getReviewEnsstial($id);
         $code = view('reviewdetail', $element);
         return $code;
-        return view('reviewdetail');
+    }
+
+    /**
+     * 标签的 列表
+     */
+    public function taglist()
+    {
+        //从头获取数据
+        $element = (new Element())->getTagTypeEnsstial();
+        $code = view('tagtypelist', $element);
+        return $code;
+    }
+
+    /**
+     * 标签的 列表
+     */
+    public function typelist()
+    {
+        //从头获取数据
+        $element = (new Element())->getTagTypeEnsstial('type');
+        $code = view('tagtypelist', $element);
+        return $code;
     }
 
     /**
@@ -112,7 +127,6 @@ class IndexstaticController extends Controller
         $element = (new Element())->getTypeMovieListEnsstial($id, $page, 10);
         $code = view('movielist', $element);
         return $code;
-        return view('movielist');
     }
 
 
@@ -126,7 +140,6 @@ class IndexstaticController extends Controller
         $element = (new Element())->getTagMovieListEnsstial($id, $page, 10);
         $code = view('movielist', $element);
         return $code;
-        return view('movielist');
     }
 
 }

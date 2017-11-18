@@ -72,6 +72,10 @@ Route::get('typelist.html', 'Index\IndexstaticController@typelist');
 Route::get('type-{id}-{page}.html', 'Index\IndexstaticController@typemovielist');
 Route::get('type-{id}.html', 'Index\IndexstaticController@typemovielist');
 
+
+//电影分类列表
+Route::get('taglist.html', 'Index\IndexstaticController@taglist');
+
 //根据电影分类获取的列表
 Route::get('tag-{id}-{page}.html', 'Index\IndexstaticController@tagmovielist');
 Route::get('tag-{id}.html', 'Index\IndexstaticController@tagmovielist');

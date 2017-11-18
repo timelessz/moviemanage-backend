@@ -17,7 +17,7 @@
 @section('content')
     <div class="col-lg-9 col-md-9 col-xs-12">
 
-        <div class="list-middle-container list-container container-fluid">
+        <div class="list-container container-fluid">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="widget">
@@ -34,9 +34,8 @@
         <?php
         if ($relative_movie) {
         ?>
-        <div class="list-middle-container list-container container-fluid">
+        <div class="list-container container-fluid">
             <div class="row">
-
                 <div class="col-lg-12">
                     <div class="widget">
                         <h4 class="title">相关电影</h4>

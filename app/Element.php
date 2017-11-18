@@ -245,6 +245,75 @@ class Element
         return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'movies', 'allpagenum', 'count', 'pagination', 'footer_reviews', 'footer_tags', 'footer_types');
     }
 
+    /**
+     * 获取展现页面需要的电影标签或者电影分类的必须的元素
+     * @param string $flag 标志类型是tag 还是type
+     */
+    public function getTagTypeEnsstial($flag = 'tag')
+    {
+        $form_movie_arr = [$this, 'execFormatMovie'];
+        $movietype = $this->getMovieType();
+//        $movietag = $this->getMovieTag();
+        if ($flag == 'tag') {
+            //菜单元素
+            $menu = (new Menu())->get_menu('tag');
+            $name = '电影标签';
+            $current = '/typelist.html';
+            $list = Movietag::all(['id', 'name', 'detail'])->toArray();
+        } else if ($flag = 'type') {
+            //菜单元素
+            $menu = (new Menu())->get_menu('type');
+            $name = '电影分类';
+            $current = '/taglist.html';
+            $list = Movietype::all(['id', 'name', 'detail'])->toArray();
+        }
+        $form_tagtype_arr = [$this, 'execFormatTagType'];
+        if ($list) {
+            array_walk($list, $form_tagtype_arr, $flag);
+        }
+        //面包屑导航
+        $breadcrumb = $this->breadcrumb;
+        array_push($breadcrumb, [
+            'text' => $name,
+            'href' => $current,
+            'title' => $name,
+        ]);
+        $this->breadcrumb;
+
+        //关键词元素
+        $tdk_html = (new Tdk())->get_tdk($flag, $name);
+        //获取每个区域的最新的id 列表
+        $regionnewlist = $this->getRegionNewList($form_movie_arr);
+        //底部最热电影
+        $hotmovie_list = $this->getHotMovie($form_movie_arr);
+        //获取正在热映的电影列表
+        $screenmovie_list = $this->getScreenMovie($form_movie_arr);
+
+        /**右侧相关菜单推荐*************************************/
+        //博主影片推荐
+        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
+        /**********************************************/
+
+        $footer_reviews = $this->getFooterMovieReview();
+        $footer_tags = $this->getFooterMovieTag();
+        $footer_types = $this->getFooterMovieType();
+        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'list', 'breadcrumb', 'name', 'regionnewlist', 'movietype','recommendmovie_list', 'screenmovie_list', 'movies', 'allpagenum', 'count', 'pagination', 'footer_reviews', 'footer_tags', 'footer_types');
+
+    }
+
+
+    /**
+     *
+     */
+    public function execFormatTagType(&$v, $k, $flag)
+    {
+        if ($flag == 'tag') {
+            $v['href'] = sprintf($this->tag_path, $v['id']);
+        } else if ($flag == 'type') {
+            $v['href'] = sprintf($this->type_path, $v['id']);
+        }
+    }
+
 
     /**
      * 获取电影详情需要的元素

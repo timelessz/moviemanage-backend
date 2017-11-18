@@ -254,6 +254,28 @@ body {
     text-decoration: none;
 }
 
+.widget .taglist-cloud a {
+    font-size: 20px;
+    font-weight: bold;
+    border: 1px solid #ebebeb;
+    padding: 5px 20px;
+    color: #957e75;
+    line-height: 1.5em;
+    display: inline-block;
+    margin: 0 7px 7px 0;
+    -webkit-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.widget .taglist-cloud a:hover {
+    color: #ffffff;
+    background: #e67e22;
+    border: 1px solid #e67e22;
+    text-decoration: none;
+}
+
+
 .widget .social {
     padding: 0;
     margin: 0;
@@ -329,6 +351,13 @@ h1 {
 }
 
 .download-link h2 {
+    font-size: 20px;
+    color: rgb(18, 120, 246);
+    font-weight: normal;
+    padding: 0px 10px;
+}
+
+.recommend_reason h2 {
     font-size: 20px;
     color: rgb(18, 120, 246);
     font-weight: normal;

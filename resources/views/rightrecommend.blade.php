@@ -4,16 +4,11 @@
         <div class="widget">
             <h4 class="title">热门搜索</h4>
             <div class="content tag-cloud">
-                <a href="/tag/jquery/">jQuery</a>
-                <a href="/tag/ghost-0-7-ban-ben/">Ghost 0.7 版本</a>
-                <a href="/tag/opensource/">开源</a>
-                <a href="/tag/zhu-shou-han-shu/">助手函数</a>
-                <a href="/tag/tag-cloud/">标签云</a>
-                <a href="/tag/navigation/">导航</a>
-                <a href="/tag/customize-page/">自定义页面</a>
-                <a href="/tag/static-page/">静态页面</a>
-                <a href="/tag/roon-io/">Roon.io</a>
-                <a href="/tag/release/">新版本发布</a>
+                <a href="/">豆瓣高分</a>
+                <a href="/">战狼2</a>
+                <a href="/">热映</a>
+                <a href="/">速度与激情</a>
+                <a href="/">天才枪手</a>
             </div>
         </div>
     </div>
@@ -41,7 +36,9 @@
     </div>
     <div class="container-fluid list-container list-middle-container">
         <div class="widget">
-            <h4 class="title"><a href="/typelist.html" target="_blank">电影分类</a></h4>
+            <h4 class="title">
+                <a href="/typelist.html" target="_blank">电影分类</a>
+            </h4>
             <div class="content tag-cloud">
                 <?php
                 foreach ($movietype as $k => $v) {
