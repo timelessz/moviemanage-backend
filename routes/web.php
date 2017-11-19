@@ -14,7 +14,6 @@
 //关于电影管理的相关页面
 
 Route::resource('xunleipu', 'Manage\XunleipuController');
-
 Route::resource('movietype', 'Manage\MovietypeController');
 //修改代码
 Route::resource('moviemanage', 'Manage\MovielistController');
@@ -41,6 +40,7 @@ Route::get('/getcaptcha', 'CaptchaController@getcaptcha');
 
 
 //关于页面静态化的相关操作
+Route::get('sitemapstatic', 'Index\IndexstaticController@sitemap');
 
 Route::get('indexstatic', 'Index\IndexstaticController@index');
 Route::get('liststatic', 'Index\IndexstaticController@listdemo');
