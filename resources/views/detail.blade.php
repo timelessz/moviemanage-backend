@@ -14,6 +14,8 @@
     </div>
 @endsection
 
+
+
 @section('content')
     <div class="col-lg-9 col-md-9 col-xs-12">
         <div class="list-container">
@@ -47,7 +49,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <div class="container-fluid">
+                                        <div class="container-fluid doubanscore" title="豆瓣评分">
                                             {{$movie['doubanscore']}}
                                         </div>
                                         <div class="container-fluid">
@@ -82,21 +84,37 @@
                 </div>
             </div>
         </div>
-        <div class="list-middle-container list-container container-fluid">
+        <div class="list-middle-container list-container container-fluid ">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="widget">
                         <h2 class="title">{{$movie['title']}}</h2>
-                        <div class="content">
+                        <div class="content movie-container">
                             {!!$movie['content'] !!}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+        <script src="{{URL::asset('dist/getThunderUrl/ThunderURIEncode.js')}}"></script>
+        <script>
+            $(function () {
+                $(".xunlei").each(function () {
+                    var href = $(this).attr('href');
+                    var thunderLink = ThunderURIEncode(href);
+                    $(this).attr('href', thunderLink);
+                });
+//                var href = $(this).attr('href');
+//                var thunderLink = ThunderURIEncode(url);
+//                $(this).attr('href', thunderLink);
 
+                return false;
+            });
+        </script>
         <?php
         foreach ($d_link as $k => $v) {
+
         ?>
         <div class="list-middle-container list-container container-fluid download-link">
             <div class="row">
@@ -105,11 +123,13 @@
                         <h2 class="title">{{$v['type_name']}}</h2>
                         <?php
                         $str = $k == 4 ? '密码:' : '';
+                        $xunleiflag = $k == 3 ? 'xunlei' : '';
                         foreach ($v['list'] as $val){
                         ?>
                         <div class="content recent-post">
                             <div class="recent-single-post">
-                                <a href="{{$val['href']}}" class="post-title">{{$val['text']}} {{$str}}{{$val['pwd']}}
+                                <a href="{{$val['href']}}" target="_blank"
+                                   class="post-title {{$xunleiflag}}">{{$val['text']}} {{$str}}{{$val['pwd']}}
                                 </a>
                             </div>
                         </div>
@@ -120,6 +140,7 @@
                 </div>
             </div>
         </div>
+
         <?php
         }
         ?>

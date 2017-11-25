@@ -36,7 +36,7 @@
                                 <h2 class="media-heading" style="font-size:24px;display: inline-block">
                                     <a href="{{$v['href']}}" target="_blank">{{$v['name']}}</a>
                                 </h2>
-                                <span style="padding-left: 20px;color: #ffb86b;font-size: 20px"> {{$v['doubanscore']}}</span>
+                                <span class="doubanscore"> {{$v['doubanscore']}}</span>
                             </div>
                             <p>
                                 <a href="{{$v['href']}}" target="_blank"

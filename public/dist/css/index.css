@@ -275,7 +275,6 @@ body {
     text-decoration: none;
 }
 
-
 .widget .social {
     padding: 0;
     margin: 0;
@@ -362,6 +361,16 @@ h1 {
     color: rgb(18, 120, 246);
     font-weight: normal;
     padding: 0px 10px;
+}
+
+.movie-container img {
+    max-width: 100%;
+}
+
+.doubanscore {
+    padding-left: 20px;
+    color: #ffb86b;
+    font-size: 20px
 }
 
 /*电影列表 list*/

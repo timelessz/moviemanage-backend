@@ -297,7 +297,7 @@ class Element
         $footer_reviews = $this->getFooterMovieReview();
         $footer_tags = $this->getFooterMovieTag();
         $footer_types = $this->getFooterMovieType();
-        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'list', 'breadcrumb', 'name', 'regionnewlist', 'movietype','recommendmovie_list', 'screenmovie_list', 'movies', 'allpagenum', 'count', 'pagination', 'footer_reviews', 'footer_tags', 'footer_types');
+        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'list', 'breadcrumb', 'name', 'regionnewlist', 'movietype', 'recommendmovie_list', 'screenmovie_list', 'movies', 'allpagenum', 'count', 'pagination', 'footer_reviews', 'footer_tags', 'footer_types');
 
     }
 
@@ -321,8 +321,18 @@ class Element
      */
     public function getMovieEnsstial($id)
     {
-        $form_movie_arr = [$this, 'execFormatMovie'];
         $movie = Movie::find($id)->toArray();
+        return $this->getMovieCompact($movie);
+    }
+
+    /**
+     * 获取电影分类
+     * @access public
+     */
+    public function getMovieCompact($movie)
+    {
+        $id = $movie['id'];
+        $form_movie_arr = [$this, 'execFormatMovie'];
         $downloadlink = Moviedownloadlink::where('movie_id', $id)->get(['id', 'type_name', 'type_id', 'href', 'pwd', 'text'])->toArray();
         //整理下下载链接把 同类的整合到一个里边
         $d_link = [];
@@ -410,6 +420,7 @@ class Element
         $footer_tags = $this->getFooterMovieTag();
         $footer_types = $this->getFooterMovieType();
         return compact('movie', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'fivecover_movie', 'review', 'relative_movies', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'footer_reviews', 'footer_tags', 'footer_types');
+
     }
 
     /**
@@ -516,9 +527,11 @@ class Element
      */
     private function getFooterMovieReview()
     {
-        $moviereview = Moviereview::limit(3)->get($this->movieReview)->toArray();
-        array_walk($moviereview, [$this, 'execFormatMoviereviews']);
-        return $moviereview;
+        return Cache::rememberForever('footerMovieReview', function () {
+            $moviereview = Moviereview::limit(3)->get($this->movieReview)->toArray();
+            array_walk($moviereview, [$this, 'execFormatMoviereviews']);
+            return $moviereview;
+        });
     }
 
     /**
@@ -527,15 +540,17 @@ class Element
      */
     private function getFooterMovieTag()
     {
-        $movietag = Movietag::limit(20)->get(['id', 'name', 'detail'])->toArray();
-        $tags = [];
-        foreach ($movietag as $k => $v) {
-            $tags[$v['id']] = [
-                'name' => $v['name'],
-                'href' => sprintf($this->tag_path, $v['id']),
-            ];
-        }
-        return $tags;
+        return Cache::rememberForever('footerMovieTag', function () {
+            $movietag = Movietag::limit(20)->get(['id', 'name', 'detail'])->toArray();
+            $tags = [];
+            foreach ($movietag as $k => $v) {
+                $tags[$v['id']] = [
+                    'name' => $v['name'],
+                    'href' => sprintf($this->tag_path, $v['id']),
+                ];
+            }
+            return $tags;
+        });
     }
 
     /**
@@ -713,52 +728,102 @@ code;
      */
     private function getRegionNewList($form_movie_arr, $limit = 10)
     {
-        /**列表类型的**************************************/
-        //然后分别获取十条最新更新的电影 1欧美　　2日韩　3港台 4大陆
-        $field = ['id', 'title', 'name', 'alias_name', 'type', 'created_at'];
-        $oumeilist = Movie::where('region_id', '1')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
-        $dalulist = Movie::where('region_id', '4')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
-        $rihanlist = Movie::where('region_id', '2')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
-        $gangtailist = Movie::where('region_id', '3')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
-        if ($oumeilist) {
-            array_walk($oumeilist, $form_movie_arr);
-        }
-        if ($dalulist) {
-            array_walk($dalulist, $form_movie_arr);
-        }
-        if ($rihanlist) {
-            array_walk($rihanlist, $form_movie_arr);
-        }
-        if ($gangtailist) {
-            array_walk($gangtailist, $form_movie_arr);
-        }
-        //四个区域最新电影推荐
-        return [
-            [
-                'name' => '欧美最新更新',
-                'href' => '/oumei.html',
-                'title' => '欧美电影列表',
-                'list' => $oumeilist
-            ],
-            [
-                'name' => '大陆最新更新',
-                'href' => '/dalu.html',
-                'title' => '大陆电影列表',
-                'list' => $dalulist
-            ],
-            [
-                'name' => '日韩最新更新',
-                'href' => '/rihan.html',
-                'title' => '日韩电影列表',
-                'list' => $rihanlist
-            ],
-            [
-                'name' => '港台最新更新',
-                'href' => '/gangtai.html',
-                'title' => '港台电影列表',
-                'list' => $gangtailist
-            ]
-        ];
+        return Cache::rememberForever('regionnewlist', function () use ($form_movie_arr, $limit) {
+            /**列表类型的**************************************/
+            //然后分别获取十条最新更新的电影 1欧美　　2日韩　3港台 4大陆
+            $field = ['id', 'title', 'name', 'alias_name', 'type', 'created_at'];
+            $oumeilist = Movie::where('region_id', '1')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
+            $dalulist = Movie::where('region_id', '4')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
+            $rihanlist = Movie::where('region_id', '2')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
+            $gangtailist = Movie::where('region_id', '3')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
+            if ($oumeilist) {
+                array_walk($oumeilist, $form_movie_arr);
+            }
+            if ($dalulist) {
+                array_walk($dalulist, $form_movie_arr);
+            }
+            if ($rihanlist) {
+                array_walk($rihanlist, $form_movie_arr);
+            }
+            if ($gangtailist) {
+                array_walk($gangtailist, $form_movie_arr);
+            }
+            //四个区域最新电影推荐
+            return [
+                [
+                    'name' => '欧美最新更新',
+                    'href' => '/oumei.html',
+                    'title' => '欧美电影列表',
+                    'list' => $oumeilist
+                ],
+                [
+                    'name' => '大陆最新更新',
+                    'href' => '/dalu.html',
+                    'title' => '大陆电影列表',
+                    'list' => $dalulist
+                ],
+                [
+                    'name' => '日韩最新更新',
+                    'href' => '/rihan.html',
+                    'title' => '日韩电影列表',
+                    'list' => $rihanlist
+                ],
+                [
+                    'name' => '港台最新更新',
+                    'href' => '/gangtai.html',
+                    'title' => '港台电影列表',
+                    'list' => $gangtailist
+                ]
+            ];
+            /**列表类型的**************************************/
+            //然后分别获取十条最新更新的电影 1欧美　　2日韩　3港台 4大陆
+            $field = ['id', 'title', 'name', 'alias_name', 'type', 'created_at'];
+            $oumeilist = Movie::where('region_id', '1')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
+            $dalulist = Movie::where('region_id', '4')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
+            $rihanlist = Movie::where('region_id', '2')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
+            $gangtailist = Movie::where('region_id', '3')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
+            if ($oumeilist) {
+                array_walk($oumeilist, $form_movie_arr);
+            }
+            if ($dalulist) {
+                array_walk($dalulist, $form_movie_arr);
+            }
+            if ($rihanlist) {
+                array_walk($rihanlist, $form_movie_arr);
+            }
+            if ($gangtailist) {
+                array_walk($gangtailist, $form_movie_arr);
+            }
+            //四个区域最新电影推荐
+            return [
+                [
+                    'name' => '欧美最新更新',
+                    'href' => '/oumei.html',
+                    'title' => '欧美电影列表',
+                    'list' => $oumeilist
+                ],
+                [
+                    'name' => '大陆最新更新',
+                    'href' => '/dalu.html',
+                    'title' => '大陆电影列表',
+                    'list' => $dalulist
+                ],
+                [
+                    'name' => '日韩最新更新',
+                    'href' => '/rihan.html',
+                    'title' => '日韩电影列表',
+                    'list' => $rihanlist
+                ],
+                [
+                    'name' => '港台最新更新',
+                    'href' => '/gangtai.html',
+                    'title' => '港台电影列表',
+                    'list' => $gangtailist
+                ]
+            ];
+        });
+
+
     }
 
     /**
@@ -767,11 +832,13 @@ code;
      */
     private function getScreenMovie($form_movie_arr, $limit = 10)
     {
-        //热映电影
-        $field = ['id', 'title', 'name', 'alias_name', 'type', 'created_at'];
-        $screenmovie_list = Movie::where('is_screen', '20')->orderBy('screen_settime', 'desc')->limit($limit)->get($field)->toArray();
-        array_walk($screenmovie_list, $form_movie_arr);
-        return $screenmovie_list;
+        return Cache::rememberForever('screenmovie', function () use ($form_movie_arr, $limit) {
+            //热映电影
+            $field = ['id', 'title', 'name', 'alias_name', 'type', 'created_at'];
+            $screenmovie_list = Movie::where('is_screen', '20')->orderBy('screen_settime', 'desc')->limit($limit)->get($field)->toArray();
+            array_walk($screenmovie_list, $form_movie_arr);
+            return $screenmovie_list;
+        });
     }
 
 
@@ -785,10 +852,12 @@ code;
      */
     private function getHotMovie($form_movie_arr, $limit = 8)
     {
-        //热门电影 取热门电影12条来
-        $hotmovie_list = Movie::where('is_hot', '20')->orderBy('hot_settime', 'desc')->limit($limit)->get($this->pic_field)->toArray();
-        array_walk($hotmovie_list, $form_movie_arr);
-        return $hotmovie_list;
+        return Cache::rememberForever('hotmovie', function () use ($form_movie_arr, $limit) {
+            //热门电影 取热门电影12条来
+            $hotmovie_list = Movie::where('is_hot', '20')->orderBy('hot_settime', 'desc')->limit($limit)->get($this->pic_field)->toArray();
+            array_walk($hotmovie_list, $form_movie_arr);
+            return $hotmovie_list;
+        });
     }
 
 
@@ -801,11 +870,13 @@ code;
      */
     private function getRecommendMovie($form_movie_arr, $limit = 10)
     {
-        //博主影片推荐
-        $field = ['id', 'title', 'name', 'alias_name', 'type', 'created_at'];
-        $recommendmovie_list = Movie::where('is_recommend', '20')->orderBy('recommend_settime', 'desc')->limit($limit)->get($field)->toArray();
-        array_walk($recommendmovie_list, $form_movie_arr);
-        return $recommendmovie_list;
+        return Cache::rememberForever('recommendmovie', function () use ($form_movie_arr, $limit) {
+            //博主影片推荐
+            $field = ['id', 'title', 'name', 'alias_name', 'type', 'created_at'];
+            $recommendmovie_list = Movie::where('is_recommend', '20')->orderBy('recommend_settime', 'desc')->limit($limit)->get($field)->toArray();
+            array_walk($recommendmovie_list, $form_movie_arr);
+            return $recommendmovie_list;
+        });
     }
 
 
@@ -815,7 +886,7 @@ code;
      */
     private function getMovieType()
     {
-        return Cache::get('MovieType', function () {
+        return Cache::rememberForever('MovieType', function () {
             $data = Movietype::get(['id', 'name'])->toArray();
             $type = [];
             foreach ($data as $k => $v) {
@@ -834,7 +905,7 @@ code;
      */
     private function getMovieTag()
     {
-        return Cache::get('MovieTag', function () {
+        return Cache::rememberForever('MovieTag', function () {
             $data = Movietag::get(['id', 'name'])->toArray();
             $type = [];
             foreach ($data as $k => $v) {
@@ -891,7 +962,7 @@ code;
      */
     private function getMovieRegion()
     {
-        return Cache::remember('region', 200, function () {
+        return Cache::rememberForever('region', function () {
             $regions = Movieregion::all(['id', 'name', 'en_name']);
             $l_regions = [];
             foreach ($regions->toArray() as $v) {

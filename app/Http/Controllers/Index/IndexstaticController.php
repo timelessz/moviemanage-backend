@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Index;
 use App\Element;
 use App\Http\Controllers\Controller;
 use App\Menu;
+use App\Movie;
 use App\Movietag;
 use App\Movietype;
 
@@ -21,7 +22,6 @@ class IndexstaticController extends Controller
      */
     public function sitemap()
     {
-        echo '<pre>';
         $host = 'http://www.' . $_SERVER['HTTP_HOST'];
         //首先获取全部链接的路径 从menu 中
         $menu = (new Menu())->get_menu();
@@ -74,6 +74,28 @@ XML;
         file_put_contents('sitemap.xml', $xmldata);
     }
 
+    /**
+     * 程序主动推送
+     */
+    public function demo()
+    {
+        $urls = array(
+            'http://www.example.com/1.html',
+            'http://www.example.com/2.html',
+        );
+        $api = 'http://data.zz.baidu.com/urls?site=dyxz2018.com&token=lS8Clzeqh2U9hPpa';
+        $ch = curl_init();
+        $options = array(
+            CURLOPT_URL => $api,
+            CURLOPT_POST => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POSTFIELDS => implode("\n", $urls),
+            CURLOPT_HTTPHEADER => array('Content-Type: text/plain'),
+        );
+        curl_setopt_array($ch, $options);
+        $result = curl_exec($ch);
+        echo $result;
+    }
 
     //
     public function index()
@@ -116,6 +138,7 @@ XML;
     public function gangtailist($id = 1)
     {
         $element = (new Element())->getMovieListEnsstial('gangtai', $id, 10);
+
         $code = view('movielist', $element);
         return $code;
     }
@@ -134,10 +157,16 @@ XML;
         if (!$id) {
             exit('请求异常');
         }
+        $file_name = "movie/movie{$id}.html";
+        if (file_exists($file_name)) {
+            exit(file_get_contents($file_name));
+        }
         //从头获取数据
         $element = (new Element())->getMovieEnsstial($id);
         $code = view('detail', $element);
-        return $code;
+        file_put_contents($file_name, $code);
+        Movie::where('id', $id)->update(['is_static' => '20']);
+        exit($code);
     }
 
     //影评list
@@ -197,10 +226,8 @@ XML;
         return $code;
     }
 
-
     /**
      * 根据电影标志来展现电影
-     *
      */
     public function tagmovielist($id = 1, $page = 1)
     {

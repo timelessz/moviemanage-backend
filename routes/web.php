@@ -85,4 +85,9 @@ Route::get('movie/{id}.html', 'Index\IndexstaticController@movie');
 //影评详情页面
 Route::get('review/{id}.html', 'Index\IndexstaticController@review');
 
+//电影相关网站链接
+Route::get('review/{id}.html', 'Index\IndexstaticController@review');
+
+//相关页面静态化操作
+Route::get('moviestatic','Index\MoviestaticController@index');
 
