@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JS生成迅雷下载地址</title>
+	<link href="/favicon.ico" rel="shortcut icon"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Language" content="zh-CN" />
+	<meta name="description" content="Zjmainstay" />
+	<meta name="keywords" content="Zjmainstay" />
+	<meta name="author" content="Zjmainstay"/>
+	<meta name="robots" content="index,follow"/>
+	<script type="text/javascript" src="http://zjmainstay.cn/jquerylib/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="ThunderURIEncode.js"></script>
+</head>
+<body>
+<label for="orig_url">请填入地址：</label>
+<input type="text" size="50" id="orig_url" def-v="这里填入文件地址" value="这里填入文件地址" />
+<label for="thunder_url">迅雷下载地址：</label>
+<input type="text" size="50" id="thunder_url" def-v="点击获取后这里生成迅雷网址"/>
+<input type="button" id="create_url" value="生成下载地址" />
+<span id="download_link"></span>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#orig_url").click(function(){
+		if($.trim($(this).val()) == $(this).attr('def-v')) $(this).val('');
+	})
+	$("#orig_url").blur(function(){
+		if($.trim($(this).val()) == '') $(this).val($(this).attr('def-v'));
+	})
+	$("#thunder_url").click(function(){
+		$(this).select();
+	})
+	$("#create_url").click(function(){
+		var url = $.trim($("#orig_url").val());
+		if( url != $.trim($("#orig_url").attr('def-v')) ){
+			var thunderLink = ThunderURIEncode(url);
+			$("#thunder_url").val(thunderLink);
+			$("#download_link").html('<a href="'+thunderLink+'" style="padding:5px;">点击下载</a>');
+		}
+	})
+
+
+
+	$(document).keyup(function(event){
+		event = event || window.event;
+		
+		var code = event.keyCode || event.which;
+		
+		if(code == 13){
+			$("#create_url").trigger('click');
+		}
+	});
+});
+</script>
+</body>
+</html>
