@@ -96,22 +96,6 @@
                 </div>
             </div>
         </div>
-        <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
-        <script src="{{URL::asset('dist/getThunderUrl/ThunderURIEncode.js')}}"></script>
-        <script>
-            $(function () {
-                $(".xunlei").each(function () {
-                    var href = $(this).attr('href');
-                    var thunderLink = ThunderURIEncode(href);
-                    $(this).attr('href', thunderLink);
-                });
-//                var href = $(this).attr('href');
-//                var thunderLink = ThunderURIEncode(url);
-//                $(this).attr('href', thunderLink);
-
-                return false;
-            });
-        </script>
         <?php
         foreach ($d_link as $k => $v) {
 
@@ -123,13 +107,12 @@
                         <h2 class="title">{{$v['type_name']}}</h2>
                         <?php
                         $str = $k == 4 ? '密码:' : '';
-                        $xunleiflag = $k == 3 ? 'xunlei' : '';
                         foreach ($v['list'] as $val){
                         ?>
                         <div class="content recent-post">
                             <div class="recent-single-post">
                                 <a href="{{$val['href']}}" target="_blank"
-                                   class="post-title {{$xunleiflag}}">{{$val['text']}} {{$str}}{{$val['pwd']}}
+                                   class="post-title">{{$val['text']}} {{$str}}{{$val['pwd']}}
                                 </a>
                             </div>
                         </div>

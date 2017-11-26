@@ -325,6 +325,16 @@ class Element
         return $this->getMovieCompact($movie);
     }
 
+
+    /**
+     * 生成迅雷下载链接
+     */
+    private function xunleiDownload($href)
+    {
+        return 'thunder://' . base64_encode('AA' . $href . 'ZZ');
+    }
+
+
     /**
      * 获取电影分类
      * @access public
@@ -338,6 +348,9 @@ class Element
         $d_link = [];
         foreach ($downloadlink as $k => $v) {
             $v['href'] = urldecode($v['href']);
+            if ($v['type_id'] == 3) {
+                $v['href'] = $this->xunleiDownload($v['href']);
+            }
             if (array_key_exists($v['type_id'], $d_link)) {
                 array_push(
                     $d_link[$v['type_id']]['list'],
@@ -360,6 +373,7 @@ class Element
                 ];
             }
         }
+
 //      $imglist = Movieimglist::where('movie_id', $id)->get(['id', 'imgsrc'])->toArray();
         $en_name = '';
         switch ($movie['region_id']) {
