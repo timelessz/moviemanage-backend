@@ -337,6 +337,7 @@ class Element
         //整理下下载链接把 同类的整合到一个里边
         $d_link = [];
         foreach ($downloadlink as $k => $v) {
+            $v['href'] = urldecode($v['href']);
             if (array_key_exists($v['type_id'], $d_link)) {
                 array_push(
                     $d_link[$v['type_id']]['list'],
@@ -349,7 +350,6 @@ class Element
             } else {
                 $d_link[$v['type_id']] = [
                     'type_name' => $v['type_name'],
-
                     'list' => [
                         [
                             'href' => $v['href'],
@@ -360,7 +360,6 @@ class Element
                 ];
             }
         }
-
 //      $imglist = Movieimglist::where('movie_id', $id)->get(['id', 'imgsrc'])->toArray();
         $en_name = '';
         switch ($movie['region_id']) {
