@@ -154,17 +154,6 @@
                         <?php
                         }
                         ?>
-                        {{--<hr>--}}
-                        {{--<a href="http://www.bootcss.com" title="Bootstrap中文网" target="_blank">爱情</a>--}}
-                        {{--<a href="http://www.bootcdn.cn" title="开放CDN服务" target="_blank">动作</a>--}}
-                        {{--<a href="http://www.gruntjs.net" title="Grunt中文网" target="_blank">动漫</a>--}}
-                        {{--<a href="http://www.gulpjs.com.cn/" title="Gulp中文网" target="_blank">恐怖</a>--}}
-                        {{--<hr>--}}
-                        {{--<a href="http://www.aliyun.com/" title="欧美" target="_blank">欧美</a>--}}
-                        {{--<a href="http://www.aliyun.com/" title="欧美" target="_blank">韩国</a>--}}
-                        {{--<a href="http://www.aliyun.com/" title="欧美" target="_blank">港台</a>--}}
-                        {{--<a href="http://www.aliyun.com/" title="欧美" target="_blank">大陆</a>--}}
-                        {{--<a href="http://www.aliyun.com/" title="欧美" target="_blank">印度</a>--}}
                     </div>
                 </div>
             </div>
