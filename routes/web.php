@@ -12,8 +12,15 @@
 */
 
 //关于电影管理的相关页面
-
+//迅雷铺管理相关操作
 Route::resource('xunleipu', 'Manage\XunleipuController');
+//迅雷铺电影下载
+Route::resource('Xunleipudownloadlink', 'Manage\Xunleipudownloadlink');
+//hao6v相关管理
+Route::resource('hao6v', 'Manage\Hao6vController');
+//迅雷铺电影下载
+Route::resource('hao6vdownloadlink', 'Manage\Hao6vdownloadlinkController');
+
 Route::resource('movietype', 'Manage\MovietypeController');
 //修改代码
 Route::resource('moviemanage', 'Manage\MovielistController');
@@ -21,9 +28,16 @@ Route::resource('moviemanage', 'Manage\MovielistController');
 Route::resource('moviereview', 'Manage\MoviereviewController');
 
 
-Route::resource('Xunleipudownloadlink', 'Manage\Xunleipudownloadlink');
+//电影下载链接
+Route::resource('moviedownloadlink', 'Manage\MoviedownloadlistController');
+Route::get('moviedownloadtype', 'Manage\MoviedownloadlistController@downloadtype');
 
+//迅雷铺电影添加
 Route::post('xunleipumovieadd', 'Manage\MovielistController@xunleipumovieadd');
+//hao6vmovieadd 电影添加
+Route::post('hao6vmovieadd', 'Manage\MovielistController@hao6vmovieadd');
+
+
 Route::get('movietypelist', 'Manage\MovietypeController@getlist');
 Route::get('movieregionlist', 'Manage\MovieregionController@getlist');
 Route::get('movietaglist', 'Manage\MovietagController@getlist');
@@ -89,5 +103,5 @@ Route::get('review/{id}.html', 'Index\IndexstaticController@review');
 Route::get('review/{id}.html', 'Index\IndexstaticController@review');
 
 //相关页面静态化操作
-Route::get('moviestatic','Index\MoviestaticController@index');
+Route::get('moviestatic', 'Index\MoviestaticController@index');
 

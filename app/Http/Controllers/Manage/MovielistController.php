@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Hao6v;
+use App\Hao6vmoviedownloadlink;
+use App\Hao6vmovieimglist;
 use App\Http\Controllers\CommonController;
 use App\Movie;
 use App\Xunleipu;
@@ -152,7 +155,6 @@ class MovielistController extends Controller
             $movie_id = $model->id;
             $pre_movieid = $request->id;
             // 需要把 xunleipu 数据库中的下载链接存进来
-            Xunleipumoviedownloadlink::where('movie_id', $pre_movieid)->get();
             //还需要把内容中的图片存下来
             $download_data = Xunleipumoviedownloadlink::where('movie_id', $pre_movieid)->get()->toArray();
             $img_data = Xunleipumovieimglist::where('movie_id', $pre_movieid)->get()->toArray();
@@ -168,6 +170,44 @@ class MovielistController extends Controller
         }
         return response()->json(['status' => 'failed', 'msg' => '电影添加失败请重试', 'data' => ['']]);
     }
+
+
+    /**
+     * 迅雷铺电影转移到最终的电影库中
+     * @access public
+     */
+    public function hao6vmovieadd(Request $request)
+    {
+        $input = $request->all();
+        if (array_key_exists('tags', $input)) {
+            $tag = implode(',', $input['tags']);
+            $input['tags'] = $tag ? ",{$tag}," : '';
+        }
+        if (array_key_exists('type', $input)) {
+            $type = implode(',', $input['type']);
+            $input['type'] = $type ? ",{$type}," : '';
+        }
+        $model = Movie::create($input);
+        if ($model) {
+            $movie_id = $model->id;
+            $pre_movieid = $request->id;
+            // 需要把 xunleipu 数据库中的下载链接存进来
+            //还需要把内容中的图片存下来
+            $download_data = Hao6vmoviedownloadlink::where('movie_id', $pre_movieid)->get()->toArray();
+            $img_data = Hao6vmovieimglist::where('movie_id', $pre_movieid)->get()->toArray();
+            $comefrom = 'hao6v';
+            array_walk($download_data, array($this, 'form_movieoption'), [$movie_id, $comefrom]);
+            array_walk($img_data, array($this, 'form_movieoption'), [$movie_id, $comefrom]);
+            DB::table('movie_download_link')->insert($download_data);
+            DB::table('movie_imglist')->insert($img_data);
+            //同时需要把 之前的电影中存下最终的电影id
+            Hao6v::where('id', $pre_movieid)->update(['movie_id' => $movie_id]);
+            //这个需要同步把 其他的数据转移过来
+            return response()->json(['status' => 'success', 'msg' => '电影添加成功', 'data' => []]);
+        }
+        return response()->json(['status' => 'failed', 'msg' => '电影添加失败请重试', 'data' => ['']]);
+    }
+
 
     /**
      * 格式化
@@ -244,7 +284,7 @@ class MovielistController extends Controller
     public function setMovieRecommend(Request $request)
     {
         $data = $request->all();
-        if (Movie::where('id', $data['id'])->update(['recommend_reason' => $data['recommend_reason'], 'recommend_settime' => time(),'is_recommend'=>'20'])) {
+        if (Movie::where('id', $data['id'])->update(['recommend_reason' => $data['recommend_reason'], 'recommend_settime' => time(), 'is_recommend' => '20'])) {
             return response()->json(['status' => 'success', 'msg' => '添加博主推荐成功', 'data' => []]);
         }
         return response()->json(['status' => 'failed', 'msg' => '添加博主推荐失败请重试', 'data' => []]);
