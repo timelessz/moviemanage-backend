@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Btbtdy;
+use App\Btbtdymoviedownloadlink;
 use App\Hao6v;
 use App\Hao6vmoviedownloadlink;
 use App\Hao6vmovieimglist;
@@ -142,6 +144,9 @@ class MovielistController extends Controller
     public function xunleipumovieadd(Request $request)
     {
         $input = $request->all();
+        if (!$input['region_id'] || !$input['region_name']) {
+            return response()->json(['status' => 'failed', 'msg' => '请选择电影区域', 'data' => ['']]);
+        }
         if (array_key_exists('tags', $input)) {
             $tag = implode(',', $input['tags']);
             $input['tags'] = $tag ? ",{$tag}," : '';
@@ -179,6 +184,9 @@ class MovielistController extends Controller
     public function hao6vmovieadd(Request $request)
     {
         $input = $request->all();
+        if (!$input['region_id'] || !$input['region_name']) {
+            return response()->json(['status' => 'failed', 'msg' => '请选择电影区域', 'data' => ['']]);
+        }
         if (array_key_exists('tags', $input)) {
             $tag = implode(',', $input['tags']);
             $input['tags'] = $tag ? ",{$tag}," : '';
@@ -202,6 +210,42 @@ class MovielistController extends Controller
             DB::table('movie_imglist')->insert($img_data);
             //同时需要把 之前的电影中存下最终的电影id
             Hao6v::where('id', $pre_movieid)->update(['movie_id' => $movie_id]);
+            //这个需要同步把 其他的数据转移过来
+            return response()->json(['status' => 'success', 'msg' => '电影添加成功', 'data' => []]);
+        }
+        return response()->json(['status' => 'failed', 'msg' => '电影添加失败请重试', 'data' => ['']]);
+    }
+
+    /**
+     * 添加btbtdy 网站的相关链接
+     * @access public
+     */
+    public function btbtdymovieadd(Request $request)
+    {
+        $input = $request->all();
+        if (!$input['region_id'] || !$input['region_name']) {
+            return response()->json(['status' => 'failed', 'msg' => '请选择电影区域', 'data' => ['']]);
+        }
+        if (array_key_exists('tags', $input)) {
+            $tag = implode(',', $input['tags']);
+            $input['tags'] = $tag ? ",{$tag}," : '';
+        }
+        if (array_key_exists('type', $input)) {
+            $type = implode(',', $input['type']);
+            $input['type'] = $type ? ",{$type}," : '';
+        }
+        $model = Movie::create($input);
+        if ($model) {
+            $movie_id = $model->id;
+            $pre_movieid = $request->id;
+            // 需要把 xunleipu 数据库中的下载链接存进来
+            //还需要把内容中的图片存下来
+            $download_data = Btbtdymoviedownloadlink::where('movie_id', $pre_movieid)->get()->toArray();
+            $comefrom = 'btbtdy';
+            array_walk($download_data, array($this, 'form_movieoption'), [$movie_id, $comefrom]);
+            DB::table('movie_download_link')->insert($download_data);
+            //同时需要把 之前的电影中存下最终的电影id
+            Btbtdy::where('id', $pre_movieid)->update(['movie_id' => $movie_id]);
             //这个需要同步把 其他的数据转移过来
             return response()->json(['status' => 'success', 'msg' => '电影添加成功', 'data' => []]);
         }

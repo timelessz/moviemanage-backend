@@ -98,7 +98,10 @@ XML;
         echo $result;
     }
 
-    //
+    /**
+     * 首页静态化相关功能展现
+     * @access public
+     */
     public function index()
     {
         Cache::flush();

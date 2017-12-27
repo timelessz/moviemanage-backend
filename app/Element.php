@@ -54,7 +54,7 @@ class Element
             array_walk($newest_movie, $form_movie_arr);
         }
         //获取每个区域的最新的id 列表
-        $regionnewlist = $this->getRegionNewList($form_movie_arr);
+        $regionnewlist = $this->getRegionNewList($form_movie_arr, 18);
         //底部最热电影
         $hotmovie_list = $this->getHotMovie($form_movie_arr);
         //热映电影
@@ -740,62 +740,16 @@ code;
      * @param $movietype
      * @return array
      */
-    private function getRegionNewList($form_movie_arr, $limit = 10)
+    private function getRegionNewList($form_movie_arr, $limit = 12)
     {
         return Cache::rememberForever('regionnewlist', function () use ($form_movie_arr, $limit) {
             /**列表类型的**************************************/
             //然后分别获取十条最新更新的电影 1欧美　　2日韩　3港台 4大陆
             $field = ['id', 'title', 'name', 'alias_name', 'type', 'created_at'];
-            $oumeilist = Movie::where('region_id', '1')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
-            $dalulist = Movie::where('region_id', '4')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
-            $rihanlist = Movie::where('region_id', '2')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
-            $gangtailist = Movie::where('region_id', '3')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
-            if ($oumeilist) {
-                array_walk($oumeilist, $form_movie_arr);
-            }
-            if ($dalulist) {
-                array_walk($dalulist, $form_movie_arr);
-            }
-            if ($rihanlist) {
-                array_walk($rihanlist, $form_movie_arr);
-            }
-            if ($gangtailist) {
-                array_walk($gangtailist, $form_movie_arr);
-            }
-            //四个区域最新电影推荐
-            return [
-                [
-                    'name' => '欧美最新更新',
-                    'href' => '/oumei.html',
-                    'title' => '欧美电影列表',
-                    'list' => $oumeilist
-                ],
-                [
-                    'name' => '大陆最新更新',
-                    'href' => '/dalu.html',
-                    'title' => '大陆电影列表',
-                    'list' => $dalulist
-                ],
-                [
-                    'name' => '日韩最新更新',
-                    'href' => '/rihan.html',
-                    'title' => '日韩电影列表',
-                    'list' => $rihanlist
-                ],
-                [
-                    'name' => '港台最新更新',
-                    'href' => '/gangtai.html',
-                    'title' => '港台电影列表',
-                    'list' => $gangtailist
-                ]
-            ];
-            /**列表类型的**************************************/
-            //然后分别获取十条最新更新的电影 1欧美　　2日韩　3港台 4大陆
-            $field = ['id', 'title', 'name', 'alias_name', 'type', 'created_at'];
-            $oumeilist = Movie::where('region_id', '1')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
-            $dalulist = Movie::where('region_id', '4')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
-            $rihanlist = Movie::where('region_id', '2')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
-            $gangtailist = Movie::where('region_id', '3')->orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
+            $oumeilist = Movie::where('region_id', '1')->orderBy('id', 'desc')->limit($limit)->get($this->pic_field)->toArray();
+            $dalulist = Movie::where('region_id', '4')->orderBy('id', 'desc')->limit($limit)->get($this->pic_field)->toArray();
+            $rihanlist = Movie::where('region_id', '2')->orderBy('id', 'desc')->limit($limit)->get($this->pic_field)->toArray();
+            $gangtailist = Movie::where('region_id', '3')->orderBy('id', 'desc')->limit($limit)->get($this->pic_field)->toArray();
             if ($oumeilist) {
                 array_walk($oumeilist, $form_movie_arr);
             }
