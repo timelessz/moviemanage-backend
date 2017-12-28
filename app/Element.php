@@ -351,8 +351,6 @@ class Element
             if ($v['type_id'] == 3) {
                 $v['href'] = $this->xunleiDownload($v['href']);
             }
-            print_r($v['href']);
-            exit;
             if (array_key_exists($v['type_id'], $d_link)) {
                 array_push(
                     $d_link[$v['type_id']]['list'],
