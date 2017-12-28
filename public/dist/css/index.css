@@ -8,7 +8,7 @@ body {
 
 .main-header {
     text-align: center;
-    padding: 22px 0;
+    padding: 10px 0;
     background-color: rgb(241, 242, 243);
     background-repeat: no-repeat;
     background-position: center 20%;
@@ -28,11 +28,15 @@ body {
 }
 
 .searchinput {
+    padding-top: 5px;
 }
 
 .nav {
     margin-left: 0px;
     margin-right: 0px;
+}
+.navbar{
+    border-radius: 0px !important;
 }
 
 /* Carousel base class */
