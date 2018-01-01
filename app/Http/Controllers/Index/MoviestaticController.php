@@ -12,7 +12,6 @@ namespace App\Http\Controllers\Index;
 
 use App\Element;
 use App\Http\Controllers\Controller;
-use App\Http\traits\pingbaidu;
 use App\Movie;
 use Illuminate\Support\Facades\Cache;
 

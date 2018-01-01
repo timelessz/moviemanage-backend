@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Index;
 
 use App\Element;
 use App\Http\Controllers\Controller;
-use App\Http\traits\pingbaidu;
 use App\Menu;
 use App\Movie;
 use App\Movietag;

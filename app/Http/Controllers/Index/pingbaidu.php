@@ -1,5 +1,6 @@
 <?php
-namespace App\Http\traits;
+
+namespace App\Http\Controllers\Index;
 
 /**
  * ping百度相关操作
