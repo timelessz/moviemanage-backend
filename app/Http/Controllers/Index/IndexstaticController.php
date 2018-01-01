@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Index;
 
 use App\Element;
 use App\Http\Controllers\Controller;
+use App\Http\traits\pingbaidu;
 use App\Menu;
 use App\Movie;
 use App\Movietag;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Cache;
 class IndexstaticController extends Controller
 {
 
-    use \pingbaidu;
+    use pingbaidu;
 
 //    1、站点访问速度
 //    2、sitemap

@@ -1,4 +1,5 @@
 <?php
+namespace App\Http\traits;
 
 /**
  * ping百度相关操作

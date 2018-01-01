@@ -12,12 +12,13 @@ namespace App\Http\Controllers\Index;
 
 use App\Element;
 use App\Http\Controllers\Controller;
+use App\Http\traits\pingbaidu;
 use App\Movie;
 use Illuminate\Support\Facades\Cache;
 
 class MoviestaticController extends Controller
 {
-    use \pingbaidu;
+    use pingbaidu;
 
     /**
      * 电影静态化
