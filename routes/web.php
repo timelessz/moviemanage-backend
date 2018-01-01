@@ -18,13 +18,19 @@ Route::resource('xunleipu', 'Manage\XunleipuController');
 Route::resource('Xunleipudownloadlink', 'Manage\Xunleipudownloadlink');
 //hao6v相关管理
 Route::resource('hao6v', 'Manage\Hao6vController');
+//hao6v电影下载
+Route::resource('hao6vdownloadlink', 'Manage\Hao6vdownloadlinkController');
 //btbtdy相关管理
 Route::resource('btbtdy', 'Manage\BtbtdyController');
-//迅雷铺电影下载
-Route::resource('hao6vdownloadlink', 'Manage\Hao6vdownloadlinkController');
 //btbtdy下载链接管理
 Route::resource('btbtdydownloadlink', 'Manage\BtbtdydownloadlinkController');
+//btbtdy相关管理
+Route::resource('dytt', 'Manage\DyttController');
+//btbtdy下载链接管理
+Route::resource('dyttdownloadlink', 'Manage\DyttdownloadlinkController');
 
+//获取相关电影的图集
+Route::get('getmovieimgset/{id}/{tag}', 'Manage\MovielistController@getMovieImgset');
 
 Route::resource('movietype', 'Manage\MovietypeController');
 //修改代码
@@ -43,10 +49,6 @@ Route::post('xunleipumovieadd', 'Manage\MovielistController@xunleipumovieadd');
 Route::post('hao6vmovieadd', 'Manage\MovielistController@hao6vmovieadd');
 //btbtdymovieadd
 Route::post('btbtdymovieadd', 'Manage\MovielistController@btbtdymovieadd');
-
-
-
-
 
 
 Route::get('movietypelist', 'Manage\MovietypeController@getlist');

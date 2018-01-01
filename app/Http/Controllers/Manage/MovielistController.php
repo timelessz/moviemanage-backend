@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Manage;
 
 use App\Btbtdy;
 use App\Btbtdymoviedownloadlink;
+use App\Dyttmovieimglist;
 use App\Hao6v;
 use App\Hao6vmoviedownloadlink;
 use App\Hao6vmovieimglist;
@@ -283,6 +284,35 @@ class MovielistController extends Controller
         }
         return response()->json(['status' => 'failed', 'msg' => '获取轮播图失败请重试', 'data' => []]);
     }
+
+    /**
+     * 获取电影的bigMovieCoversrc
+     * @access public
+     */
+    public function getMovieImgset($id, $tag)
+    {
+        switch ($tag) {
+            case 'xunleipu':
+                $model = new Xunleipumovieimglist();
+                break;
+            case 'dytt':
+                $model = new Dyttmovieimglist();
+                break;
+            case 'hao6v':
+                $model = new Hao6vmovieimglist();
+                break;
+        }
+        $data = $model->where('movie_id', '=', $id)->get(['imgsrc']);
+        $img = [];
+        foreach ($data as $v) {
+            $img[] = $v['imgsrc'];
+        }
+        if ($img) {
+            return response()->json(['status' => 'success', 'msg' => '获取轮播图成功', 'data' => $img]);
+        }
+        return response()->json(['status' => 'failed', 'msg' => '获取轮播图失败请重试', 'data' => []]);
+    }
+
 
     /**
      * 保存设置好的 bigcoversrc
