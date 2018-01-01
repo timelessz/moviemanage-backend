@@ -68,11 +68,11 @@ Route::get('/getcaptcha', 'CaptchaController@getcaptcha');
 
 //关于页面静态化的相关操作
 Route::get('sitemapstatic', 'Index\IndexstaticController@sitemap');
-
 Route::get('indexstatic', 'Index\IndexstaticController@index');
 Route::get('liststatic', 'Index\IndexstaticController@listdemo');
 Route::get('detailstatic', 'Index\IndexstaticController@detaildemo');
-
+//相关页面静态化操作
+Route::get('moviestatic', 'Index\MoviestaticController@index');
 
 //没有找到更好的解决方案
 Route::get('oumei.html', 'Index\IndexstaticController@oumeilist');
@@ -115,6 +115,5 @@ Route::get('review/{id}.html', 'Index\IndexstaticController@review');
 //电影相关网站链接
 Route::get('review/{id}.html', 'Index\IndexstaticController@review');
 
-//相关页面静态化操作
-Route::get('moviestatic', 'Index\MoviestaticController@index');
+
 

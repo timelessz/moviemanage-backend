@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Cache;
 class IndexstaticController extends Controller
 {
 
+    use \pingbaidu;
+
 //    1、站点访问速度
 //    2、sitemap
 //    3、爬虫爬取更新的数据
@@ -76,29 +78,6 @@ XML;
     }
 
     /**
-     * 程序主动推送
-     */
-    public function demo()
-    {
-        $urls = array(
-            'http://www.example.com/1.html',
-            'http://www.example.com/2.html',
-        );
-        $api = 'http://data.zz.baidu.com/urls?site=dyxz2018.com&token=lS8Clzeqh2U9hPpa';
-        $ch = curl_init();
-        $options = array(
-            CURLOPT_URL => $api,
-            CURLOPT_POST => true,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POSTFIELDS => implode("\n", $urls),
-            CURLOPT_HTTPHEADER => array('Content-Type: text/plain'),
-        );
-        curl_setopt_array($ch, $options);
-        $result = curl_exec($ch);
-        echo $result;
-    }
-
-    /**
      * 首页静态化相关功能展现
      * @access public
      */
@@ -135,7 +114,6 @@ XML;
         $element = (new Element())->getMovieListEnsstial('rihan', $id, 10);
         $code = view('movielist', $element);
         return $code;
-        return view('movielist');
     }
 
 
@@ -156,12 +134,13 @@ XML;
         return $code;
     }
 
-    //
+    //电影列表
     public function movie($id)
     {
         if (!$id) {
             exit('请求异常');
         }
+        $root_url = config('app.root_url');
         $file_name = "movie/movie{$id}.html";
         if (file_exists($file_name)) {
             exit(file_get_contents($file_name));
@@ -171,7 +150,13 @@ XML;
         $code = view('detail', $element);
         file_put_contents($file_name, $code);
         Movie::where('id', $id)->update(['is_static' => '20']);
+        //ping百度
+        $url = [
+            $root_url . '/' . $file_name
+        ];
+        $this->pingBaidu($url);
         exit($code);
+
     }
 
     //影评list
