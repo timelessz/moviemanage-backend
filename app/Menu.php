@@ -18,9 +18,9 @@ class Menu
             ['en' => 'rihan', 'path' => '/rihan.html', 'text' => '日韩电影', 'title' => '日韩电影，影窝', 'priority' => '0.7'],
             ['en' => 'gangtai', 'path' => '/gangtai.html', 'text' => '港台电影', 'title' => '港台电影，影窝', 'priority' => '0.7'],
             ['en' => 'jingdian', 'path' => '/jingdian.html', 'text' => '经典电影', 'title' => '经典电影，影窝', 'priority' => '0.7'],
-            ['en' => 'recommend', 'path' => '/recommend.html', 'text' => '博主推荐', 'title' => '电影评论，影窝', 'priority' => '0.7'],
+//            ['en' => 'recommend', 'path' => '/recommend.html', 'text' => '博主推荐', 'title' => '电影评论，影窝', 'priority' => '0.7'],
             ['en' => 'yingping', 'path' => '/yingping.html', 'text' => '电影影评', 'title' => '电影影评，影窝', 'priority' => '0.7'],
-            ['en' => 'meiju', 'path' => '/meiju.html', 'text' => '美剧下载', 'title' => '美剧下载，影窝', 'priority' => '0.7'],
+//            ['en' => 'meiju', 'path' => '/meiju.html', 'text' => '美剧下载', 'title' => '美剧下载，影窝', 'priority' => '0.7'],
             ['en' => 'type', 'path' => '/typelist.html', 'text' => '电影分类', 'title' => '电影分类，影窝', 'priority' => '0.5'],
             ['en' => 'tag', 'path' => '/taglist.html', 'text' => '电影标签', 'title' => '电影标签，影窝', 'priority' => '0.5'],
         ];
