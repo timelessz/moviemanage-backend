@@ -109,6 +109,7 @@ Route::get('meiju.html', function () {
 
 //电影分类列表
 Route::get('taglist.html', 'Index\IndexstaticController@taglist');
+Route::get('tag.html', 'Index\IndexstaticController@taglist');
 
 //根据电影分类获取的列表
 Route::get('tag-{id}-{page}.html', 'Index\IndexstaticController@tagmovielist');
