@@ -35,8 +35,18 @@ body {
     margin-left: 0px;
     margin-right: 0px;
 }
-.navbar{
+
+.navbar {
     border-radius: 0px !important;
+}
+
+@media (max-width: 768px) {
+    #myCarousel {
+        display: none;
+    }
+
+
+
 }
 
 /* Carousel base class */
