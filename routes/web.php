@@ -99,6 +99,13 @@ Route::get('typelist.html', 'Index\IndexstaticController@typelist');
 Route::get('type-{id}-{page}.html', 'Index\IndexstaticController@typemovielist');
 Route::get('type-{id}.html', 'Index\IndexstaticController@typemovielist');
 
+Route::get('recommend.html', function () {
+    return '代码正在测试中';
+});
+
+Route::get('meiju.html', function () {
+    return '代码正在测试中';
+});
 
 //电影分类列表
 Route::get('taglist.html', 'Index\IndexstaticController@taglist');
