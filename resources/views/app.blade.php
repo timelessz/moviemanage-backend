@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <meta name="360-site-verification" content="c32173878cc2e7d571ecc1056481312e"/>
     <link rel="stylesheet" href="{{URL::asset('star/css/star-rating.css')}}" media="all" type="text/css"/>
     <link rel="stylesheet" href="{{URL::asset('dist/css/index.css')}}">
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
@@ -31,7 +32,7 @@
 </head>
 <body>
 <script>
-    (function(){
+    (function () {
         var bp = document.createElement('script');
         var curProtocol = window.location.protocol.split(':')[0];
         if (curProtocol === 'https') {
