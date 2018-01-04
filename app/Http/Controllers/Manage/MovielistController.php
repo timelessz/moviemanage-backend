@@ -10,6 +10,7 @@ use App\Hao6vmoviedownloadlink;
 use App\Hao6vmovieimglist;
 use App\Http\Controllers\CommonController;
 use App\Movie;
+use App\Moviedownloadlink;
 use App\Xunleipu;
 use App\Xunleipumoviedownloadlink;
 use App\Xunleipumovieimglist;
@@ -49,7 +50,7 @@ class MovielistController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
+     * 新添加资源
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
@@ -86,19 +87,24 @@ class MovielistController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
+     * 修改资源
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $data = [];
         $movie = Movie::where('id', $id)->first();
         if ($movie) {
             $data = $movie->toArray();
             $data['type'] = array_values(array_filter(explode(',', $data['type'])));
             $data['tags'] = array_values(array_filter(explode(',', $data['tags'])));
-            return response()->json(['status' => 'success', 'msg' => '电影获取成功', 'data' => $data]);
+            //获取下载链接
+            //处理相关的下载字段
+            $download_link = Moviedownloadlink::where('movie_id', $id)->get(['id', 'movie_id', 'type_id', 'type_name', 'href', 'text', 'pwd']);
+            if ($download_link) {
+                $download_link = $download_link->toArray();
+            }
+            return response()->json(['status' => 'success', 'msg' => '电影获取成功', 'data' => ['movie' => $data, 'downloadlink' => $download_link]]);
         }
         return response()->json(['status' => 'failed', 'msg' => '电影获取失败请重试', 'data' => ['']]);
     }
@@ -122,9 +128,24 @@ class MovielistController extends Controller
             $input['type'] = $type ? ",{$type}," : '';
         }
         if (Movie::where('id', $id)->update($input)) {
+            //需要同步删除掉制定的电影
+            $this->deleteMovie($id);
             return response()->json(['status' => 'success', 'msg' => '电影修改成功', 'data' => []]);
         }
         return response()->json(['status' => 'failed', 'msg' => '电影修改失败请重试', 'data' => ['']]);
+    }
+
+
+    /**
+     * 删除制定一个电影文件
+     * @param $id
+     */
+    public function deleteMovie($id)
+    {
+        $moviefile = sprintf('movie/movie%s.html', $id);
+        if (file_exists($moviefile)) {
+            unlink($moviefile);
+        }
     }
 
     /**
@@ -136,6 +157,7 @@ class MovielistController extends Controller
     public function destroy($id)
     {
         //
+
     }
 
     /**
@@ -159,14 +181,15 @@ class MovielistController extends Controller
         $model = Movie::create($input);
         if ($model) {
             $movie_id = $model->id;
+            $movie_name = $model->name;
             $pre_movieid = $request->id;
             // 需要把 xunleipu 数据库中的下载链接存进来
             //还需要把内容中的图片存下来
             $download_data = Xunleipumoviedownloadlink::where('movie_id', $pre_movieid)->get()->toArray();
             $img_data = Xunleipumovieimglist::where('movie_id', $pre_movieid)->get()->toArray();
             $comefrom = 'xunleipu';
-            array_walk($download_data, array($this, 'form_movieoption'), [$movie_id, $comefrom]);
-            array_walk($img_data, array($this, 'form_movieoption'), [$movie_id, $comefrom]);
+            array_walk($download_data, array($this, 'form_movieoption'), [$movie_id, $movie_name, $comefrom]);
+            array_walk($img_data, array($this, 'form_movieoption'), [$movie_id, $movie_name, $comefrom]);
             DB::table('movie_download_link')->insert($download_data);
             DB::table('movie_imglist')->insert($img_data);
             //同时需要把 之前的电影中存下最终的电影id
@@ -199,14 +222,15 @@ class MovielistController extends Controller
         $model = Movie::create($input);
         if ($model) {
             $movie_id = $model->id;
+            $movie_name = $model->name;
             $pre_movieid = $request->id;
             // 需要把 xunleipu 数据库中的下载链接存进来
             //还需要把内容中的图片存下来
             $download_data = Hao6vmoviedownloadlink::where('movie_id', $pre_movieid)->get()->toArray();
             $img_data = Hao6vmovieimglist::where('movie_id', $pre_movieid)->get()->toArray();
             $comefrom = 'hao6v';
-            array_walk($download_data, array($this, 'form_movieoption'), [$movie_id, $comefrom]);
-            array_walk($img_data, array($this, 'form_movieoption'), [$movie_id, $comefrom]);
+            array_walk($download_data, array($this, 'form_movieoption'), [$movie_id, $movie_name, $comefrom]);
+            array_walk($img_data, array($this, 'form_movieoption'), [$movie_id, $movie_name, $comefrom]);
             DB::table('movie_download_link')->insert($download_data);
             DB::table('movie_imglist')->insert($img_data);
             //同时需要把 之前的电影中存下最终的电影id
@@ -238,12 +262,13 @@ class MovielistController extends Controller
         $model = Movie::create($input);
         if ($model) {
             $movie_id = $model->id;
+            $movie_name = $model->name;
             $pre_movieid = $request->id;
             // 需要把 xunleipu 数据库中的下载链接存进来
             //还需要把内容中的图片存下来
             $download_data = Btbtdymoviedownloadlink::where('movie_id', $pre_movieid)->get()->toArray();
             $comefrom = 'btbtdy';
-            array_walk($download_data, array($this, 'form_movieoption'), [$movie_id, $comefrom]);
+            array_walk($download_data, array($this, 'form_movieoption'), [$movie_id, $movie_name, $comefrom]);
             DB::table('movie_download_link')->insert($download_data);
             //同时需要把 之前的电影中存下最终的电影id
             Btbtdy::where('id', $pre_movieid)->update(['movie_id' => $movie_id]);
@@ -259,9 +284,10 @@ class MovielistController extends Controller
      */
     protected function form_movieoption(&$v, $k, $data)
     {
-        list($movie_id, $comefrom) = $data;
+        list($movie_id, $movie_name, $comefrom) = $data;
         $v['pre_movie_id'] = $v['movie_id'];
         $v['movie_id'] = $movie_id;
+        $v['movie_name'] = $movie_name;
         $v['comefrom'] = $comefrom;
         unset($v['create_time']);
         unset($v['update_time']);

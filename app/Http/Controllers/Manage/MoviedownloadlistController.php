@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Manage;
 
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\Controller;
+use App\Movie;
 use App\Moviedownloadlink;
 use Illuminate\Http\Request;
 
@@ -48,6 +49,7 @@ class MoviedownloadlistController extends Controller
         $input = $request->all();
         $model = Moviedownloadlink::create($input);
         if ($model) {
+            (new MovielistController())->deleteMovie($input['movie_id']);
             return response()->json(['status' => 'success', 'msg' => '电影添加成功', 'data' => []]);
         }
         return response()->json(['status' => 'failed', 'msg' => '电影添加失败请重试', 'data' => ['']]);
@@ -73,39 +75,23 @@ class MoviedownloadlistController extends Controller
      */
     public function edit($id)
     {
-//        $data = [];
-//        $movie = Movie::where('id', $id)->first();
-//        if ($movie) {
-//            $data = $movie->toArray();
-//            $data['type'] = array_values(array_filter(explode(',', $data['type'])));
-//            $data['tags'] = array_values(array_filter(explode(',', $data['tags'])));
-//            return response()->json(['status' => 'success', 'msg' => '电影获取成功', 'data' => $data]);
-//        }
-//        return response()->json(['status' => 'failed', 'msg' => '电影获取失败请重试', 'data' => ['']]);
     }
 
     /**
      * Update the specified resource in storage.
-     *
      * @param  \Illuminate\Http\Request $request
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-//        $input = $request->all();
-//        if (array_key_exists('tags', $input)) {
-//            $tag = implode(',', $input['tags']);
-//            $input['tags'] = $tag ? ",{$tag}," : '';
-//        }
-//        if (array_key_exists('type', $input)) {
-//            $type = implode(',', $input['type']);
-//            $input['type'] = $type ? ",{$type}," : '';
-//        }
-//        if (Movie::where('id', $id)->update($input)) {
-//            return response()->json(['status' => 'success', 'msg' => '电影修改成功', 'data' => []]);
-//        }
-//        return response()->json(['status' => 'failed', 'msg' => '电影修改失败请重试', 'data' => ['']]);
+        $input = $request->all();
+        if (Moviedownloadlink::where('id', $id)->update($input)) {
+            //应该删除掉制定的电影
+            (new MovielistController())->deleteMovie($input['movie_id']);
+            return response()->json(['status' => 'success', 'msg' => '电影修改成功', 'data' => []]);
+        }
+        return response()->json(['status' => 'failed', 'msg' => '电影修改失败请重试', 'data' => ['']]);
     }
 
     /**
@@ -116,7 +102,13 @@ class MoviedownloadlistController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $status = 'failed';
+        $msg = '删除失败';
+        if (Moviedownloadlink::where('id', $id)->delete()) {
+            $status = 'success';
+            $msg = '删除成功';
+        }
+        return response()->json(['status' => $status, 'data' => [], 'msg' => $msg]);
     }
 
 
@@ -131,6 +123,7 @@ class MoviedownloadlistController extends Controller
             ['id' => 2, 'text' => '电驴下载'],
             ['id' => 3, 'text' => '迅雷下载'],
             ['id' => 4, 'text' => '百度云'],
+            ['id' => 5, 'text' => '在线播放'],
             ['id' => 10, 'text' => '其他'],
         ];
         return response()->json(['status' => 'success', 'data' => $data, 'msg' => 'get data success']);
