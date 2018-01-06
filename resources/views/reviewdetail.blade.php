@@ -22,7 +22,7 @@
                 <div class="col-lg-12">
                     <div class="widget">
                         <h2 class="title">{{$moviereview['title']}}</h2>
-                        <div class="content">
+                        <div class="content review-container">
                             {!!$moviereview['content'] !!}
                         </div>
                     </div>

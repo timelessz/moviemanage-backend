@@ -53,6 +53,15 @@ class Element
         if ($newest_movie) {
             array_walk($newest_movie, $form_movie_arr);
         }
+        $commmondata = $this->getCommonData($form_movie_arr);
+        return array_merge(compact('tdk_html', 'menu', 'fivecover_movie', 'newest_movie'), $commmondata);
+    }
+
+    /**
+     * 获取每个页面公共的元素
+     */
+    private function getCommonData($form_movie_arr)
+    {
         //获取每个区域的最新的id 列表
         $regionnewlist = $this->getRegionNewList($form_movie_arr, 18);
         //底部最热电影
@@ -64,11 +73,13 @@ class Element
         $movietype = $this->getMovieType();
         //博主影片推荐
         $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
+        //右边的电影影评
+        $reviewlist = $this->getMoviewReview();
         /**********************************************/
         $footer_reviews = $this->getFooterMovieReview();
         $footer_tags = $this->getFooterMovieTag();
         $footer_types = $this->getFooterMovieType();
-        return compact('tdk_html', 'menu', 'fivecover_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'footer_reviews', 'footer_tags', 'footer_types');
+        return compact('regionnewlist', 'hotmovie_list', 'screenmovie_list', 'movietype', 'recommendmovie_list', 'reviewlist', 'footer_reviews', 'footer_tags', 'footer_types');
     }
 
 
@@ -119,30 +130,14 @@ class Element
         $menu = (new Menu())->get_menu($region_enname);
         //关键词元素
         $tdk_html = (new Tdk())->get_tdk($region_enname);
-        //获取每个区域的最新的id 列表
-        $regionnewlist = $this->getRegionNewList($form_movie_arr);
-        //底部最热电影
-        $hotmovie_list = $this->getHotMovie($form_movie_arr);
-        //获取正在热映的电影列表
-        $screenmovie_list = $this->getScreenMovie($form_movie_arr);
-
-        /**右侧相关菜单推荐*************************************/
-        //电影分类
-        $movietype = $this->getMovieType();
-        //博主影片推荐
-        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
-        /**********************************************/
-
         //电影列表 同事计算分页相关
         $movies = Movie::where('region_id', $region_id)->orderBy('id', 'desc')->limit($pagesize)->offset($pagesize * ($pagenum - 1))->get($this->pic_field)->toArray();
         array_walk($movies, $form_movie_arr);
         $count = Movie::where('region_id', $region_id)->count();
         $allpagenum = ceil($count / $pagesize);
         $pagination = $this->multipage($allpagenum, $pagenum, 'oumei');
-        $footer_reviews = $this->getFooterMovieReview();
-        $footer_tags = $this->getFooterMovieTag();
-        $footer_types = $this->getFooterMovieType();
-        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'movies', 'allpagenum', 'count', 'pagination', 'footer_reviews', 'footer_tags', 'footer_types');
+        $commondata = $this->getCommonData($form_movie_arr);
+        return array_merge(compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'movies', 'allpagenum', 'count', 'pagination'), $commondata);
     }
 
 
@@ -154,7 +149,8 @@ class Element
     {
         $form_movie_arr = [$this, 'execFormatMovie'];
         //首先需要根据$type_id 来获取
-        $movietype = $this->getMovieType();
+        $commondata = $this->getCommonData($form_movie_arr);
+        $movietype = $commondata['movietype'];
         $typeinfo = $movietype[$type_id];
         $name = $typeinfo['name'];
         $current = sprintf($this->type_path, $type_id);
@@ -170,29 +166,13 @@ class Element
         $menu = (new Menu())->get_menu('type');
         //关键词元素
         $tdk_html = (new Tdk())->get_tdk('type', $name);
-
-        //获取每个区域的最新的id 列表
-        $regionnewlist = $this->getRegionNewList($form_movie_arr);
-        //底部最热电影
-        $hotmovie_list = $this->getHotMovie($form_movie_arr);
-        //获取正在热映的电影列表
-        $screenmovie_list = $this->getScreenMovie($form_movie_arr);
-
-        /**右侧相关菜单推荐*************************************/
-        //博主影片推荐
-        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
-        /**********************************************/
-
         //电影列表 同事计算分页相关
         $movies = Movie::where('type', 'like', ",$type_id,")->orderBy('id', 'desc')->limit($pagesize)->offset($pagesize * ($pagenum - 1))->get($this->pic_field)->toArray();
         array_walk($movies, $form_movie_arr);
         $count = Movie::where('type', 'like', ",$type_id,")->count();
         $allpagenum = ceil($count / $pagesize);
         $pagination = $this->multipage($allpagenum, $pagenum, 'type-' . $type_id, '');
-        $footer_reviews = $this->getFooterMovieReview();
-        $footer_tags = $this->getFooterMovieTag();
-        $footer_types = $this->getFooterMovieType();
-        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'movies', 'allpagenum', 'count', 'pagination', 'footer_reviews', 'footer_tags', 'footer_types');
+        return array_merge(compact('tdk_html', 'menu', 'current', 'breadcrumb', 'name', 'movies', 'allpagenum', 'count', 'pagination'), $commondata);
     }
 
 
@@ -203,7 +183,6 @@ class Element
     public function getTagMovieListEnsstial($tag_id, $pagenum, $pagesize = 10)
     {
         $form_movie_arr = [$this, 'execFormatMovie'];
-        $movietype = $this->getMovieType();
 
         $movietag = $this->getMovieTag();
         $taginfo = $movietag[$tag_id];
@@ -221,28 +200,15 @@ class Element
         $menu = (new Menu())->get_menu('tag');
         //关键词元素
         $tdk_html = (new Tdk())->get_tdk('tag', $name);
-        //获取每个区域的最新的id 列表
-        $regionnewlist = $this->getRegionNewList($form_movie_arr);
-        //底部最热电影
-        $hotmovie_list = $this->getHotMovie($form_movie_arr);
-        //获取正在热映的电影列表
-        $screenmovie_list = $this->getScreenMovie($form_movie_arr);
-
-        /**右侧相关菜单推荐*************************************/
-        //博主影片推荐
-        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
-        /**********************************************/
-
+        $commondata = $this->getCommonData($form_movie_arr);
         //电影列表 同事计算分页相关
         $movies = Movie::where('tags', 'like', ",$tag_id,")->orderBy('id', 'desc')->limit($pagesize)->offset($pagesize * ($pagenum - 1))->get($this->pic_field)->toArray();
         array_walk($movies, $form_movie_arr);
         $count = Movie::where('tags', 'like', ",$tag_id,")->count();
         $allpagenum = ceil($count / $pagesize);
         $pagination = $this->multipage($allpagenum, $pagenum, 'tag-' . $tag_id, '');
-        $footer_reviews = $this->getFooterMovieReview();
-        $footer_tags = $this->getFooterMovieTag();
-        $footer_types = $this->getFooterMovieType();
-        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'movies', 'allpagenum', 'count', 'pagination', 'footer_reviews', 'footer_tags', 'footer_types');
+
+        return array_merge(compact('tdk_html', 'menu', 'current', 'breadcrumb', 'name', 'movies', 'allpagenum', 'count', 'pagination'), $commondata);
     }
 
     /**
@@ -252,7 +218,6 @@ class Element
     public function getTagTypeEnsstial($flag = 'tag')
     {
         $form_movie_arr = [$this, 'execFormatMovie'];
-        $movietype = $this->getMovieType();
 //        $movietag = $this->getMovieTag();
         if ($flag == 'tag') {
             //菜单元素
@@ -279,25 +244,10 @@ class Element
             'title' => $name,
         ]);
         $this->breadcrumb;
-
         //关键词元素
         $tdk_html = (new Tdk())->get_tdk($flag, $name);
-        //获取每个区域的最新的id 列表
-        $regionnewlist = $this->getRegionNewList($form_movie_arr);
-        //底部最热电影
-        $hotmovie_list = $this->getHotMovie($form_movie_arr);
-        //获取正在热映的电影列表
-        $screenmovie_list = $this->getScreenMovie($form_movie_arr);
-
-        /**右侧相关菜单推荐*************************************/
-        //博主影片推荐
-        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
-        /**********************************************/
-
-        $footer_reviews = $this->getFooterMovieReview();
-        $footer_tags = $this->getFooterMovieTag();
-        $footer_types = $this->getFooterMovieType();
-        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'list', 'breadcrumb', 'name', 'regionnewlist', 'movietype', 'recommendmovie_list', 'screenmovie_list', 'movies', 'allpagenum', 'count', 'pagination', 'footer_reviews', 'footer_tags', 'footer_types');
+        $commondata = $this->getCommonData($form_movie_arr);
+        return array_merge(compact('tdk_html', 'menu', 'current', 'list', 'breadcrumb', 'name', 'movies', 'allpagenum', 'count', 'pagination'), $commondata);
 
     }
 
@@ -410,29 +360,14 @@ class Element
         $menu = (new Menu())->get_menu($en_name);
         //关键词元素
         $tdk_html = (new Tdk())->get_tdk('movie', $movie['name']);
-        //获取每个区域的最新的id 列表
-        $regionnewlist = $this->getRegionNewList($form_movie_arr);
-        //底部最热电影
-        $hotmovie_list = $this->getHotMovie($form_movie_arr);
-        //热映电影
-        $screenmovie_list = $this->getScreenMovie($form_movie_arr);
-        /**右侧相关菜单推荐*************************************/
-        //电影分类
-        $movietype = $this->getMovieType();
-        //博主影片推荐
-        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
         //获取电影影评
         $review = $this->getMovieReview($id);
-//        print_r($review);
         /**********************************************/
         //获取相关的电影
         $relative_movies = $this->getRelativeMovie($movie['type'], $id);
         $this->form_per_movie($movie);
-        $footer_reviews = $this->getFooterMovieReview();
-        $footer_tags = $this->getFooterMovieTag();
-        $footer_types = $this->getFooterMovieType();
-        return compact('movie', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'fivecover_movie', 'review', 'relative_movies', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'footer_reviews', 'footer_tags', 'footer_types');
-
+        $commondata = $this->getCommonData($form_movie_arr);
+        return array_merge(compact('movie', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'review', 'relative_movies'), $commondata);
     }
 
     /**
@@ -446,7 +381,6 @@ class Element
         //首先需要根据$type_id 来获取
         $current = sprintf('/yingping-%s.html', $pagenum);
         //面包屑导航
-
         $breadcrumb = $this->breadcrumb;
         array_push($breadcrumb, [
             'text' => '影评',
@@ -454,35 +388,18 @@ class Element
             'title' => '影评',
         ]);
         $this->breadcrumb;
-
         //菜单元素
         $menu = (new Menu())->get_menu('yingping');
         //关键词元素
         $tdk_html = (new Tdk())->get_tdk('yingping');
-        //电影分类
-        $movietype = $this->getMovieType();
-        //获取每个区域的最新的id 列表
-        $regionnewlist = $this->getRegionNewList($form_movie_arr);
-        //底部最热电影
-        $hotmovie_list = $this->getHotMovie($form_movie_arr);
-        //获取正在热映的电影列表
-        $screenmovie_list = $this->getScreenMovie($form_movie_arr);
-
-        /**右侧相关菜单推荐*************************************/
-        //博主影片推荐
-        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
-        /**********************************************/
-
         //电影列表 同事计算分页相关
         $moviereviews = Moviereview::orderBy('id', 'desc')->limit($pagesize)->offset($pagesize * ($pagenum - 1))->get($this->movieReview)->toArray();
         array_walk($moviereviews, [$this, 'execFormatMoviereviews']);
         $count = Moviereview::count();
         $allpagenum = ceil($count / $pagesize);
         $pagination = $this->multipage($allpagenum, $pagenum, 'yingping', '');
-        $footer_reviews = $this->getFooterMovieReview();
-        $footer_tags = $this->getFooterMovieTag();
-        $footer_types = $this->getFooterMovieType();
-        return compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'moviereviews', 'allpagenum', 'count', 'pagination', 'footer_reviews', 'footer_tags', 'footer_types');
+        $commondata = $this->getCommonData($form_movie_arr);
+        return array_merge(compact('tdk_html', 'menu', 'current', 'breadcrumb', 'name', 'moviereviews', 'allpagenum', 'count', 'pagination'), $commondata);
     }
 
     // 获取电影评论必须的元素
@@ -510,17 +427,6 @@ class Element
         $menu = (new Menu())->get_menu('yingping');
         //关键词元素
         $tdk_html = (new Tdk())->get_tdk('review', $movie_name ?: $moviereview['title']);
-        //获取每个区域的最新的id 列表
-        $regionnewlist = $this->getRegionNewList($form_movie_arr);
-        //底部最热电影
-        $hotmovie_list = $this->getHotMovie($form_movie_arr);
-        //热映电影
-        $screenmovie_list = $this->getScreenMovie($form_movie_arr);
-        /**右侧相关菜单推荐*************************************/
-        //电影分类
-        $movietype = $this->getMovieType();
-        //博主影片推荐
-        $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
         //相关电影 后期这个地方可以修改为多个电影的形式 暂时只有一个
         $relative_movie = [];
         if ($movie_id) {
@@ -528,10 +434,8 @@ class Element
             $relative_movie = Movie::find($movie_id);
             $this->execFormatMovie($relative_movie, 0);
         }
-        $footer_reviews = $this->getFooterMovieReview();
-        $footer_tags = $this->getFooterMovieTag();
-        $footer_types = $this->getFooterMovieType();
-        return compact('moviereview', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'fivecover_movie', 'review', 'relative_movie', 'newest_movie', 'hotmovie_list', 'regionnewlist', 'recommendmovie_list', 'screenmovie_list', 'movietype', 'footer_reviews', 'footer_tags', 'footer_types');
+        $commondata = $this->getCommonData($form_movie_arr);
+        return array_merge(compact('moviereview', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'review', 'relative_movie'), $commondata);
     }
 
     /**
@@ -540,7 +444,7 @@ class Element
     private function getFooterMovieReview()
     {
         return Cache::rememberForever('footerMovieReview', function () {
-            $moviereview = Moviereview::limit(3)->get($this->movieReview)->toArray();
+            $moviereview = Moviereview::limit(3)->orderBy('id', 'desc')->get($this->movieReview)->toArray();
             array_walk($moviereview, [$this, 'execFormatMoviereviews']);
             return $moviereview;
         });
@@ -553,7 +457,7 @@ class Element
     private function getFooterMovieTag()
     {
         return Cache::rememberForever('footerMovieTag', function () {
-            $movietag = Movietag::limit(20)->get(['id', 'name', 'detail'])->toArray();
+            $movietag = Movietag::limit(20)->orderBy('id', 'desc')->get(['id', 'name', 'detail'])->toArray();
             $tags = [];
             foreach ($movietag as $k => $v) {
                 $tags[$v['id']] = [
@@ -610,6 +514,18 @@ class Element
      */
     private function execFormatMoviereviews(&$v, $k)
     {
+        //首先格式化电影
+        if (array_key_exists('movie_id', $v) && $v['movie_id']) {
+            $v['movie'] = [
+                'href' => "/movie/{$v['id']}.html",
+                'text' => $v['movie_name']
+            ];
+        } else {
+            $v['movie'] = [
+                'href' => "/",
+                'text' => ''
+            ];
+        }
         if (array_key_exists('created_at', $v)) {
             $v['created_at'] = date('Y-m-d', $v['created_at']);
         }
@@ -788,8 +704,6 @@ code;
                 ]
             ];
         });
-
-
     }
 
     /**
@@ -842,6 +756,22 @@ code;
             $recommendmovie_list = Movie::where('is_recommend', '20')->orderBy('recommend_settime', 'desc')->limit($limit)->get($field)->toArray();
             array_walk($recommendmovie_list, $form_movie_arr);
             return $recommendmovie_list;
+        });
+    }
+
+
+    /**
+     * 获取电影预览相关数据
+     * @access private
+     */
+    private function getMoviewReview($limit = 10)
+    {
+        return Cache::rememberForever('moviereview', function () use ($limit) {
+            //博主影片推荐
+            $field = ['id', 'title', 'movie_id', 'movie_name', 'thumbnail', 'count', 'type', 'created_at'];
+            $moviereview_list = Moviereview::orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
+            array_walk($moviereview_list, [$this, 'execFormatMoviereviews']);
+            return $moviereview_list;
         });
     }
 
@@ -922,6 +852,7 @@ code;
         }
     }
 
+
     /**
      * 获取电影的区域 信息 用于格式化数据时候使用
      * @access private
@@ -940,6 +871,4 @@ code;
             return $l_regions;
         });
     }
-
-
 }

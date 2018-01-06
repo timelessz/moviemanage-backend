@@ -20,51 +20,43 @@
             <div class="widget">
                 <h1 class="title">{{$name}}</h1>
                 <div class="container-fluid movie-list">
-                    <?php
-                    foreach ($movies as $k=>$v){
-                    ?>
-                    <div class="media movie-list-item">
-                        <div class="media-left">
-                            <a href="{{$v['href']}}" title="{{$v['title']}}">
-                                <img class="media-object" data-src="holder.js/90x90" alt="{{$v['title']}}"
-                                     src="{{$v['coversrc']}}"
-                                     data-holder-rendered="true" style="width:90px;">
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <div>
-                                <h2 class="media-heading" style="font-size:24px;display: inline-block">
-                                    <a href="{{$v['href']}}" target="_blank">{{$v['name']}}</a>
-                                </h2>
-                                <span class="doubanscore"> {{$v['doubanscore']}}</span>
-                            </div>
-                            <p>
-                                <a href="{{$v['href']}}" target="_blank"
-                                   title="{{$v['summary']}}"> {{$v['sub_summary']}}
+                    <div class="row">
+                        <?php foreach ($movies as $v){ ?>
+                        <div class="col-xs-6 col-md-4 col-lg-3" style="padding-left:8px;padding-right:8px;">
+                            <div class="thumbnail" style="margin-bottom: 15px;margin-top: 0px">
+                                <a href="{{$v['href']}}" title="{{$v['title']}}">
+                                    <img src="{{$v['coversrc']}}" alt="{{$v['title']}}" title="{{$v['sub_summary']}}" style="height:240px">
                                 </a>
-                            </p>
-                            <div class="pull-left">
-                                <span>
-                                    <a href="{{$current}}" target="_blank">{{$v['region_name']}}</a>
-                                </span>
-                                <span>
-                                    <?php
-                                    foreach ($v['type'] as $val) {
-                                    ?>
-                                    <a href='{{$val['href']}}' target="_blank">{{$val['name']}}</a>
-                                    <?php
-                                    }
-                                    ?></span>
-                            </div>
-                            <div class="pull-right">
-                                {{$v['created_at']}}
+                                <div class="row">
+                                    <div class="col-lg-12 movie-list-title"
+                                         style="width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
+                                        <a href="{{$v['href']}}" title="{{$v['sub_summary']}}">
+                                            {{$v['name']}}
+                                        </a>
+                                        <span class="movie-score" title="豆瓣评分{{$v['doubanscore']}}">
+                                            {{$v['doubanscore']}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-left:15px">
+                                    <div class="movie-list-desc">
+                                        {{$v['ages']}}
+                                        <a href='{{$v['region']['href']}}' target="_blank">{{$v['region']['name']}}</a>
+                                        <?php
+                                        foreach ($v['type'] as $val) {
+                                        ?>
+                                        <a href='{{$val['href']}}' target="_blank">{{$val['name']}}</a>
+                                        <?php
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <?php } ?>
                     </div>
-                    <?php
-                    }
-                    ?>
                 </div>
+
             </div>
             <div class=" widget pull-right">
                 <nav aria-label="Page navigation">

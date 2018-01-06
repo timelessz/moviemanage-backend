@@ -45,8 +45,8 @@
         s.parentNode.insertBefore(bp, s);
     })();
 </script>
-<script>(function(){
-        var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?cb130546e0e8aaffc7b3fa8261509715":"https://jspassport.ssl.qhimg.com/11.0.1.js?cb130546e0e8aaffc7b3fa8261509715";
+<script>(function () {
+        var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?cb130546e0e8aaffc7b3fa8261509715" : "https://jspassport.ssl.qhimg.com/11.0.1.js?cb130546e0e8aaffc7b3fa8261509715";
         document.write('<script src="' + src + '" id="sozz"><\/script>');
     })();
 </script>
@@ -185,14 +185,14 @@
         <div class="row">
             <div class="col-sm-12">
                 <span>
-                    电影天堂电影下载网站 免费提供下载链接,本站不直接提供电影下载资源，所有电影下载 免费链接均来自网络，本站电影大多为rmvb格式，只供网络测试、请在下载电影24小时内删除所下内容，请支持购买正版！如无意中侵犯了您的权益,请发邮件至xlpuvip@126.com (使用时将#改为@),我们确认后将立即清除相关链接。
+                    影窝电影下载网站 免费提供下载链接,本站不直接提供电影下载资源，所有电影下载 免费链接均来自网络，只供网络测试、请在下载电影24小时内删除所下内容，请支持购买正版！如无意中侵犯了您的权益,请发邮件至 timelessyw#mail.com(使用时将#改为@),我们确认后将立即清除相关链接。
                  <a class="back-to-top" href="#top">
                     返回顶部
                  </a>
                 </span>
                 <hr>
                 <span>
-                    Copyright © <a href="http://www.dyxz2018.com/">电影下载主站 2016-2017</a>
+                    Copyright © <a href="http://www.dyxz2018.com/">影窝电影下载 2016-{{date('Y')}}</a>
                </span>
             </div>
         </div>

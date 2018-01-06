@@ -94,7 +94,7 @@ XML;
     //欧美list
     public function oumeilist($id = 1)
     {
-        $element = (new Element())->getMovieListEnsstial('oumei', $id, 10);
+        $element = (new Element())->getMovieListEnsstial('oumei', $id, 20);
         $code = view('movielist', $element);
         return $code;
     }
@@ -103,7 +103,7 @@ XML;
     //大陆list
     public function dalulist($id = 1)
     {
-        $element = (new Element())->getMovieListEnsstial('dalu', $id, 10);
+        $element = (new Element())->getMovieListEnsstial('dalu', $id, 20);
         $code = view('movielist', $element);
         return $code;
     }
@@ -111,7 +111,7 @@ XML;
     //rihan list
     public function rihanlist($id = 1)
     {
-        $element = (new Element())->getMovieListEnsstial('rihan', $id, 10);
+        $element = (new Element())->getMovieListEnsstial('rihan', $id, 20);
         $code = view('movielist', $element);
         return $code;
     }
@@ -120,7 +120,7 @@ XML;
     //港台list
     public function gangtailist($id = 1)
     {
-        $element = (new Element())->getMovieListEnsstial('gangtai', $id, 10);
+        $element = (new Element())->getMovieListEnsstial('gangtai', $id, 20);
 
         $code = view('movielist', $element);
         return $code;
@@ -129,7 +129,7 @@ XML;
     //经典电影list
     public function jingdianlist($id = 1)
     {
-        $element = (new Element())->getMovieListEnsstial('jingdian', $id, 10);
+        $element = (new Element())->getMovieListEnsstial('jingdian', $id, 20);
         $code = view('movielist', $element);
         return $code;
     }
@@ -156,7 +156,6 @@ XML;
         ];
         $this->pingBaidu($url);
         exit($code);
-
     }
 
     //影评list
@@ -176,10 +175,20 @@ XML;
         if (!$id) {
             exit('请求异常');
         }
-        //从头获取数据
+        $root_url = config('app.root_url');
+        $file_name = "review/review{$id}.html";
+        if (file_exists($file_name)) {
+            exit(file_get_contents($file_name));
+        }
         $element = (new Element())->getReviewEnsstial($id);
         $code = view('reviewdetail', $element);
-        return $code;
+        file_put_contents($file_name, $code);
+        //ping百度
+        $url = [
+            $root_url . '/' . $file_name
+        ];
+        $this->pingBaidu($url);
+        exit($code);
     }
 
     /**
