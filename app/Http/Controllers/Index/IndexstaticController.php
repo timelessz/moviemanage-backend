@@ -220,7 +220,7 @@ XML;
     public function typemovielist($id = 1, $page = 1)
     {
         //获取分类的id
-        $element = (new Element())->getTypeMovieListEnsstial($id, $page, 10);
+        $element = (new Element())->getTypeMovieListEnsstial($id, $page, 20);
         $code = view('movielist', $element);
         return $code;
     }
@@ -231,7 +231,7 @@ XML;
     public function tagmovielist($id = 1, $page = 1)
     {
         //获取分类的id
-        $element = (new Element())->getTagMovieListEnsstial($id, $page, 10);
+        $element = (new Element())->getTagMovieListEnsstial($id, $page, 20);
         $code = view('movielist', $element);
         return $code;
     }
