@@ -97,7 +97,7 @@ XML;
         return Cache::rememberForever('oumeilist' . $id, function () use ($id) {
             $element = (new Element())->getMovieListEnsstial('oumei', $id, 20);
             $code = view('movielist', $element);
-            return $code;
+            return $code->render();
         });
     }
 
