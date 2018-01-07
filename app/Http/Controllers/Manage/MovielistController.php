@@ -144,7 +144,10 @@ class MovielistController extends Controller
     {
         $moviefile = sprintf('movie/movie%s.html', $id);
         if (file_exists($moviefile)) {
-            unlink($moviefile);
+            if (unlink($moviefile)) {
+                file_put_contents('delete.txt', print_r($moviefile, true), FILE_APPEND);
+            }
+            file_put_contents('faileddelete.txt', print_r($moviefile, true), FILE_APPEND);
         }
     }
 
