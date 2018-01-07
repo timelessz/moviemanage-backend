@@ -41,11 +41,12 @@ class Tdk
      * @access public
      * 获取页面的 tdk
      * @param $current  当前页面的类型
-     * @param $name  页面标题
-     * @param $type 电影类型
+     * @param string $name 页面标题
+     * @param string $type 电影类型
+     * @param string $desription 页面的描述 从内容中截取一段来
      * @return array|mixed
      */
-    public function get_tdk($current, $name = '', $type = '')
+    public function get_tdk($current, $name = '', $type = '', $desription = '')
     {
         $tdk = [];
         switch ($current) {
@@ -96,7 +97,7 @@ class Tdk
                 $tdk = $this->tdk_template[$current];
                 $tdk['title'] = str_replace("%s", $name, $tdk['title']);
                 $tdk['keywords'] = str_replace("%s", $name, $tdk['keywords']);
-                $tdk['description'] = str_replace("%s", $name, $tdk['description']);
+                $tdk['description'] = str_replace("%s", $name, $desription);
                 break;
         }
         return $this->get_tdk_html($tdk);

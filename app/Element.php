@@ -427,13 +427,16 @@ class Element
         //菜单元素
         $menu = (new Menu())->get_menu('yingping');
         //关键词元素
-        $tdk_html = (new Tdk())->get_tdk('review', $movie_name ?: $moviereview['title']);
+        $tdk_html = (new Tdk())->get_tdk('review', $movie_name ?: $moviereview['title'], '', $moviereview['summary']);
         //相关电影 后期这个地方可以修改为多个电影的形式 暂时只有一个
         $relative_movie = [];
         if ($movie_id) {
             //获取相关的电影
-            $relative_movie = Movie::find($movie_id);
-            $this->execFormatMovie($relative_movie, 0);
+            $relative_movie = Movie::find($movie_id, ['id', 'name', 'title', 'coversrc', 'type', 'created_at']);
+            if ($relative_movie) {
+                $relative_movie = $relative_movie->toArray();
+                $this->execFormatMovie($relative_movie, 0);
+            }
         }
         $commondata = $this->getCommonData($form_movie_arr);
         return array_merge(compact('moviereview', 'tdk_html', 'd_link', 'menu', 'breadcrumb', 'review', 'relative_movie'), $commondata);
