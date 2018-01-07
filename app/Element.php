@@ -137,6 +137,7 @@ class Element
         $allpagenum = ceil($count / $pagesize);
         $pagination = $this->multipage($allpagenum, $pagenum, 'oumei');
         $commondata = $this->getCommonData($form_movie_arr);
+
         return array_merge(compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'movies', 'allpagenum', 'count', 'pagination'), $commondata);
     }
 
