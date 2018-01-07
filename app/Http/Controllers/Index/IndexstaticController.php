@@ -94,34 +94,31 @@ XML;
     //欧美list
     public function oumeilist($id = 1)
     {
-        $element = (new Element())->getMovieListEnsstial('oumei', $id, 20);
-        $code = view('movielist', $element);
-        return $code;
-//        return Cache::rememberForever('oumeilist' . $id, function () use ($id) {
-//
-//        });
+        return Cache::rememberForever('oumeilist' . $id, function () use ($id) {
+            $element = (new Element())->getMovieListEnsstial('oumei', $id, 20);
+            $code = view('movielist', $element);
+            return $code;
+        });
     }
 
 
     //大陆list
     public function dalulist($id = 1)
     {
-        $element = (new Element())->getMovieListEnsstial('dalu', $id, 20);
-        $code = view('movielist', $element);
-        return $code;
         return Cache::rememberForever('dalulist' . $id, function () use ($id) {
-
+            $element = (new Element())->getMovieListEnsstial('dalu', $id, 20);
+            $code = view('movielist', $element);
+            return $code->render();
         });
     }
 
     //rihan list
     public function rihanlist($id = 1)
     {
-        $element = (new Element())->getMovieListEnsstial('rihan', $id, 20);
-        $code = view('movielist', $element);
-        return $code;
         return Cache::rememberForever('rihanlist' . $id, function () use ($id) {
-
+            $element = (new Element())->getMovieListEnsstial('rihan', $id, 20);
+            $code = view('movielist', $element);
+            return $code->render();
         });
     }
 
@@ -129,22 +126,20 @@ XML;
     //港台list
     public function gangtailist($id = 1)
     {
-        $element = (new Element())->getMovieListEnsstial('gangtai', $id, 20);
-        $code = view('movielist', $element);
-        return $code;
         return Cache::rememberForever('gangtailist' . $id, function () use ($id) {
-
+            $element = (new Element())->getMovieListEnsstial('gangtai', $id, 20);
+            $code = view('movielist', $element);
+            return $code->render();
         });
     }
 
     //经典电影list
     public function jingdianlist($id = 1)
     {
-        $element = (new Element())->getMovieListEnsstial('jingdian', $id, 20);
-        $code = view('movielist', $element);
-        return $code;
-        return Cache::rememberForever('gangtailist' . $id, function () use ($id) {
-
+        return Cache::rememberForever('jingdianlist' . $id, function () use ($id) {
+            $element = (new Element())->getMovieListEnsstial('jingdian', $id, 20);
+            $code = view('movielist', $element);
+            return $code->render();
         });
     }
 
