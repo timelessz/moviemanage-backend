@@ -9,6 +9,7 @@ use App\Hao6v;
 use App\Hao6vmoviedownloadlink;
 use App\Hao6vmovieimglist;
 use App\Http\Controllers\CommonController;
+use App\Http\Controllers\Index\IndexstaticController;
 use App\Movie;
 use App\Moviedownloadlink;
 use App\Xunleipu;
@@ -129,8 +130,12 @@ class MovielistController extends Controller
         }
         if (Movie::where('id', $id)->update($input)) {
             //需要同步删除掉制定的电影
-            $this->deleteMovie($id);
-            return response()->json(['status' => 'success', 'msg' => '电影修改成功', 'data' => []]);
+            $msg = '删除电影失败';
+            if ($this->deleteMovie($id)) {
+                $msg = '删除电影文件成功';
+                (new IndexstaticController())->movie($id, 'restatic');
+            }
+            return response()->json(['status' => 'success', 'msg' => '电影修改成功 ' . $msg, 'data' => []]);
         }
         return response()->json(['status' => 'failed', 'msg' => '电影修改失败请重试', 'data' => ['']]);
     }
@@ -143,13 +148,12 @@ class MovielistController extends Controller
     public function deleteMovie($id)
     {
         $moviefile = sprintf('movie/movie%s.html', $id);
-        file_put_contents('deletefilename.txt', print_r($moviefile, true), FILE_APPEND);
         if (file_exists($moviefile)) {
             if (unlink($moviefile)) {
-                file_put_contents('delete.txt', print_r($moviefile, true), FILE_APPEND);
+                return true;
             }
-            file_put_contents('faileddelete.txt', print_r($moviefile, true), FILE_APPEND);
         }
+        return false;
     }
 
     /**

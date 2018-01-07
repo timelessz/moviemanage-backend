@@ -144,7 +144,7 @@ XML;
     }
 
     //电影列表
-    public function movie($id)
+    public function movie($id, $flag = '')
     {
         if (!$id) {
             exit('请求异常');
@@ -164,6 +164,10 @@ XML;
             $root_url . '/' . $file_name
         ];
         $this->pingBaidu($url);
+        if ($flag == 'restatic') {
+            //表示重新生成静态页
+            return true;
+        }
         exit($code);
     }
 

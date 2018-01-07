@@ -49,7 +49,9 @@ class MoviedownloadlistController extends Controller
         $input = $request->all();
         $model = Moviedownloadlink::create($input);
         if ($model) {
-            (new MovielistController())->deleteMovie($input['movie_id']);
+            $movie_id = $input['movie_id'];
+            (new MovielistController())->deleteMovie($movie_id);
+            (new IndexstaticController())->movie($movie_id, 'restatic');
             return response()->json(['status' => 'success', 'msg' => '电影下载链接添加成功', 'data' => []]);
         }
         return response()->json(['status' => 'failed', 'msg' => '电影添加失败请重试', 'data' => ['']]);
@@ -88,7 +90,9 @@ class MoviedownloadlistController extends Controller
         $input = $request->all();
         if (Moviedownloadlink::where('id', $id)->update($input)) {
             //应该删除掉制定的电影
-            (new MovielistController())->deleteMovie($input['movie_id']);
+            $movie_id = $input['movie_id'];
+            (new MovielistController())->deleteMovie($movie_id);
+            (new IndexstaticController())->movie($movie_id, 'restatic');
             return response()->json(['status' => 'success', 'msg' => '电影修改成功', 'data' => []]);
         }
         return response()->json(['status' => 'failed', 'msg' => '电影修改失败请重试', 'data' => ['']]);
