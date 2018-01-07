@@ -170,9 +170,11 @@ XML;
     //影评list
     public function yingpinglist($id = 1)
     {
-        $element = (new Element())->getYingpingListEnsstial($id, 10);
-        $code = view('reviewlist', $element);
-        return $code;
+        return Cache::rememberForever('yingping' . $id, function () use ($id) {
+            $element = (new Element())->getYingpingListEnsstial($id, 10);
+            $code = view('reviewlist', $element);
+            return $code->render();
+        });
     }
 
     /**
