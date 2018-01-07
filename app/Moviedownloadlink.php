@@ -10,6 +10,7 @@ class Moviedownloadlink extends Model
     protected $table = 'movie_download_link';
     //不主动维护 时间戳字段
     public $timestamps = false;
+
     //存储时间戳
     public static function boot()
     {
@@ -28,7 +29,7 @@ class Moviedownloadlink extends Model
         });
     }
 
-    protected $fillable = ['movie_id', 'comefrom', 'pre_movie_id', 'type_name', 'type_id', 'href', 'text', 'pwd', 'created_at', 'updated_at'];
+    protected $fillable = ['movie_id', 'movie_name', 'comefrom', 'pre_movie_id', 'type_name', 'type_id', 'href', 'text', 'pwd', 'created_at', 'updated_at'];
 
 
 }

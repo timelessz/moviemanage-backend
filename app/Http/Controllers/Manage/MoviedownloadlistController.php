@@ -50,7 +50,7 @@ class MoviedownloadlistController extends Controller
         $model = Moviedownloadlink::create($input);
         if ($model) {
             (new MovielistController())->deleteMovie($input['movie_id']);
-            return response()->json(['status' => 'success', 'msg' => '电影添加成功', 'data' => []]);
+            return response()->json(['status' => 'success', 'msg' => '电影下载链接添加成功', 'data' => []]);
         }
         return response()->json(['status' => 'failed', 'msg' => '电影添加失败请重试', 'data' => ['']]);
     }
