@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Manage;
 
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Index\IndexstaticController;
 use App\Movie;
 use App\Moviedownloadlink;
 use Illuminate\Http\Request;
