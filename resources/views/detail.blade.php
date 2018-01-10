@@ -127,7 +127,22 @@
         <?php
         }
         ?>
-
+        <?php
+        if($movie['comment']){
+        ?>
+        <div class="list-middle-container list-container container-fluid recommend_reason">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="widget">
+                        <h2 class="title">热门评论</h2>
+                        <div class="content">
+                            {!!$movie['comment'] !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php } ?>
         <?php
         if($movie['recommend_reason']){
         ?>
