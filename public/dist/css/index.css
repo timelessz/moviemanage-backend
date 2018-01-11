@@ -154,6 +154,10 @@ body {
     text-align: left;
     padding: 5px 25px;
     color: #0f0f0f;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
 }
 
 .movie-list a:visited {

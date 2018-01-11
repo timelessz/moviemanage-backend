@@ -70,8 +70,7 @@
                                     <img src="{{$v['coversrc']}}" alt="{{$v['title']}}" style="height:240px">
                                 </a>
                                 <div class="row">
-                                    <div class="col-lg-12 movie-list-title"
-                                         style="width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
+                                    <div class="col-lg-12 movie-list-title">
                                         <a href="{{$v['href']}}" title="{{$v['title']}}">
                                             {{$v['name']}}
                                         </a>
