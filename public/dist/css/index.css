@@ -383,6 +383,14 @@ h1 {
     max-width: 100%;
 }
 
+.recommend_reason img {
+    max-width: 100%;
+}
+
+.comment-container img {
+    max-width: 100%;
+}
+
 .doubanscore {
     padding-left: 20px;
     color: #ffb86b;

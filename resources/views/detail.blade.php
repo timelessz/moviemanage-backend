@@ -135,7 +135,7 @@
                 <div class="col-lg-12">
                     <div class="widget">
                         <h2 class="title">热门评论</h2>
-                        <div class="content">
+                        <div class="content comment-container">
                             {!!$movie['comment'] !!}
                         </div>
                     </div>
@@ -151,7 +151,7 @@
                 <div class="col-lg-12">
                     <div class="widget">
                         <h2 class="title">博主推荐</h2>
-                        <div class="content">
+                        <div class="content recommend-container">
                             {!!$movie['recommend_reason'] !!}
                         </div>
                     </div>
