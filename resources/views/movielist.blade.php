@@ -25,12 +25,12 @@
                         <div class="col-xs-6 col-md-4 col-lg-3" style="padding-left:8px;padding-right:8px;">
                             <div class="thumbnail" style="margin-bottom: 15px;margin-top: 0px">
                                 <a href="{{$v['href']}}" title="{{$v['title']}}">
-                                    <img src="{{$v['coversrc']}}" alt="{{$v['title']}}" title="{{$v['sub_summary']}}" style="height:240px">
+                                    <img src="{{$v['coversrc']}}" alt="{{$v['title']}}" title="{{$v['name']}}" style="height:240px">
                                 </a>
                                 <div class="row">
                                     <div class="col-lg-12 movie-list-title"
                                          style="width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
-                                        <a href="{{$v['href']}}" title="{{$v['sub_summary']}}">
+                                        <a href="{{$v['href']}}" title="{{$v['name']}}">
                                             {{$v['name']}}
                                         </a>
                                         <span class="movie-score" title="豆瓣评分{{$v['doubanscore']}}">

@@ -33,7 +33,8 @@
                                 <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
                                 <a href="#" class="bds_bdhome" data-cmd="bdhome" title="分享到百度新首页"></a>
                             </div>
-                            <script>window._bd_share_config = {
+                            <script>
+                                window._bd_share_config = {
                                     "common": {
                                         "bdSnsKey": {},
                                         "bdText": "",
