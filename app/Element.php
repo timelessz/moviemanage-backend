@@ -73,13 +73,15 @@ class Element
         $movietype = $this->getMovieType();
         //博主影片推荐
         $recommendmovie_list = $this->getRecommendMovie($form_movie_arr);
+        //获取20个最新更新电影
+        $allnewestmovie = $this->getAllnewestMovie($form_movie_arr);
         //右边的电影影评
         $reviewlist = $this->getMoviewReview();
         /**********************************************/
         $footer_reviews = $this->getFooterMovieReview();
         $footer_tags = $this->getFooterMovieTag();
         $footer_types = $this->getFooterMovieType();
-        return compact('regionnewlist', 'hotmovie_list', 'screenmovie_list', 'movietype', 'recommendmovie_list', 'reviewlist', 'footer_reviews', 'footer_tags', 'footer_types');
+        return compact('regionnewlist', 'hotmovie_list', 'screenmovie_list', 'movietype', 'recommendmovie_list','allnewestmovie', 'reviewlist', 'footer_reviews', 'footer_tags', 'footer_types');
     }
 
 
@@ -734,7 +736,7 @@ code;
      * @param $limit 取出多少条
      * @return array
      */
-    private function getHotMovie($form_movie_arr, $limit = 8)
+    private function getHotMovie($form_movie_arr, $limit = 12)
     {
         return Cache::rememberForever('hotmovie', function () use ($form_movie_arr, $limit) {
             //热门电影 取热门电影12条来
@@ -760,6 +762,22 @@ code;
             $recommendmovie_list = Movie::where('is_recommend', '20')->orderBy('recommend_settime', 'desc')->limit($limit)->get($field)->toArray();
             array_walk($recommendmovie_list, $form_movie_arr);
             return $recommendmovie_list;
+        });
+    }
+
+
+    /**
+     *  获取最新的20条更新
+     * @access private
+     */
+    private function getAllnewestMovie($form_movie_arr, $limit = 27)
+    {
+        return Cache::rememberForever('allnewestmovie', function () use ($form_movie_arr, $limit) {
+            //博主影片推荐
+            $field = ['id', 'title', 'name', 'alias_name', 'type', 'created_at'];
+            $movie_list = Movie::orderBy('id', 'desc')->limit($limit)->get($field)->toArray();
+            array_walk($movie_list, $form_movie_arr);
+            return $movie_list;
         });
     }
 

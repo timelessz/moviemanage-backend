@@ -111,12 +111,16 @@
         <div class="row">
             @yield('breadcrumb')
             @yield('content')
-            @include('rightrecommend')
+            @include('rightnewestmovie')
+        </div>
+        <div class="row">
+            @include('type')
         </div>
         <div class="row">
             <div class="col-lg-12">
                 @include('regionnewlist')
                 @include('hotmovie')
+                @include('movienews')
             </div>
         </div>
     </div>

@@ -19,18 +19,17 @@
             ?>
             <div role="tabpanel" class="tab-pane fade {{$key==0?'active in':''}}" id="{{$key}}"
                  aria-labelledby="home-tab">
-                <div class="row">
+                <div class="row" style="padding-top: 10px">
                     <?php
                     foreach ($val['list'] as $k => $v) {
                     ?>
-                    <div class="col-xs-6 col-md-4 col-lg-2" style="padding:5px;">
-                        <div class="thumbnail" style="margin-bottom: 15px;margin-top: 0px">
+                    <div class="col-xs-6 col-md-4 col-lg-2" style="padding-left:5px;padding-right:5px;padding-bottom:0px">
+                        <div class="thumbnail thumbnail-style" >
                             <a href="{{$v['href']}}" title="{{$v['title']}}">
                                 <img src="{{$v['coversrc']}}" alt="{{$v['title']}}" style="height:240px">
                             </a>
                             <div class="row">
-                                <div class="col-lg-12 movie-list-title"
-                                     style="width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
+                                <div class="col-lg-12 movie-list-title">
                                     <a href="{{$v['href']}}" title="{{$v['title']}}">
                                         {{$v['name']}}
                                     </a>

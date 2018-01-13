@@ -65,7 +65,7 @@
                     <div class="row">
                         <?php foreach ($newest_movie as $v){ ?>
                         <div class="col-xs-6 col-md-4 col-lg-3" style="padding-left:8px;padding-right:8px;">
-                            <div class="thumbnail" style="margin-bottom: 15px;margin-top: 0px">
+                            <div class="thumbnail thumbnail-style">
                                 <a href="{{$v['href']}}" title="{{$v['title']}}">
                                     <img src="{{$v['coversrc']}}" alt="{{$v['title']}}" style="height:240px">
                                 </a>

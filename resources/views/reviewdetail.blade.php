@@ -62,7 +62,6 @@
                     <div class="widget">
                         <h4 class="title">相关电影</h4>
                         <div class="content recent-post">
-
                             <div class="recent-single-post">
                                 <a href="{{$relative_movie['href']}}" class="post-title"
                                    title="{{$relative_movie['title']}}">

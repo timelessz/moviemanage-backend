@@ -7,10 +7,10 @@
                 <?php
                 foreach ($hotmovie_list as $k=>$v){
                 ?>
-                <div class="col-xs-6 col-md-4 col-lg-3" style="padding-left:8px;padding-right:8px;">
-                    <div class="thumbnail">
+                <div class="col-xs-4 col-md-6 col-lg-2" style="padding-right:0px;">
+                    <div class="thumbnail thumbnail-style" >
                         <a href="{{$v['href']}}" title="{{$v['title']}}">
-                            <img src="{{$v['coversrc']}}" alt="{{$v['title']}}" style="height:300px">
+                            <img src="{{$v['coversrc']}}" alt="{{$v['title']}}" style="height:240px">
                         </a>
                         <div class="row">
                             <div class="col-lg-12 movie-list-title">

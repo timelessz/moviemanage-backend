@@ -139,6 +139,11 @@ body {
     color: #555555;
 }
 
+.thumbnail-style {
+    margin-bottom: 10px;
+    margin-top: 0px
+}
+
 /**电影列表*/
 
 .movie-list {
