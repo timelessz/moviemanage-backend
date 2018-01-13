@@ -105,7 +105,7 @@ XML;
     public function oumeilist($id = 1)
     {
         return Cache::rememberForever('oumeilist' . $id, function () use ($id) {
-            $element = (new Element())->getMovieListEnsstial('oumei', $id, 20);
+            $element = (new Element())->getMovieListEnsstial('oumei', $id, 16);
             $code = view('movielist', $element);
             return $code->render();
         });
@@ -116,7 +116,7 @@ XML;
     public function dalulist($id = 1)
     {
         return Cache::rememberForever('dalulist' . $id, function () use ($id) {
-            $element = (new Element())->getMovieListEnsstial('dalu', $id, 20);
+            $element = (new Element())->getMovieListEnsstial('dalu', $id, 16);
             $code = view('movielist', $element);
             return $code->render();
         });
@@ -126,7 +126,7 @@ XML;
     public function rihanlist($id = 1)
     {
         return Cache::rememberForever('rihanlist' . $id, function () use ($id) {
-            $element = (new Element())->getMovieListEnsstial('rihan', $id, 20);
+            $element = (new Element())->getMovieListEnsstial('rihan', $id, 16);
             $code = view('movielist', $element);
             return $code->render();
         });
@@ -137,7 +137,7 @@ XML;
     public function gangtailist($id = 1)
     {
         return Cache::rememberForever('gangtailist' . $id, function () use ($id) {
-            $element = (new Element())->getMovieListEnsstial('gangtai', $id, 20);
+            $element = (new Element())->getMovieListEnsstial('gangtai', $id, 16);
             $code = view('movielist', $element);
             return $code->render();
         });
@@ -147,7 +147,7 @@ XML;
     public function jingdianlist($id = 1)
     {
         return Cache::rememberForever('jingdianlist' . $id, function () use ($id) {
-            $element = (new Element())->getMovieListEnsstial('jingdian', $id, 20);
+            $element = (new Element())->getMovieListEnsstial('jingdian', $id, 16);
             $code = view('movielist', $element);
             return $code->render();
         });

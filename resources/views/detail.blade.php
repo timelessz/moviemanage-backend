@@ -26,7 +26,7 @@
                             <div class=" col-lg-4 col-md-12 col-sm-12">
                                 <a href="#" class="thumbnail">
                                     <img src="{{$movie['coversrc']}}" alt="{{$movie['name']}}"
-                                         title="{{$movie['title']}}">
+                                         title="{{$movie['title']}}" class="detail-thumbnail">
                                 </a>
                             </div>
                             <div class=" col-lg-8 col-md-12 col-sm-12">
@@ -38,14 +38,14 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <div class="">
-                                            更新：{{$movie['releasedate']}}
+                                        <div class="detail-field">
+                                            <span>更新</span>：{{date('Y-m-d H:i')}}
                                         </div>
-                                        <div class="">
-                                            状态：高清
+                                        <div class="detail-field">
+                                            <span>状态</span>：高清
                                         </div>
-                                        <div class="">
-                                            地区：<a href="">{{$movie['region_name']}}</a>
+                                        <div class="detail-field">
+                                            <span>地区</span>：<a href="">{{$movie['region_name']}}</a>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -77,11 +77,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="">
-                                    语言：{{$movie['language']}}
+                                <div class="detail-field">
+                                    <span> 语言</span>：{{$movie['language']}}
                                 </div>
-                                <div class="">
-                                    类型：
+                                <div class="detail-field">
+                                    <span>类型</span>：
                                     <?php
                                     foreach ($movie['type'] as $val) {
                                     ?>
@@ -90,11 +90,15 @@
                                     }
                                     ?>
                                 </div>
-                                <div class="">
-                                    主演：{{$movie['starring']}}
+                                <div class="detail-field">
+                                    <span>主演</span>：{{$movie['starring']}}
                                 </div>
-                                <div class="">
-                                    剧情介绍：
+                                <div class="detail-field">
+                                    <span>剧情介绍</span>：
+                                </div>
+                                <div class="detail-field">
+                                    <span>上映时间</span>：
+                                    {{$movie['releasedate']}}
                                 </div>
                                 <div class="movie-detail-list-des">
                                     {{$movie['summary']}}
@@ -119,7 +123,6 @@
         </div>
         <?php
         foreach ($d_link as $k => $v) {
-
         ?>
         <div class="list-middle-container list-container container-fluid download-link">
             <div class="row">
