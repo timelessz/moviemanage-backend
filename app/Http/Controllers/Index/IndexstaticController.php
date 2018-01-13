@@ -28,12 +28,13 @@ class IndexstaticController extends Controller
         $host = 'http://www.' . $_SERVER['HTTP_HOST'];
         //首先获取全部链接的路径 从menu 中
         $menu = (new Menu())->get_menu();
-//        print_r($menu);
         //然后需要获取全部的电影分类 点一个标签的信息
         $movietype = Movietype::all(['id', 'name'])->toArray();
         $movietag = Movietag::all(['id', 'name'])->toArray();
         array_walk($movietype, [(new Element()), 'execFormatTagType'], 'type');
         array_walk($movietag, [(new Element()), 'execFormatTagType'], 'tag');
+        //每次去除500条最新电影放进来
+        $movie = (new Movie())->limit(500)->orderBy('id', 'desc')->get(['id', 'created_at'])->toArray();
         $sitemap = [];
         foreach ($menu as $v) {
             $sitemap[] = [
@@ -48,7 +49,7 @@ class IndexstaticController extends Controller
                 'loc' => $host . $v['href'],
                 'lastmod' => date('Y-m-d', time()),
                 'changefreq' => 'daily',
-                'priority' => '0.6',
+                'priority' => '0.7',
             ];
         }
         foreach ($movietype as $v) {
@@ -56,7 +57,15 @@ class IndexstaticController extends Controller
                 'loc' => $host . $v['href'],
                 'lastmod' => date('Y-m-d', time()),
                 'changefreq' => 'daily',
-                'priority' => '0.6',
+                'priority' => '0.8',
+            ];
+        }
+        foreach ($movie as $v) {
+            $sitemap[] = [
+                'loc' => $host . sprintf('/movie/%s.html', $v['id']),
+                'lastmod' => date('Y-m-d', time()),
+                'changefreq' => 'daily',
+                'priority' => '0.9',
             ];
         }
         $xml_wrapper = <<<XML
@@ -87,6 +96,7 @@ XML;
         $element = (new Element())->getIndexEnsstial();
         $code = view('index', $element);
         file_put_contents('index.html', $code);
+        $this->sitemap();
         return $code;
     }
 
