@@ -25,7 +25,7 @@ class IndexstaticController extends Controller
      */
     public function sitemap()
     {
-        $host = 'http://www.' . $_SERVER['HTTP_HOST'];
+        $host = 'http://' . $_SERVER['HTTP_HOST'];
         //首先获取全部链接的路径 从menu 中
         $menu = (new Menu())->get_menu();
         //然后需要获取全部的电影分类 点一个标签的信息
