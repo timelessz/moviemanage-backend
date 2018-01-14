@@ -94,11 +94,11 @@
                                     <span>主演</span>：{{$movie['starring']}}
                                 </div>
                                 <div class="detail-field">
-                                    <span>剧情介绍</span>：
-                                </div>
-                                <div class="detail-field">
                                     <span>上映时间</span>：
                                     {{$movie['releasedate']}}
+                                </div>
+                                <div class="detail-field">
+                                    <span>剧情介绍</span>：
                                 </div>
                                 <div class="movie-detail-list-des">
                                     {{$movie['summary']}}
