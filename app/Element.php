@@ -81,7 +81,7 @@ class Element
         $footer_reviews = $this->getFooterMovieReview();
         $footer_tags = $this->getFooterMovieTag();
         $footer_types = $this->getFooterMovieType();
-        return compact('regionnewlist', 'hotmovie_list', 'screenmovie_list', 'movietype', 'recommendmovie_list','allnewestmovie', 'reviewlist', 'footer_reviews', 'footer_tags', 'footer_types');
+        return compact('regionnewlist', 'hotmovie_list', 'screenmovie_list', 'movietype', 'recommendmovie_list', 'allnewestmovie', 'reviewlist', 'footer_reviews', 'footer_tags', 'footer_types');
     }
 
 
@@ -588,6 +588,14 @@ class Element
                 ];
             }
             $v['type'] = $type;
+        }
+        if (array_key_exists('content', $v)) {
+            $host = 'http://' . $_SERVER['HTTP_HOST'];
+            //从内容中添加链接
+            $movie_name = $v['name'];
+            $path = $host . "/movie/{$v['id']}.html";
+            $movie_a = sprintf('<a href="%s" target="_blank" title="%s">%s</a>', $path, $v['title'], $movie_name);
+            $v['content'] = str_replace($v['name'], $movie_a, $v['content']);
         }
         if (array_key_exists('created_at', $v)) {
             $v['created_at'] = date('Y年m月d日', $v['created_at']);
