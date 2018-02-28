@@ -137,7 +137,7 @@ class Element
         array_walk($movies, $form_movie_arr);
         $count = Movie::where('region_id', $region_id)->count();
         $allpagenum = ceil($count / $pagesize);
-        $pagination = $this->multipage($allpagenum, $pagenum, 'oumei');
+        $pagination = $this->multipage($allpagenum, $pagenum, $region_enname);
         $commondata = $this->getCommonData($form_movie_arr);
 
         return array_merge(compact('tdk_html', 'menu', 'hotmovie_list', 'current', 'breadcrumb', 'name', 'movies', 'allpagenum', 'count', 'pagination'), $commondata);
